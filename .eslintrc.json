@@ -1,0 +1,134 @@
+{
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:jest/recommended"
+  ],
+  "globals": {
+    "document": false,
+    "localStorage": false,
+    "mockStore": false,
+    "restoreSpys": false,
+    "setupReduxSpys": false,
+    "shallowWrappedComponent": false,
+    "WebSocket": false,
+    "window": false
+  },
+  "plugins": [
+    "jest",
+    "react-hooks",
+    "simple-import-sort"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "./src"
+        ]
+      }
+    }
+  },
+  "rules": {
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "complexity": [
+      "error",
+      {
+        "max": 5
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+    "function-paren-newline": "off",
+    "import/no-extraneous-dependencies": "off",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "ignoreUrls": true
+      }
+    ],
+    "no-trailing-spaces": "error",
+    "no-underscore-dangle": "off",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "consistent": true,
+        "multiline": true
+      }
+    ],
+    "object-property-newline": [
+      "error",
+      {
+        "allowAllPropertiesOnSameLine": true
+      }
+    ],
+    "object-shorthand": "error",
+    "quote-props": [
+      "error",
+      "consistent-as-needed"
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/no-array-index-key": "off",
+    "react/sort-comp": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "require-jsdoc": "off",
+    "semi": [
+      "error",
+      "always"
+    ],
+    "simple-import-sort/sort": [
+      "error",
+      {
+        "groups": [
+          [
+            "^\\u0000"
+          ],
+          [
+            "^react",
+            "^prop-types",
+            "^redux",
+            "^reselect",
+            "^@emotion",
+            "^semantic-ui",
+            "^lodash"
+          ],
+          [
+            "^@?\\w"
+          ]
+        ]
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "asyncArrow": "always",
+        "named": "never"
+      }
+    ]
+  }
+}
