@@ -1,4 +1,4 @@
-import './index.css';
+import 'index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,9 +6,9 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
-import App from './App';
-import rootReducer from './reducers';
-import * as serviceWorker from './serviceWorker';
+import App from 'App';
+import rootReducer from 'reducers';
+import * as serviceWorker from 'serviceWorker';
 
 const getReduxDevExtOptions = () => {
   if (!window.__REDUX_DEVTOOLS_EXTENSION__) return f => f;
