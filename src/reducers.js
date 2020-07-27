@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import { handleAction } from 'redux-actions';
+import { handleAction, handleActions } from 'redux-actions';
 import flatMap from 'lodash/flatMap';
+import reject from 'lodash/reject';
 import sampleSize from 'lodash/sampleSize';
 
 import actions from 'actions';
@@ -29,9 +30,16 @@ const startingHand = sampleSize(cards, handSize);
 
 // utility functions
 const append = (state, action) => update(state, { $push: [action.payload] });
+const remove = (state, action) => reject(state, action.payload);
 
 const rootReducer = combineReducers({
-  hand: handleAction(actions.game.hand.append, append, startingHand),
+  hand: handleActions(
+    {
+      [actions.game.hand.append]: append,
+      [actions.game.hand.remove]: remove,
+    },
+    startingHand,
+  ),
   table: handleAction(actions.game.table.append, append, []),
 });
 

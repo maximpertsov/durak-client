@@ -17,10 +17,15 @@ const Table = () => {
   const dispatch = useDispatch();
   const cards = useSelector(state => state.table, isEqual);
 
+  const handleDrop = ({ suit, rank }) => {
+    dispatch(actions.game.table.append({ suit, rank }));
+    dispatch(actions.game.hand.remove({ suit, rank }));
+  };
+
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
-    drop: ({ suit, rank }) => {
-      dispatch(actions.game.table.append({ suit, rank }));
+    drop: item => {
+      handleDrop(item);
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
