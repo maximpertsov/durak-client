@@ -7,6 +7,7 @@ import last from 'lodash/last';
 import actions from 'actions';
 
 const CardWrapper = styled.div(props => ({
+  opacity: props.isOver ? '30%' : '100%',
   marginTop: props.index === 0 ? '0%' : '-100%',
 }));
 
@@ -26,15 +27,13 @@ const CardStack = ({ children }) => {
     drop: item => {
       handleDrop(item);
     },
-    // TODO: what do I need this for?
     collect: monitor => ({
       isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
     }),
   });
 
   const renderCards = () => children.map((card, index) => (
-    <CardWrapper key={index} index={index} ref={dropRef}>
+    <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
       {card}
     </CardWrapper>
   ));

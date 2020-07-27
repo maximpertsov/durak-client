@@ -8,7 +8,7 @@ import some from 'lodash/some';
 import getCardImage from './images';
 
 const Wrapper = styled.div(props => {
-  const { opacity, rank, suit } = props;
+  const { isDragging, rank, suit } = props;
   const cardImage = getCardImage({ rank, suit });
 
   return {
@@ -16,7 +16,7 @@ const Wrapper = styled.div(props => {
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     height: '0%',
-    opacity,
+    opacity: isDragging ? '30%' : '100%',
     paddingTop: '155.67%',
   };
 });
@@ -24,18 +24,18 @@ const Wrapper = styled.div(props => {
 const Card = ({ suit, rank }) => {
   const hand = useSelector(state => state.hand, isEqual);
 
-  const [{ opacity }, dragRef] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', suit, rank },
     canDrag: () => some(hand, { suit, rank }),
     collect: monitor => ({
-      opacity: monitor.isDragging() ? 0.3 : 1,
+      isDragging: !!monitor.isDragging(),
     }),
   });
 
   return (
     <Wrapper
       className="Card"
-      opacity={opacity}
+      isDragging={isDragging}
       suit={suit}
       rank={rank}
       ref={dragRef}

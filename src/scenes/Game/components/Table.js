@@ -8,10 +8,10 @@ import actions from 'actions';
 
 import Cards from './Cards';
 
-const Wrapper = styled.div({
-  backgroundColor: 'green',
+const Wrapper = styled.div(props => ({
+  backgroundColor: props.isOver ? 'yellow' : 'green',
   height: '400px',
-});
+}));
 
 const Table = () => {
   const dispatch = useDispatch();
@@ -29,15 +29,13 @@ const Table = () => {
     },
     // do not drop when over nested card stack component
     canDrop: (item, monitor) => monitor.isOver({ shallow: true }),
-    // TODO: what do I need this for?
     collect: monitor => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
+      isOver: !!monitor.isOver({ shallow: true }),
     }),
   });
 
   return (
-    <Wrapper className="Table" ref={dropRef}>
+    <Wrapper className="Table" isOver={isOver} ref={dropRef}>
       <Cards cards={cards} />
     </Wrapper>
   );
