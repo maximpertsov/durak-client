@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import isEqual from 'lodash/isEqual';
+import some from 'lodash/some';
 
 import getCardImage from './images';
 
@@ -19,10 +22,11 @@ const Wrapper = styled.div(props => {
 });
 
 const Card = ({ suit, rank }) => {
+  const hand = useSelector(state => state.hand, isEqual);
+
   const [{ opacity }, dragRef] = useDrag({
     item: { type: 'CARD', suit, rank },
-    begin: () => {},
-    end: () => {},
+    canDrag: () => some(hand, { suit, rank }),
     collect: monitor => ({
       opacity: monitor.isDragging() ? 0.3 : 1,
     }),
