@@ -27,6 +27,9 @@ const Table = () => {
     drop: item => {
       handleDrop(item);
     },
+    // do not drop when over nested card stack component
+    canDrop: (item, monitor) => monitor.isOver({ shallow: true }),
+    // TODO: what do I need this for?
     collect: monitor => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),

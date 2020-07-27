@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import Card from './Card';
+import CardStack from './CardStack';
 
 const Wrapper = styled.div({
   display: 'grid',
@@ -11,12 +12,25 @@ const Wrapper = styled.div({
   width: '50%',
 });
 
-const Cards = ({ cards }) => {
-  const renderCards = () => cards.map(card => {
-    const { suit, rank } = card;
+const CardOrStack = ({ cardOrStack }) => {
+  if (Array.isArray(cardOrStack)) {
+    return (
+      <CardStack>
+        {cardOrStack.map((card, index) => (
+          <CardOrStack key={index} cardOrStack={card} />
+        ))}
+      </CardStack>
+    );
+  }
 
-    return <Card suit={suit} rank={rank} />;
-  });
+  const { suit, rank } = cardOrStack;
+  return <Card suit={suit} rank={rank} />;
+};
+
+const Cards = ({ cards }) => {
+  const renderCards = () => cards.map((cardOrStack, index) => (
+    <CardOrStack key={index} cardOrStack={cardOrStack} />
+  ));
 
   return <Wrapper className="Game">{renderCards()}</Wrapper>;
 };

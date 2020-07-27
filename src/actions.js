@@ -8,6 +8,7 @@ export default createActions({
     },
     TABLE: {
       APPEND: undefined,
+      STACK: undefined,
     },
   },
 });
