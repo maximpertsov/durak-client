@@ -29,7 +29,9 @@ const append = (state, action) => update(state, { $push: [action.payload] });
 
 const rootReducer = combineReducers({
   hand: handleAction(actions.game.hand.append, append, cards),
-  table: handleAction(actions.game.table.append, append, []),
+  table: handleAction(actions.game.table.append, append, [
+    { suit: 'hearts', rank: 'ace' },
+  ]),
 });
 
 export default rootReducer;
