@@ -14,7 +14,7 @@ const Wrapper = styled.div(props => {
     backgroundSize: 'cover',
     height: '0%',
     opacity,
-    paddingTop: '157%',
+    paddingTop: '155.67%',
   };
 });
 
