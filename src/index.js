@@ -1,6 +1,8 @@
 import 'index.css';
 
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
@@ -24,7 +26,9 @@ const store = compose(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>
   </Provider>,
   document.getElementById('root'),
 );

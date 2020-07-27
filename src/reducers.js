@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleAction } from 'redux-actions';
 import flatMap from 'lodash/flatMap';
+import sampleSize from 'lodash/sampleSize';
 
 import actions from 'actions';
 import update from 'immutability-helper';
@@ -23,15 +24,15 @@ const ranks = [
   'king',
 ];
 const cards = flatMap(suits, suit => ranks.map(rank => ({ rank, suit })));
+const handSize = 6;
+const startingHand = sampleSize(cards, handSize);
 
 // utility functions
 const append = (state, action) => update(state, { $push: [action.payload] });
 
 const rootReducer = combineReducers({
-  hand: handleAction(actions.game.hand.append, append, cards),
-  table: handleAction(actions.game.table.append, append, [
-    { suit: 'hearts', rank: 'ace' },
-  ]),
+  hand: handleAction(actions.game.hand.append, append, startingHand),
+  table: handleAction(actions.game.table.append, append, []),
 });
 
 export default rootReducer;
