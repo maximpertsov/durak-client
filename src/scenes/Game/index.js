@@ -4,7 +4,7 @@ import Card from './components/Card';
 
 const Game = () => (
   <div className="Game">
-    <Card />
+    <Card suit="spades" rank="ace" />
   </div>
 );
 
