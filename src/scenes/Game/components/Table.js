@@ -9,7 +9,7 @@ import actions from 'actions';
 import Cards from './Cards';
 
 const Wrapper = styled.div(props => ({
-  backgroundColor: props.isOver ? 'yellow' : 'green',
+  backgroundColor: props.isOver ? '#90EE90' : 'green',
   height: '400px',
 }));
 
