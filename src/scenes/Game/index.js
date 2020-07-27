@@ -1,6 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
-import flatMap from 'lodash/flatMap';
+import isEqual from 'lodash/isEqual';
 
 import Card from './components/Card';
 
@@ -10,25 +11,9 @@ const Wrapper = styled.div({
   gridGap: '0.25rem',
 });
 
-const suits = ['clubs', 'diamonds', 'hearts', 'spades'];
-const ranks = [
-  'ace',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  'jack',
-  'queen',
-  'king',
-];
-const cards = flatMap(suits, suit => ranks.map(rank => ({ rank, suit })));
-
 const Game = () => {
+  const cards = useSelector(state => state.hand, isEqual);
+
   const renderCards = () => cards.map(card => {
     const { suit, rank } = card;
 
