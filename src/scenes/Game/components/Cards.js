@@ -5,7 +5,7 @@ import Card from './Card';
 
 const Wrapper = styled.div({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, 120px)',
+  gridTemplateColumns: 'repeat(auto-fit, 100px)',
   gridGap: '0.25rem',
 });
 

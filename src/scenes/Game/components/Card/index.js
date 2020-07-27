@@ -10,12 +10,11 @@ const Wrapper = styled.div(props => {
 
   return {
     backgroundImage: `url(${cardImage})`,
-    backgroundPosition: 'right',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     height: '0%',
     opacity,
-    paddingTop: '100%',
+    paddingTop: '157%',
   };
 });
 
