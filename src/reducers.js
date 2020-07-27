@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleAction, handleActions } from 'redux-actions';
+import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
-import reject from 'lodash/reject';
 import sampleSize from 'lodash/sampleSize';
 
 import actions from 'actions';
@@ -30,7 +30,10 @@ const startingHand = sampleSize(cards, handSize);
 
 // utility functions
 const append = (state, action) => update(state, { $push: [action.payload] });
-const remove = (state, action) => reject(state, action.payload);
+const remove = (state, action) => {
+  const index = findIndex(state, action.payload);
+  return update(state, { $splice: [[index, 1, {}]] });
+};
 
 const rootReducer = combineReducers({
   hand: handleActions(
