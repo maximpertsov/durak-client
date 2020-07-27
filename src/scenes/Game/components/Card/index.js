@@ -8,11 +8,11 @@ const Wrapper = styled.div(props => {
 
   return {
     backgroundImage: `url(${cardImage})`,
-    backgroundSize: 'contain',
+    backgroundPosition: 'right',
     backgroundRepeat: 'no-repeat',
-    display: 'center',
+    backgroundSize: 'contain',
     height: '0%',
-    paddingTop: '125%',
+    paddingTop: '100%',
   };
 });
 
