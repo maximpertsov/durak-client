@@ -7,6 +7,8 @@ const Wrapper = styled.div({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, 100px)',
   gridGap: '0.25rem',
+  margin: '0 auto',
+  width: '50%',
 });
 
 const Cards = ({ cards }) => {
