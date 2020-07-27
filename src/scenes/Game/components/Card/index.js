@@ -1,9 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
-
-import actions from 'actions';
 
 import getCardImage from './images';
 
@@ -23,10 +20,8 @@ const Wrapper = styled.div(props => {
 });
 
 const Card = ({ suit, rank }) => {
-  const dispatch = useDispatch();
-
   const [{ opacity }, dragRef] = useDrag({
-    item: { type: 'CARD' },
+    item: { type: 'CARD', suit, rank },
     begin: () => {},
     end: () => {},
     collect: monitor => ({

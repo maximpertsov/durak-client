@@ -1,7 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import isEqual from 'lodash/isEqual';
+
+import actions from 'actions';
 
 import Cards from './Cards';
 
@@ -11,10 +14,22 @@ const Wrapper = styled.div({
 });
 
 const Table = () => {
+  const dispatch = useDispatch();
   const cards = useSelector(state => state.table, isEqual);
 
+  const [{ isOver }, dropRef] = useDrop({
+    accept: 'CARD',
+    drop: ({ suit, rank }) => {
+      dispatch(actions.game.table.append({ suit, rank }));
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  });
+
   return (
-    <Wrapper className="Table">
+    <Wrapper className="Table" ref={dropRef}>
       <Cards cards={cards} />
     </Wrapper>
   );
