@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
-import isEqual from 'lodash/isEqual';
-import last from 'lodash/last';
 import sampleSize from 'lodash/sampleSize';
 
 import actions from 'actions';
 import update from 'immutability-helper';
-import { cards, ranks, suits } from 'utils/gameLogic';
+import { cards } from 'utils/gameLogic';
+
+import table from './table';
 
 // constants
 const handSize = 6;
@@ -20,18 +20,6 @@ const remove = (state, action) => {
   const index = findIndex(state, action.payload);
   return update(state, { $splice: [[index, 1, {}]] });
 };
-// Table
-const add = (state, action) => update(state, { $push: [[action.payload]] });
-const stack = (state, action) => {
-  const {
-    payload: { baseCard, card },
-  } = action;
-
-  const index = findIndex(state, cardStack => isEqual(last(cardStack), baseCard),
-  );
-  const newCardStack = update(state[index], { $push: [card] });
-  return update(state, { $splice: [[index, 1, newCardStack]] });
-};
 
 const rootReducer = combineReducers({
   hand: handleActions(
@@ -41,13 +29,7 @@ const rootReducer = combineReducers({
     },
     startingHand,
   ),
-  table: handleActions(
-    {
-      [actions.game.table.append]: add,
-      [actions.game.table.stack]: stack,
-    },
-    [],
-  ),
+  table,
 });
 
 export default rootReducer;
