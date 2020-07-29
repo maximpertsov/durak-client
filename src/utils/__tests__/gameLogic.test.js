@@ -3,14 +3,24 @@ import { canDefend } from '../gameLogic';
 /* eslint-disable max-len */
 describe('canDefend', () => {
   test.each`
-    attackSuit  | attackRank | defenseSuit | defenseRank | trump       | expected
-    ${'hearts'} | ${2}       | ${'hearts'} | ${3}        | ${'spades'} | ${true}
+    attackSuit  | attackRank | defenseSuit | defenseRank | trumpSuit   | expected
+    ${'hearts'} | ${6}       | ${'hearts'} | ${7}        | ${'spades'} | ${true}
+    ${'hearts'} | ${7}       | ${'hearts'} | ${6}        | ${'spades'} | ${false}
+    ${'hearts'} | ${6}       | ${'clubs'}  | ${7}        | ${'spades'} | ${false}
+    ${'hearts'} | ${'ace'}   | ${'spades'} | ${7}        | ${'spades'} | ${true}
   `(
   '$defenseRank of $defenseSuit beats $attackRank of $attackSuit when $trump is trump? $expected',
-  ({ attackSuit, attackRank, defenseSuit, defenseRank, trump, expected }) => {
+  ({
+    attackSuit,
+    attackRank,
+    defenseSuit,
+    defenseRank,
+    trumpSuit,
+    expected,
+  }) => {
     const defenseCard = { suit: defenseSuit, rank: defenseRank };
     const attackCard = { suit: attackSuit, rank: attackRank };
-    expect(canDefend({ defenseCard, attackCard, trump })).toBe(expected);
+    expect(canDefend({ defenseCard, attackCard, trumpSuit })).toBe(expected);
   },
 );
 });

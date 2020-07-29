@@ -8,24 +8,9 @@ import sampleSize from 'lodash/sampleSize';
 
 import actions from 'actions';
 import update from 'immutability-helper';
+import { ranks, suits } from 'utils/gameLogic';
 
 // constants
-const suits = ['clubs', 'diamonds', 'hearts', 'spades'];
-const ranks = [
-  'ace',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  'jack',
-  'queen',
-  'king',
-];
 const cards = flatMap(suits, suit => ranks.map(rank => ({ rank, suit })));
 const handSize = 6;
 const startingHand = sampleSize(cards, handSize);
