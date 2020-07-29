@@ -1,4 +1,4 @@
-import { canAttack, canDefend } from '../gameLogic';
+import { canAttack, canDefend, cards } from '../gameLogic';
 
 /* eslint-disable max-len */
 describe('canDefend', () => {
@@ -28,10 +28,11 @@ describe('canDefend', () => {
 describe('canAttack', () => {
   describe('empty table', () => {
     const table = [];
-    const card = { suit: 'spades', rank: 'ace' };
 
     test('always true', () => {
-      expect(canAttack({ table, card })).toBe(true);
+      cards.forEach(card => {
+        expect(canAttack({ table, card })).toBe(true);
+      });
     });
   });
 

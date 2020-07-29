@@ -1,3 +1,4 @@
+import flatMap from 'lodash/flatMap';
 import flatten from 'lodash/flatten';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
@@ -20,6 +21,9 @@ export const ranks = Object.freeze([
   'king',
   'ace',
 ]);
+export const cards = Object.freeze(
+  flatMap(suits, suit => ranks.map(rank => ({ rank, suit }))),
+);
 
 const rankValues = Object.freeze(
   fromPairs(ranks.map((value, index) => [value, index])),
