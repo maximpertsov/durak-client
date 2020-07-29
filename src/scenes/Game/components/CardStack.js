@@ -41,7 +41,7 @@ const CardStack = ({ children }) => {
     }),
   });
 
-  const renderCards = () => children.map((card, index) => (
+  const renderCards = () => React.Children.toArray(children).map((card, index) => (
     <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
       {card}
     </CardWrapper>
