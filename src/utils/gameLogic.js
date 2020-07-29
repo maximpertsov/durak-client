@@ -1,5 +1,8 @@
+import flatten from 'lodash/flatten';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import some from 'lodash/some';
 
 export const suits = Object.freeze(['clubs', 'diamonds', 'hearts', 'spades']);
 export const ranks = Object.freeze([
@@ -29,6 +32,13 @@ export const canDefend = ({ attackCard, defenseCard, trumpSuit }) => {
     return getValue(defenseCard) > getValue(attackCard);
   }
   return defenseCard.suit === trumpSuit;
+};
+
+export const canAttack = ({ table, card }) => {
+  const flatTable = flatten(table);
+  if (isEmpty(flatTable)) return true;
+
+  return some(flatTable, ['rank', card.rank]);
 };
 
 export default {};

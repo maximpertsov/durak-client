@@ -1,4 +1,4 @@
-import { canDefend } from '../gameLogic';
+import { canAttack, canDefend } from '../gameLogic';
 
 /* eslint-disable max-len */
 describe('canDefend', () => {
@@ -23,5 +23,37 @@ describe('canDefend', () => {
     expect(canDefend({ defenseCard, attackCard, trumpSuit })).toBe(expected);
   },
 );
+});
+
+describe('canAttack', () => {
+  describe('empty table', () => {
+    const table = [];
+    const card = { suit: 'spades', rank: 'ace' };
+
+    test('always true', () => {
+      expect(canAttack({ table, card })).toBe(true);
+    });
+  });
+
+  describe('table with cards', () => {
+    const table = [
+      [
+        { suit: 'hearts', rank: 10 },
+        { suit: 'hearts', rank: 'ace' },
+      ],
+      [{ suit: 'clubs', rank: 7 }],
+    ];
+
+    test.each`
+      suit          | rank     | expected
+      ${'spades'}   | ${7}     | ${true}
+      ${'spades'}   | ${8}     | ${false}
+      ${'spades'}   | ${'ace'} | ${true}
+      ${'spades'}   | ${10}    | ${true}
+      ${'diamonds'} | ${10}    | ${true}
+    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
+  expect(canAttack({ table, card: { rank, suit } })).toBe(expected);
+});
+  });
 });
 /* eslint-enable max-len */
