@@ -6,8 +6,6 @@ import last from 'lodash/last';
 import actions from 'actions';
 import update from 'immutability-helper';
 
-// reducer functions
-// Table
 const add = (state, action) => update(state, { $push: [[action.payload]] });
 const stack = (state, action) => {
   const {

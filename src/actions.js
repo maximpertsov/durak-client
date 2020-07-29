@@ -10,5 +10,8 @@ export default createActions({
       APPEND: undefined,
       STACK: undefined,
     },
+    USERNAME: {
+      SET: undefined,
+    },
   },
 });
