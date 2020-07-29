@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import last from 'lodash/last';
 
 import actions from 'actions';
+import { canDefend } from 'utils/gameLogic';
 
 const CardWrapper = styled.div(props => ({
   opacity: props.isOver ? '30%' : '100%',
@@ -14,25 +15,33 @@ const CardWrapper = styled.div(props => ({
 const CardStack = ({ children }) => {
   const dispatch = useDispatch();
 
-  const handleDrop = ({ suit, rank }) => {
-    // YUCK
-    const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
+  // YUCK
+  const getBaseCard = () => last(React.Children.toArray(children)).props.cardOrStack;
+
+  const drop = ({ suit, rank }) => {
+    const baseCard = getBaseCard();
 
     dispatch(actions.game.table.stack({ baseCard, card: { rank, suit } }));
     dispatch(actions.game.hand.remove({ suit, rank }));
   };
 
+  const canDrop = card => {
+    if (React.Children.count(children) > 1) return false;
+
+    const baseCard = getBaseCard();
+    return canDefend({ defenseCard: card, attackCard: baseCard });
+  };
+
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
-    drop: item => {
-      handleDrop(item);
-    },
+    drop,
+    canDrop,
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
   });
 
-  const renderCards = () => children.map((card, index) => (
+  const renderCards = () => React.Children.toArray(children).map((card, index) => (
     <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
       {card}
     </CardWrapper>
