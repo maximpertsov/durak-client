@@ -19,15 +19,20 @@ const startingHands = chunk(
 
 const playersWithStartingHands = zipObject(players, startingHands);
 
-const append = (state, action) => update(state, { $push: [action.payload] });
 const remove = (state, action) => {
-  const index = findIndex(state, action.payload);
-  return update(state, { $splice: [[index, 1, {}]] });
+  const {
+    payload: { rank, suit, player },
+  } = action;
+
+  const playerHand = state[player];
+
+  const index = findIndex(playerHand, { rank, suit });
+  const newHand = update(playerHand, { $splice: [[index, 1, {}]] });
+  return update(state, { [player]: { $set: newHand } });
 };
 
 export default handleActions(
   {
-    [actions.game.hand.append]: append,
     [actions.game.hand.remove]: remove,
   },
   playersWithStartingHands,

@@ -24,9 +24,9 @@ const Table = () => {
     return monitor.isOver({ shallow: true });
   };
 
-  const drop = ({ suit, rank }) => {
+  const drop = ({ suit, rank, player }) => {
     dispatch(actions.game.table.append({ suit, rank }));
-    dispatch(actions.game.hand.remove({ suit, rank }));
+    dispatch(actions.game.hand.remove({ suit, rank, player }));
   };
 
   const [{ isOver }, dropRef] = useDrop({

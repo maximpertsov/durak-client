@@ -18,11 +18,11 @@ const CardStack = ({ children }) => {
   // YUCK
   const getBaseCard = () => last(React.Children.toArray(children)).props.cardOrStack;
 
-  const drop = ({ suit, rank }) => {
+  const drop = ({ suit, rank, player }) => {
     const baseCard = getBaseCard();
 
     dispatch(actions.game.table.stack({ baseCard, card: { rank, suit } }));
-    dispatch(actions.game.hand.remove({ suit, rank }));
+    dispatch(actions.game.hand.remove({ suit, rank, player }));
   };
 
   const canDrop = card => {
