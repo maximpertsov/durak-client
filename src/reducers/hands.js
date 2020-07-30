@@ -10,7 +10,7 @@ import { cards } from 'utils/gameLogic';
 
 // constants
 const handSize = 6;
-const players = ['anna', 'vasyl', 'igor', 'grusha'];
+export const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
 const startingHands = chunk(
   sampleSize(cards, handSize * players.length),
@@ -31,9 +31,11 @@ const remove = (state, action) => {
   return update(state, { [player]: { $set: newHand } });
 };
 
-export default handleActions(
+const hands = handleActions(
   {
     [actions.game.hand.remove]: remove,
   },
   playersWithStartingHands,
 );
+
+export default hands;
