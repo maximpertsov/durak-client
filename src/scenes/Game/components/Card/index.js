@@ -22,11 +22,14 @@ const Wrapper = styled.div(props => {
 });
 
 const Card = ({ suit, rank }) => {
-  const hand = useSelector(state => state.hand, isEqual);
+  const username = useSelector(state => state.username, isEqual);
+  const hand = useSelector(state => state.hands[username], isEqual);
+
+  const canDrag = () => some(hand, { suit, rank });
 
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD', suit, rank },
-    canDrag: () => some(hand, { suit, rank }),
+    item: { type: 'CARD', suit, rank, player: username },
+    canDrag,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),

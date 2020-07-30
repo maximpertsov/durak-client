@@ -5,7 +5,8 @@ import isEqual from 'lodash/isEqual';
 import Cards from './Cards';
 
 const Hand = () => {
-  const cards = useSelector(state => state.hand, isEqual);
+  const username = useSelector(state => state.username, isEqual);
+  const cards = useSelector(state => state.hands[username], isEqual);
 
   return <Cards className="Hand" cards={cards} />;
 };
