@@ -16,7 +16,6 @@ const Wrapper = styled.div({
 
 const Table = () => {
   const io = useWebSocketContext();
-
   const table = useSelector(state => state.table, isEqual);
 
   const canDrop = (card, monitor) => {

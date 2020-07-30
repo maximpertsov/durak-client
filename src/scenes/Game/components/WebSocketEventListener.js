@@ -4,10 +4,12 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import attack from 'actions/attack';
+import defend from 'actions/defend';
 import { getLastMessage } from 'reducers';
 
 const eventActions = {
   ATTACKED: attack,
+  DEFENDED: defend,
 };
 
 const dispatchEventAction = (dispatch, message) => {

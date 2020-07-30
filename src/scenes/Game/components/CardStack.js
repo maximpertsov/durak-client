@@ -1,11 +1,10 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 import last from 'lodash/last';
 
-import actions from 'actions';
 import { canDefend } from 'utils/gameLogic';
+import { useWebSocketContext } from 'utils/websockets';
 
 const CardWrapper = styled.div(props => ({
   opacity: props.isOver ? '30%' : '100%',
@@ -13,7 +12,7 @@ const CardWrapper = styled.div(props => ({
 }));
 
 const CardStack = ({ children }) => {
-  const dispatch = useDispatch();
+  const io = useWebSocketContext();
 
   // YUCK
   const getBaseCard = () => last(React.Children.toArray(children)).props.cardOrStack;
@@ -21,8 +20,7 @@ const CardStack = ({ children }) => {
   const drop = ({ suit, rank, player }) => {
     const baseCard = getBaseCard();
 
-    dispatch(actions.game.table.stack({ baseCard, card: { rank, suit } }));
-    dispatch(actions.game.hand.remove({ suit, rank, player }));
+    io.send('DEFENDED', { baseCard, card: { suit, rank }, player });
   };
 
   const canDrop = card => {
