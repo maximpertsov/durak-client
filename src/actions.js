@@ -9,8 +9,10 @@ export default createActions({
       SET: undefined,
     },
     HAND: {
-      APPEND: undefined,
       REMOVE: undefined,
+    },
+    PLAYERS: {
+      SET: undefined,
     },
     TABLE: {
       APPEND: undefined,

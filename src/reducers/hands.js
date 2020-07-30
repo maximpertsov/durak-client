@@ -10,6 +10,7 @@ import { cards } from 'utils/gameLogic';
 
 // constants
 const handSize = 6;
+// TODO: remove hard-coded players
 export const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
 const startingHands = chunk(
