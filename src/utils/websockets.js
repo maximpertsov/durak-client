@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
 import actions from 'actions';
@@ -38,5 +38,7 @@ export const WebSocketProvider = ({ children }) => {
     <WebSocketContext.Provider value={io}>{children}</WebSocketContext.Provider>
   );
 };
+
+export const useWebSocketContext = () => useContext(WebSocketContext);
 
 export default {};

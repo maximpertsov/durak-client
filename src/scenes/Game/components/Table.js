@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
 import { canAttack } from 'utils/gameLogic';
+import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
 
@@ -16,6 +17,8 @@ const Wrapper = styled.div({
 
 const Table = () => {
   const dispatch = useDispatch();
+  const io = useWebSocketContext();
+
   const table = useSelector(state => state.table, isEqual);
 
   const canDrop = (card, monitor) => {
@@ -25,6 +28,7 @@ const Table = () => {
   };
 
   const drop = ({ suit, rank, player }) => {
+    io.send('DROP_CARD', 'dropped a card');
     dispatch(actions.game.table.append({ suit, rank }));
     dispatch(actions.game.hand.remove({ suit, rank, player }));
   };

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
+import last from 'lodash/last';
 
 import actions from 'actions';
 import update from 'immutability-helper';
@@ -51,3 +52,5 @@ export const getDefender = ({ attacker, players }) => {
   const index = findIndex(players, player => player === attacker);
   return players[(index + 1) % players.length];
 };
+
+export const getLastMessage = ({ messages }) => last(messages);

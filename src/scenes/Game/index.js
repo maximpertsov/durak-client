@@ -6,6 +6,7 @@ import { players } from 'reducers/hands';
 import Hand from './components/Hand';
 import Player from './components/Player';
 import Table from './components/Table';
+import WebSocketEventListener from './components/WebSocketEventListener';
 
 const Wrapper = styled.div({
   alignItems: 'center',
@@ -20,6 +21,7 @@ const TopBottomWrapper = styled.div({
 
 const Game = () => (
   <Wrapper className="Game">
+    <WebSocketEventListener />
     <TopBottomWrapper>
       <Player player={players[2]} />
     </TopBottomWrapper>

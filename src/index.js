@@ -11,6 +11,7 @@ import thunk from 'redux-thunk';
 import App from 'App';
 import rootReducer from 'reducers';
 import * as serviceWorker from 'serviceWorker';
+import { WebSocketProvider } from 'utils/websockets';
 
 const getReduxDevExtOptions = () => {
   if (!window.__REDUX_DEVTOOLS_EXTENSION__) return f => f;
@@ -26,9 +27,11 @@ const store = compose(
 
 ReactDOM.render(
   <Provider store={store}>
-    <DndProvider backend={HTML5Backend}>
-      <App />
-    </DndProvider>
+    <WebSocketProvider>
+      <DndProvider backend={HTML5Backend}>
+        <App />
+      </DndProvider>
+    </WebSocketProvider>
   </Provider>,
   document.getElementById('root'),
 );
