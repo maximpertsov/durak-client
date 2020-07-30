@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import isEqual from 'lodash/isEqual';
 
-import actions from 'actions';
 import { canAttack } from 'utils/gameLogic';
+import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
 
@@ -15,7 +15,7 @@ const Wrapper = styled.div({
 });
 
 const Table = () => {
-  const dispatch = useDispatch();
+  const io = useWebSocketContext();
   const table = useSelector(state => state.table, isEqual);
 
   const canDrop = (card, monitor) => {
@@ -24,9 +24,8 @@ const Table = () => {
     return monitor.isOver({ shallow: true });
   };
 
-  const drop = ({ suit, rank, player }) => {
-    dispatch(actions.game.table.append({ suit, rank }));
-    dispatch(actions.game.hand.remove({ suit, rank, player }));
+  const drop = item => {
+    io.send('ATTACKED', item);
   };
 
   const [{ isOver }, dropRef] = useDrop({
