@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
-import last from 'lodash/last';
+import sample from 'lodash/sample';
 
 import actions from 'actions';
 import update from 'immutability-helper';
 
 // TODO: remove player import after it comes from server
-import hands, { players } from './hands';
+import hands, { players as handPlayers } from './hands';
 import table from './table';
 
 // constants
@@ -34,15 +34,15 @@ const rootReducer = combineReducers({
     {
       [actions.game.players.set]: set,
     },
-    players,
+    handPlayers,
   ),
   table,
   username: handleActions(
     {
       [actions.game.username.set]: set,
     },
-    // TODO: should not be hardcoded
-    players[0],
+    // TODO: right now this is a random player
+    sample(handPlayers),
   ),
 });
 
@@ -52,5 +52,3 @@ export const getDefender = ({ attacker, players }) => {
   const index = findIndex(players, player => player === attacker);
   return players[(index + 1) % players.length];
 };
-
-export const getLastMessage = ({ messages }) => last(messages);

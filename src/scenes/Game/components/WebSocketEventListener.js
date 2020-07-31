@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+import last from 'lodash/last';
 
 import attack from 'actions/attack';
 import defend from 'actions/defend';
-import { getLastMessage } from 'reducers';
 
 const eventActions = {
   ATTACKED: attack,
@@ -20,6 +20,8 @@ const dispatchEventAction = (dispatch, message) => {
   }
   dispatch(action(message.payload));
 };
+
+const getLastMessage = ({ messages }) => last(messages);
 
 const WebSocketEventListener = () => {
   const dispatch = useDispatch();
