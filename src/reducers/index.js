@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
+import isEmpty from 'lodash/isEmpty';
 import sample from 'lodash/sample';
 
 import actions from 'actions';
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     {
       [actions.game.attacker.set]: set,
     },
-    null,
+    // TODO: remove hard-coded attacker
+    'anna',
   ),
   hands,
   messages: handleActions(
@@ -56,4 +58,11 @@ export const getDefender = ({ attacker, players }) => {
 export const getPlayersFromUser = ({ username, players }) => {
   const offset = findIndex(players, player => player === username);
   return players.map((_, index) => players[(index + offset) % players.length]);
+};
+
+export const getAttackers = state => {
+  if (isEmpty(state.table)) return [state.attacker];
+
+  const defender = getDefender(state);
+  return state.players.filter(player => player !== defender);
 };
