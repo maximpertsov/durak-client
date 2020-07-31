@@ -1,4 +1,9 @@
-import { getAttackers, getDefender, getPlayersFromUser } from '..';
+import {
+  getAttackers,
+  getDefender,
+  getPlayersFromUser,
+  getUnbeatenCards,
+} from '..';
 
 const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
@@ -56,5 +61,17 @@ describe('getAttackers', () => {
   const state = { table, attacker, players };
   expect(getAttackers(state).sort()).toEqual(expected.sort());
 });
+  });
+});
+
+describe('getUnbeatenCards', () => {
+  const state = {
+    table: [
+      // TODO: Add cards
+    ],
+  };
+  test('get all unbeaten cards', () => {
+    const expected = [];
+    expect(getUnbeatenCards(state).sort()).toEqual(expected.sort());
   });
 });

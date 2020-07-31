@@ -66,3 +66,8 @@ export const getAttackers = state => {
   const defender = getDefender(state);
   return state.players.filter(player => player !== defender);
 };
+
+export const getUnbeatenCards = state => {
+  const x = 1;
+  return null;
+};
