@@ -10,7 +10,7 @@ const Wrapper = styled.div({
   gridGap: '0.25em',
   justifyContent: 'center',
   margin: '0 auto',
-  width: '80%',
+  padding: '0 10%',
 });
 
 const CardOrStack = ({ cardOrStack }) => {
