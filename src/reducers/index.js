@@ -52,3 +52,8 @@ export const getDefender = ({ attacker, players }) => {
   const index = findIndex(players, player => player === attacker);
   return players[(index + 1) % players.length];
 };
+
+export const getPlayersFromUser = ({ username, players }) => {
+  const offset = findIndex(players, player => player === username);
+  return players.map((_, index) => players[(index + offset) % players.length]);
+};
