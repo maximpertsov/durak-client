@@ -1,5 +1,7 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import last from 'lodash/last';
 
@@ -11,22 +13,27 @@ const CardWrapper = styled.div(props => ({
   marginTop: props.index === 0 ? '0%' : '-100%',
 }));
 
+const mapStateToProps = createSelector(
+  (_, props) => props && last(React.Children.toArray(props.children)),
+  (_, props) => props && React.Children.count(props.children),
+
+  (baseCard, stackSize) => ({
+    baseCard: baseCard && baseCard.props.cardOrStack,
+    stackSize,
+  }),
+);
+
 const CardStack = ({ children }) => {
   const io = useWebSocketContext();
-
-  // YUCK
-  const getBaseCard = () => last(React.Children.toArray(children)).props.cardOrStack;
+  const { baseCard, stackSize } = useSelector(mapStateToProps, { children });
 
   const drop = ({ suit, rank, player }) => {
-    const baseCard = getBaseCard();
-
     io.send('DEFENDED', { baseCard, card: { suit, rank }, player });
   };
 
   const canDrop = card => {
-    if (React.Children.count(children) > 1) return false;
+    if (stackSize > 1) return false;
 
-    const baseCard = getBaseCard();
     return canDefend({ defenseCard: card, attackCard: baseCard });
   };
 
