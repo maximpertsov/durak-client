@@ -1,9 +1,11 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import isEqual from 'lodash/isEqual';
 
+import { getAttackers } from 'reducers';
 import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
@@ -14,14 +16,25 @@ const Wrapper = styled.div({
   height: '100%',
 });
 
+const mapStateToProps = createSelector(
+  state => state,
+  state => getAttackers(state),
+
+  (state, attackers) => ({
+    userCanAttack: attackers.includes(state.username),
+    table: state.table,
+  }),
+);
+
 const Table = () => {
   const io = useWebSocketContext();
-  const table = useSelector(state => state.table, isEqual);
+  const { table, userCanAttack } = useSelector(mapStateToProps, isEqual);
 
   const canDrop = (card, monitor) => {
-    if (!canAttack({ table, card })) return false;
+    if (!monitor.isOver({ shallow: true })) return false;
+    if (!userCanAttack) return false;
 
-    return monitor.isOver({ shallow: true });
+    return canAttack({ table, card });
   };
 
   const drop = item => {
