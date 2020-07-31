@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import isEqual from 'lodash/isEqual';
 
-import { players } from 'reducers/hands';
+import { getPlayersFromUser } from 'reducers';
 
 import Hand from './components/Hand';
 import Player from './components/Player';
@@ -11,7 +13,8 @@ import WebSocketEventListener from './components/WebSocketEventListener';
 const Wrapper = styled.div({
   alignItems: 'center',
   display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gridTemplateRows: '1fr 2fr 1fr',
   gridGap: '0.25rem',
 });
 const TopBottomWrapper = styled.div({
@@ -19,12 +22,25 @@ const TopBottomWrapper = styled.div({
   gridColumnEnd: 4,
 });
 
-const Game = () => (
-  <div className="Game">
-    <WebSocketEventListener />
-    <Table />
-    <Hand />
-  </div>
-);
+const Game = () => {
+  const playersFromUser = useSelector(getPlayersFromUser, isEqual);
+
+  return (
+    <div className="Game">
+      <WebSocketEventListener />
+      <Wrapper>
+        <TopBottomWrapper>
+          <Player player={playersFromUser[2]} />
+        </TopBottomWrapper>
+        <Player player={playersFromUser[1]} />
+        <Table />
+        <Player player={playersFromUser[3]} />
+        <TopBottomWrapper>
+          <Hand />
+        </TopBottomWrapper>
+      </Wrapper>
+    </div>
+  );
+};
 
 export default Game;

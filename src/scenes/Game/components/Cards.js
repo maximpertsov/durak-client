@@ -6,11 +6,11 @@ import CardStack from './CardStack';
 
 const Wrapper = styled.div({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, 80px)',
+  gridTemplateColumns: 'repeat(auto-fit, 60px)',
   gridGap: '0.25em',
   justifyContent: 'center',
   margin: '0 auto',
-  padding: '0 10%',
+  padding: '0 5%',
 });
 
 const CardOrStack = ({ cardOrStack }) => {

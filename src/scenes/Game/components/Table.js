@@ -11,7 +11,7 @@ import Cards from './Cards';
 
 const Wrapper = styled.div({
   backgroundColor: 'green',
-  height: '400px',
+  height: '100%',
 });
 
 const Table = () => {
