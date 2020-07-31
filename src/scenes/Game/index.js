@@ -20,18 +20,11 @@ const TopBottomWrapper = styled.div({
 });
 
 const Game = () => (
-  <Wrapper className="Game">
+  <div className="Game">
     <WebSocketEventListener />
-    <TopBottomWrapper>
-      <Player player={players[2]} />
-    </TopBottomWrapper>
-    <Player player={players[1]} />
     <Table />
-    <Player player={players[3]} />
-    <TopBottomWrapper>
-      <Hand />
-    </TopBottomWrapper>
-  </Wrapper>
+    <Hand />
+  </div>
 );
 
 export default Game;

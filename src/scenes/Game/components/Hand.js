@@ -9,9 +9,9 @@ const Hand = () => {
   const cards = useSelector(state => state.hands[username], isEqual);
 
   return (
-    <div>
+    <div className="Hand">
       <h2>{username}</h2>
-      <Cards className="Hand" cards={cards} />
+      <Cards cards={cards} />
     </div>
   );
 };
