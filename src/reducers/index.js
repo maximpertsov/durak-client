@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
+import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import sample from 'lodash/sample';
 
@@ -67,7 +68,8 @@ export const getAttackers = state => {
   return state.players.filter(player => player !== defender);
 };
 
-export const getUnbeatenCards = state => {
-  const x = 1;
-  return null;
-};
+export const getUnbeatenCards = state => flatMap(state.table, cards => {
+  if (cards.length === 1) return [cards[0]];
+
+  return [];
+});

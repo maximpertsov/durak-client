@@ -1,3 +1,5 @@
+import sortBy from 'lodash/sortBy';
+
 import {
   getAttackers,
   getDefender,
@@ -6,6 +8,7 @@ import {
 } from '..';
 
 const players = ['anna', 'vasyl', 'igor', 'grusha'];
+const sortCards = cards => sortBy(cards, ['suit', 'rank']);
 
 describe('getDefender', () => {
   test.each`
@@ -59,7 +62,7 @@ describe('getAttackers', () => {
       ${'grusha'} | ${['grusha', 'vasyl', 'igor']}
     `('$attacker attacks', ({ attacker, expected }) => {
   const state = { table, attacker, players };
-  expect(getAttackers(state).sort()).toEqual(expected.sort());
+  expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
 });
   });
 });
@@ -67,11 +70,19 @@ describe('getAttackers', () => {
 describe('getUnbeatenCards', () => {
   const state = {
     table: [
-      // TODO: Add cards
+      [
+        { suit: 'hearts', rank: 'jack' },
+        { suit: 'hearts', rank: 'queen' },
+      ],
+      [{ suit: 'spades', rank: 'jack' }],
+      [{ suit: 'clubs', rank: 7 }],
     ],
   };
   test('get all unbeaten cards', () => {
-    const expected = [];
-    expect(getUnbeatenCards(state).sort()).toEqual(expected.sort());
+    const expected = [
+      { suit: 'clubs', rank: 7 },
+      { suit: 'spades', rank: 'jack' },
+    ];
+    expect(sortCards(getUnbeatenCards(state))).toEqual(sortCards(expected));
   });
 });
