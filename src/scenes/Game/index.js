@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual';
 import { getPlayersFromUser } from 'reducers';
 
 import Hand from './components/Hand';
+import Messages from './components/Messages';
 import Player from './components/Player';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
@@ -39,6 +40,7 @@ const Game = () => {
           <Hand />
         </TopBottomWrapper>
       </Wrapper>
+      <Messages />
     </div>
   );
 };
