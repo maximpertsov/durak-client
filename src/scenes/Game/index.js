@@ -43,19 +43,23 @@ const Game = () => {
   }, [io]);
 
   const renderGame = () => {
-    if (playersFromUser.length < 4) return null;
+    const [user, player2, player3, player4] = playersFromUser;
 
     return (
       <Wrapper>
-        <TopBottomWrapper>
-          <Player player={playersFromUser[2]} />
-        </TopBottomWrapper>
-        <Player player={playersFromUser[1]} />
+        {player3 && (
+          <TopBottomWrapper>
+            <Player player={player3} />
+          </TopBottomWrapper>
+        )}
+        {player2 && <Player player={player2} />}
         <Table />
-        <Player player={playersFromUser[3]} />
-        <TopBottomWrapper>
-          <Hand />
-        </TopBottomWrapper>
+        {player4 && <Player player={player4} />}
+        {user && (
+          <TopBottomWrapper>
+            <Hand />
+          </TopBottomWrapper>
+        )}
       </Wrapper>
     );
   };
