@@ -44,6 +44,7 @@
       "always-multiline"
     ],
     "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
     "import/no-extraneous-dependencies": "off",
     "indent": [
       "error",
