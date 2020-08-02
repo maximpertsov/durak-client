@@ -1,7 +1,7 @@
 import actions from 'actions';
 
-const joinGame = ({ player }) => dispatch => {
-  dispatch(actions.game.players.add({ player }));
+const joinGame = ({ user }) => dispatch => {
+  dispatch(actions.game.players.add(user));
 };
 
 export default joinGame;

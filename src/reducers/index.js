@@ -38,7 +38,7 @@ const rootReducer = combineReducers({
       [actions.game.players.set]: set,
       [actions.game.players.add]: append,
     },
-    handPlayers,
+    [],
   ),
   table,
   username: handleActions(
