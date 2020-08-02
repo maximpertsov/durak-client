@@ -6,8 +6,10 @@ import last from 'lodash/last';
 
 import attack from 'actions/attack';
 import defend from 'actions/defend';
+import joinGame from 'actions/joinGame';
 
 const eventActions = {
+  JOINED_GAME: joinGame,
   ATTACKED: attack,
   DEFENDED: defend,
 };

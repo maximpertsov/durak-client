@@ -5,6 +5,7 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
+    SET: undefined,
     ATTACKER: {
       SET: undefined,
     },
@@ -12,6 +13,7 @@ export default createActions({
       REMOVE: undefined,
     },
     PLAYERS: {
+      ADD: undefined,
       SET: undefined,
     },
     TABLE: {

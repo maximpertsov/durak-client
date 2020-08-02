@@ -36,6 +36,7 @@ const rootReducer = combineReducers({
   players: handleActions(
     {
       [actions.game.players.set]: set,
+      [actions.game.players.add]: append,
     },
     handPlayers,
   ),
