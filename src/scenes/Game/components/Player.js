@@ -10,6 +10,7 @@ const Player = ({ player }) => {
   // TODO: this should not be visible in a real game
   return (
     <div className="Player">
+      <h2>{player}</h2>
       <Cards cards={cards} />
     </div>
   );
