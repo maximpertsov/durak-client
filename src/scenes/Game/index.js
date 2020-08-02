@@ -32,12 +32,7 @@ const Game = () => {
   useEffect(() => {
     client.get('game/abc123/events').then(response => {
       response.data.events.forEach(event => {
-        const payload = {
-          game: event.game,
-          user: event.user,
-          ...event.payload,
-        };
-        io.send(event.type, payload);
+        io.send(event.type, event.payload);
       });
     });
   }, [io]);
