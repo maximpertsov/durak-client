@@ -6,12 +6,14 @@ import last from 'lodash/last';
 import attack from 'actions/attack';
 import defend from 'actions/defend';
 import joinGame from 'actions/joinGame';
+import yieldAttack from 'actions/yieldAttack';
 import client from 'utils/client';
 
 const eventActions = {
   joined_game: joinGame,
   attacked: attack,
   defended: defend,
+  yielded_attack: yieldAttack,
 };
 
 const dispatchEventAction = (dispatch, message) => {

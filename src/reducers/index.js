@@ -48,6 +48,13 @@ const rootReducer = combineReducers({
     // TODO: right now this is a random player
     sample(handPlayers),
   ),
+  yielded: handleActions(
+    {
+      [actions.game.yielded.add]: append,
+      [actions.game.yielded.clear]: () => [],
+    },
+    [],
+  ),
 });
 
 export default rootReducer;
@@ -69,8 +76,9 @@ export const getAttackers = state => {
   return state.players.filter(player => player !== defender);
 };
 
-export const getUnbeatenCards = state => flatMap(state.table, cards => {
-  if (cards.length === 1) return [cards[0]];
+export const getUnbeatenCards = state =>
+  flatMap(state.table, cards => {
+    if (cards.length === 1) return [cards[0]];
 
-  return [];
-});
+    return [];
+  });

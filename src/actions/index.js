@@ -16,6 +16,10 @@ export default createActions({
       ADD: undefined,
       SET: undefined,
     },
+    YIELDED: {
+      ADD: undefined,
+      CLEAR: undefined,
+    },
     TABLE: {
       APPEND: undefined,
       STACK: undefined,
