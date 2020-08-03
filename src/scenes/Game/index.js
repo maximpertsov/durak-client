@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import isEqual from 'lodash/isEqual';
 
 import { getPlayersFromUser } from 'reducers';
-import client from 'utils/client';
-import { useWebSocketContext } from 'utils/websockets';
 
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -26,16 +24,7 @@ const TopBottomWrapper = styled.div({
 });
 
 const Game = () => {
-  const io = useWebSocketContext();
   const playersFromUser = useSelector(getPlayersFromUser, isEqual);
-
-  useEffect(() => {
-    client.get('game/abc123/events').then(response => {
-      response.data.events.forEach(event => {
-        io.send(event.type, event.payload);
-      });
-    });
-  }, [io]);
 
   const renderGame = () => {
     const [user, player2, player3, player4] = playersFromUser;
