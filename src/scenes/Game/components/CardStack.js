@@ -17,8 +17,8 @@ const CardStack = ({ children }) => {
   const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
   const isDefended = React.Children.count(children) > 1;
 
-  const drop = ({ suit, rank, player }) => {
-    io.send('DEFENDED', { baseCard, card: { suit, rank }, player });
+  const drop = ({ suit, rank }) => {
+    io.send('defended', { baseCard, card: { suit, rank } });
   };
 
   const canDrop = card => {
@@ -36,11 +36,12 @@ const CardStack = ({ children }) => {
     }),
   });
 
-  const renderCards = () => React.Children.toArray(children).map((card, index) => (
-    <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
-      {card}
-    </CardWrapper>
-  ));
+  const renderCards = () =>
+    React.Children.toArray(children).map((card, index) => (
+      <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
+        {card}
+      </CardWrapper>
+    ));
 
   return <div className="CardStack">{renderCards()}</div>;
 };

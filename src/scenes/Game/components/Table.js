@@ -38,7 +38,7 @@ const Table = () => {
   };
 
   const drop = item => {
-    io.send('ATTACKED', item);
+    io.send('attacked', item);
   };
 
   const [{ isOver }, dropRef] = useDrop({

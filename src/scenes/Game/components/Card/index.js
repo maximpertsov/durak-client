@@ -28,7 +28,7 @@ const Card = ({ suit, rank }) => {
   const canDrag = () => some(hand, { suit, rank });
 
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD', suit, rank, player: username },
+    item: { type: 'CARD', suit, rank },
     canDrag,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),

@@ -130,14 +130,14 @@ const playersWithStartingHands = {
 
 const remove = (state, action) => {
   const {
-    payload: { rank, suit, player },
+    payload: { rank, suit, user },
   } = action;
 
-  const playerHand = state[player];
+  const playerHand = state[user];
 
   const index = findIndex(playerHand, { rank, suit });
   const newHand = update(playerHand, { $splice: [[index, 1, {}]] });
-  return update(state, { [player]: { $set: newHand } });
+  return update(state, { [user]: { $set: newHand } });
 };
 
 const hands = handleActions(

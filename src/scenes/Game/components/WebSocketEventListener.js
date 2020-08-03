@@ -9,8 +9,8 @@ import joinGame from 'actions/joinGame';
 
 const eventActions = {
   joined_game: joinGame,
-  ATTACKED: attack,
-  DEFENDED: defend,
+  attacked: attack,
+  defended: defend,
 };
 
 const dispatchEventAction = (dispatch, message) => {
