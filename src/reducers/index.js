@@ -12,11 +12,15 @@ import update from 'immutability-helper';
 import hands, { players as handPlayers } from './hands';
 import table from './table';
 
-// constants
-
 // helpers
 const set = (state, action) => action.payload;
 const append = (state, action) => update(state, { $push: [action.payload] });
+
+// TODO: get at login
+const getUsername = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('u') || sample(handPlayers);
+};
 
 const rootReducer = combineReducers({
   attacker: handleActions(
@@ -45,8 +49,7 @@ const rootReducer = combineReducers({
     {
       [actions.game.username.set]: set,
     },
-    // TODO: right now this is a random player
-    sample(handPlayers),
+    getUsername(),
   ),
   yielded: handleActions(
     {
