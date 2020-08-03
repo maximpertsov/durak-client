@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 
 import Cards from './Cards';
+import SuccessfulDefenseListener from './SuccessfulDefenseListener';
 import YieldButton from './YieldButton';
 
 const mapStateToProps = createSelector(
@@ -21,6 +22,7 @@ const Hand = () => {
 
   return (
     <div className="Hand">
+      <SuccessfulDefenseListener />
       <YieldButton />
       <h2>{username}</h2>
       <Cards cards={cards} />
