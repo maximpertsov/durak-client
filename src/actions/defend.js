@@ -5,6 +5,7 @@ const defend = ({ baseCard, card, user }) => dispatch => {
 
   dispatch(actions.game.table.stack({ baseCard, card }));
   dispatch(actions.game.hand.remove({ suit, rank, user }));
+  dispatch(actions.game.yielded.clear());
 };
 
 export default defend;
