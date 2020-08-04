@@ -23,17 +23,16 @@ const mapStateToProps = createSelector(
 const YieldButton = () => {
   const io = useWebSocketContext();
 
-  const {
-    hasYielded,
-    isDefender,
-    table,
-    user,
-    unbeatenCards,
-  } = useSelector(mapStateToProps, isEqual);
+  const { hasYielded, isDefender, table, user, unbeatenCards } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   const yieldAttack = () => {
-    io.send('yielded_attack', { user: user });
+    io.send('yielded_attack', { user });
   };
+
+  // TODO: add auto-yield if no cards can be thrown
 
   if (hasYielded) return null;
   if (isDefender) return null;
