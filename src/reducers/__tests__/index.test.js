@@ -11,21 +11,16 @@ const players = ['anna', 'vasyl', 'igor', 'grusha'];
 const sortCards = cards => sortBy(cards, ['suit', 'rank']);
 
 describe('getDefender', () => {
-  test.each`
-    attacker    | expected
-    ${'anna'}   | ${'vasyl'}
-    ${'vasyl'}  | ${'igor'}
-    ${'igor'}   | ${'grusha'}
-    ${'grusha'} | ${'anna'}
-  `('$attacker attacks', ({ attacker, expected }) => {
-  const state = { players, attacker };
-  expect(getDefender(state)).toEqual(expected);
-});
+  test('defender is vasyl', () => {
+    const state = { players };
+    const expected = 'vasyl';
+    expect(getDefender(state)).toEqual(expected);
+  });
 });
 
 describe('getPlayersFromUser', () => {
   test.each`
-    user    | expected
+    user        | expected
     ${'anna'}   | ${['anna', 'vasyl', 'igor', 'grusha']}
     ${'vasyl'}  | ${['vasyl', 'igor', 'grusha', 'anna']}
     ${'igor'}   | ${['igor', 'grusha', 'anna', 'vasyl']}
@@ -40,30 +35,20 @@ describe('getAttackers', () => {
   describe('table is empty', () => {
     const table = [];
 
-    test.each`
-      attacker    | expected
-      ${'anna'}   | ${['anna']}
-      ${'vasyl'}  | ${['vasyl']}
-      ${'igor'}   | ${['igor']}
-      ${'grusha'} | ${['grusha']}
-    `('$attacker attacks', ({ attacker, expected }) => {
-  const state = { table, attacker, players };
-  expect(getAttackers(state).sort()).toEqual(expected.sort());
-});
+    test('attacker is anna', () => {
+      const state = { table, players };
+      const expected = ['anna'];
+      expect(getAttackers(state).sort()).toEqual(expected.sort());
+    });
   });
   describe('table has cards', () => {
     const table = ['card'];
 
-    test.each`
-      attacker    | expected
-      ${'anna'}   | ${['anna', 'igor', 'grusha']}
-      ${'vasyl'}  | ${['vasyl', 'grusha', 'anna']}
-      ${'igor'}   | ${['igor', 'anna', 'vasyl']}
-      ${'grusha'} | ${['grusha', 'vasyl', 'igor']}
-    `('$attacker attacks', ({ attacker, expected }) => {
-  const state = { table, attacker, players };
-  expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
-});
+    test('all except vasyl attack', () => {
+      const state = { table, players };
+      const expected = ['anna', 'igor', 'grusha'];
+      expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
+    });
   });
 });
 

@@ -25,10 +25,7 @@ const rootReducer = combineReducers({
 
 export default rootReducer;
 
-export const getDefender = ({ attacker, players }) => {
-  const index = findIndex(players, player => player === attacker);
-  return players[(index + 1) % players.length];
-};
+export const getDefender = state => state.players[1];
 
 export const getPlayersFromUser = ({ user, players }) => {
   const offset = findIndex(players, player => player === user);
@@ -36,7 +33,7 @@ export const getPlayersFromUser = ({ user, players }) => {
 };
 
 export const getAttackers = state => {
-  if (isEmpty(state.table)) return [state.attacker];
+  if (isEmpty(state.table)) return [state.players[0]];
 
   const defender = getDefender(state);
   return state.players.filter(player => player !== defender);
