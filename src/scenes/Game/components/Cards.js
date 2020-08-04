@@ -24,7 +24,7 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { suit, rank } = cardOrStack;
+  const { suit, rank } = cardOrStack || {};
   return <Card suit={suit} rank={rank} />;
 };
 

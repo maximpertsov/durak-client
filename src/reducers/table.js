@@ -12,7 +12,8 @@ const stack = (state, action) => {
     payload: { baseCard, card },
   } = action;
 
-  const index = findIndex(state, cardStack => isEqual(last(cardStack), baseCard),
+  const index = findIndex(state, cardStack =>
+    isEqual(last(cardStack), baseCard),
   );
   const newCardStack = update(state[index], { $push: [card] });
   return update(state, { $splice: [[index, 1, newCardStack]] });
@@ -22,6 +23,7 @@ const table = handleActions(
   {
     [actions.game.table.append]: add,
     [actions.game.table.stack]: stack,
+    [actions.game.table.clear]: () => [],
   },
   [],
 );

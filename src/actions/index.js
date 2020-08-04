@@ -23,6 +23,7 @@ export default createActions({
     TABLE: {
       APPEND: undefined,
       STACK: undefined,
+      CLEAR: undefined,
     },
     USER: {
       SET: undefined,
