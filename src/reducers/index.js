@@ -1,56 +1,45 @@
 import { combineReducers } from 'redux';
-import { handleActions } from 'redux-actions';
 import findIndex from 'lodash/findIndex';
-import last from 'lodash/last';
+import flatMap from 'lodash/flatMap';
+import isEmpty from 'lodash/isEmpty';
 
-import actions from 'actions';
-import update from 'immutability-helper';
-
-// TODO: remove player import after it comes from server
-import hands, { players } from './hands';
+import drawPile from './drawPile';
+import hands from './hands';
+import messages from './messages';
+import players from './players';
 import table from './table';
-
-// constants
-
-// helpers
-const set = (state, action) => action.payload;
-const append = (state, action) => update(state, { $push: [action.payload] });
+import user from './user';
+import yielded from './yielded';
 
 const rootReducer = combineReducers({
-  attacker: handleActions(
-    {
-      [actions.game.attacker.set]: set,
-    },
-    null,
-  ),
+  drawPile,
   hands,
-  messages: handleActions(
-    {
-      [actions.messages.append]: append,
-    },
-    [],
-  ),
-  players: handleActions(
-    {
-      [actions.game.players.set]: set,
-    },
-    players,
-  ),
+  messages,
+  players,
   table,
-  username: handleActions(
-    {
-      [actions.game.username.set]: set,
-    },
-    // TODO: should not be hardcoded
-    players[0],
-  ),
+  user,
+  yielded,
 });
 
 export default rootReducer;
 
-export const getDefender = ({ attacker, players }) => {
-  const index = findIndex(players, player => player === attacker);
-  return players[(index + 1) % players.length];
+export const getDefender = state => state.players[1];
+
+export const getPlayersFromUser = ({ user, players }) => {
+  const offset = findIndex(players, player => player === user);
+  return players.map((_, index) => players[(index + offset) % players.length]);
 };
 
-export const getLastMessage = ({ messages }) => last(messages);
+export const getAttackers = state => {
+  if (isEmpty(state.table)) return [state.players[0]];
+
+  const defender = getDefender(state);
+  return state.players.filter(player => player !== defender);
+};
+
+export const getUnbeatenCards = state =>
+  flatMap(state.table, cards => {
+    if (cards.length === 1) return [cards[0]];
+
+    return [];
+  });

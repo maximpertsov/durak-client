@@ -6,10 +6,11 @@ import CardStack from './CardStack';
 
 const Wrapper = styled.div({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, 100px)',
-  gridGap: '0.25rem',
+  gridTemplateColumns: 'repeat(auto-fit, 60px)',
+  gridGap: '0.25em',
+  justifyContent: 'center',
   margin: '0 auto',
-  width: '50%',
+  padding: '0 5%',
 });
 
 const CardOrStack = ({ cardOrStack }) => {
@@ -23,7 +24,7 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { suit, rank } = cardOrStack;
+  const { suit, rank } = cardOrStack || {};
   return <Card suit={suit} rank={rank} />;
 };
 

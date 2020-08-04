@@ -14,20 +14,17 @@ const CardWrapper = styled.div(props => ({
 const CardStack = ({ children }) => {
   const io = useWebSocketContext();
 
-  // YUCK
-  const getBaseCard = () => last(React.Children.toArray(children)).props.cardOrStack;
+  const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
+  const isDefended = React.Children.count(children) > 1;
 
-  const drop = ({ suit, rank, player }) => {
-    const baseCard = getBaseCard();
-
-    io.send('DEFENDED', { baseCard, card: { suit, rank }, player });
+  const drop = ({ suit, rank }) => {
+    io.send('defended', { baseCard, card: { suit, rank } });
   };
 
   const canDrop = card => {
-    if (React.Children.count(children) > 1) return false;
+    if (isDefended) return false;
 
-    const baseCard = getBaseCard();
-    return canDefend({ defenseCard: card, attackCard: baseCard });
+    return canDefend({ attackCard: baseCard, defenseCard: card });
   };
 
   const [{ isOver }, dropRef] = useDrop({
@@ -39,11 +36,12 @@ const CardStack = ({ children }) => {
     }),
   });
 
-  const renderCards = () => React.Children.toArray(children).map((card, index) => (
-    <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
-      {card}
-    </CardWrapper>
-  ));
+  const renderCards = () =>
+    React.Children.toArray(children).map((card, index) => (
+      <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
+        {card}
+      </CardWrapper>
+    ));
 
   return <div className="CardStack">{renderCards()}</div>;
 };

@@ -5,20 +5,28 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
-    ATTACKER: {
+    DRAW_PILE: {
       SET: undefined,
     },
     HAND: {
+      ADD: undefined,
       REMOVE: undefined,
     },
     PLAYERS: {
+      ADD: undefined,
       SET: undefined,
+      ROTATE: undefined,
+    },
+    YIELDED: {
+      ADD: undefined,
+      CLEAR: undefined,
     },
     TABLE: {
       APPEND: undefined,
       STACK: undefined,
+      CLEAR: undefined,
     },
-    USERNAME: {
+    USER: {
       SET: undefined,
     },
   },

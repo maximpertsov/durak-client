@@ -8,7 +8,12 @@ const Player = ({ player }) => {
   const cards = useSelector(state => state.hands[player], isEqual);
 
   // TODO: this should not be visible in a real game
-  return <Cards className="Player" cards={cards} />;
+  return (
+    <div className="Player">
+      <h2>{player}</h2>
+      <Cards cards={cards} />
+    </div>
+  );
 };
 
 export default Player;

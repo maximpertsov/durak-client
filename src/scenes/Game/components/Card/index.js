@@ -17,18 +17,18 @@ const Wrapper = styled.div(props => {
     backgroundSize: 'cover',
     height: '0%',
     opacity: isDragging ? '30%' : '100%',
-    paddingTop: '155.67%',
+    paddingTop: '156.67%',
   };
 });
 
 const Card = ({ suit, rank }) => {
-  const username = useSelector(state => state.username, isEqual);
-  const hand = useSelector(state => state.hands[username], isEqual);
+  const user = useSelector(state => state.user, isEqual);
+  const hand = useSelector(state => state.hands[user], isEqual);
 
   const canDrag = () => some(hand, { suit, rank });
 
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD', suit, rank, player: username },
+    item: { type: 'CARD', suit, rank },
     canDrag,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),

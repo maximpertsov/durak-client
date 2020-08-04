@@ -1,6 +1,9 @@
 import { handleActions } from 'redux-actions';
 import chunk from 'lodash/chunk';
+import compact from 'lodash/compact';
+import concat from 'lodash/concat';
 import findIndex from 'lodash/findIndex';
+import get from 'lodash/get';
 import sampleSize from 'lodash/sampleSize';
 import zipObject from 'lodash/zipObject';
 
@@ -13,11 +16,11 @@ const handSize = 6;
 // TODO: remove hard-coded players
 export const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
-const startingHands = chunk(
-  sampleSize(cards, handSize * players.length),
-  handSize,
-);
-
+// const startingHands = chunk(
+//   sampleSize(cards, handSize * players.length),
+//   handSize,
+// );
+//
 // const playersWithStartingHands = zipObject(players, startingHands);
 
 // TODO: hard-coded starting game state
@@ -128,23 +131,34 @@ const playersWithStartingHands = {
   ],
 };
 
-const remove = (state, action) => {
+const add = (state, action) => {
   const {
-    payload: { rank, suit, player },
+    payload: { cards, player },
   } = action;
 
-  const playerHand = state[player];
+  const playerHand = get(state, player, []);
+  const newHand = compact(concat(playerHand, cards));
+  return update(state, { [player]: { $set: newHand } });
+};
+
+const remove = (state, action) => {
+  const {
+    payload: { rank, suit, user },
+  } = action;
+
+  const playerHand = state[user];
 
   const index = findIndex(playerHand, { rank, suit });
-  const newHand = update(playerHand, { $splice: [[index, 1, {}]] });
-  return update(state, { [player]: { $set: newHand } });
+  const newHand = update(playerHand, { $splice: [[index, 1, null]] });
+  return update(state, { [user]: { $set: newHand } });
 };
 
 const hands = handleActions(
   {
+    [actions.game.hand.add]: add,
     [actions.game.hand.remove]: remove,
   },
-  playersWithStartingHands,
+  {}, // playersWithStartingHands,
 );
 
 export default hands;

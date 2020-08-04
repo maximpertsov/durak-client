@@ -1,15 +1,9 @@
 import React, { createContext, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import actions from 'actions';
 
 export const WebSocketContext = createContext(null);
-
-const createMessage = (type, payload) => ({
-  createdAt: new Date(),
-  type,
-  payload,
-});
 
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
@@ -17,6 +11,12 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
+  const createMessage = (type, payload) => {
+    const messagePayload = { user: user, ...payload };
+    return { type, payload: messagePayload };
+  };
 
   const send = (type, payload) => {
     const message = createMessage(type, payload);
