@@ -4,10 +4,11 @@ import client from 'utils/client';
 const fetchGame = () => dispatch => {
   client.get('game/abc123').then(response => {
     const {
-      data: { players },
+      data: { drawPile, players },
     } = response;
 
     dispatch(actions.game.players.set(players));
+    dispatch(actions.game.drawPile.set(drawPile));
   });
 };
 
