@@ -5,8 +5,10 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
-    SET: undefined,
     ATTACKER: {
+      SET: undefined,
+    },
+    DRAW_PILE: {
       SET: undefined,
     },
     HAND: {

@@ -4,7 +4,7 @@ import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 
 import attacker from './attacker';
-// TODO: remove player import after it comes from server
+import drawPile from './drawPile';
 import hands from './hands';
 import messages from './messages';
 import players from './players';
@@ -14,6 +14,7 @@ import yielded from './yielded';
 
 const rootReducer = combineReducers({
   attacker,
+  drawPile,
   hands,
   messages,
   players,
