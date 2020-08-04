@@ -157,7 +157,7 @@ const hands = handleActions(
     [actions.game.hand.add]: add,
     [actions.game.hand.remove]: remove,
   },
-  playersWithStartingHands,
+  {}, // playersWithStartingHands,
 );
 
 export default hands;

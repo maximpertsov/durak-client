@@ -6,7 +6,6 @@ import last from 'lodash/last';
 import attack from 'actions/attack';
 import defend from 'actions/defend';
 import draw from 'actions/draw';
-import fetchGame from 'actions/fetchGame';
 import yieldAttack from 'actions/yieldAttack';
 // import client from 'utils/client';
 
@@ -30,10 +29,6 @@ const getLastMessage = ({ messages }) => last(messages);
 const WebSocketEventListener = () => {
   const dispatch = useDispatch();
   const lastMessage = useSelector(getLastMessage);
-
-  useEffect(() => {
-    dispatch(fetchGame());
-  }, [dispatch]);
 
   useEffect(() => {
     if (!lastMessage) return;

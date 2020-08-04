@@ -2,12 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import size from 'lodash/size';
 import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
 
+import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
 import Player from './components/Player';
@@ -32,7 +33,7 @@ const mapStateToProps = createSelector(
 
   (state, playersFromUser) => ({
     hands: state.hands,
-    playerCount: playersFromUser.length,
+    playerCount: size(playersFromUser),
     ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
@@ -64,8 +65,9 @@ const Game = () => {
   // TODO: guarded by magic player count, should be a query (e.g. game is full)
   return (
     <div className="Game">
+      <GameInitializer />
       <WebSocketEventListener />
-      {!isEmpty(hands) && playerCount === 4 && renderGame()}
+      {size(hands) === 4 && playerCount === 4 && renderGame()}
       <Messages />
     </div>
   );
