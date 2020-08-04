@@ -11,6 +11,7 @@ import update from 'immutability-helper';
 import attacker from './attacker';
 // TODO: remove player import after it comes from server
 import hands, { players as handPlayers } from './hands';
+import messages from './messages';
 import table from './table';
 
 // helpers
@@ -26,12 +27,7 @@ const getUsername = () => {
 const rootReducer = combineReducers({
   attacker,
   hands,
-  messages: handleActions(
-    {
-      [actions.messages.append]: append,
-    },
-    [],
-  ),
+  messages,
   players: handleActions(
     {
       [actions.game.players.set]: set,
