@@ -12,6 +12,7 @@ import attacker from './attacker';
 // TODO: remove player import after it comes from server
 import hands, { players as handPlayers } from './hands';
 import messages from './messages';
+import players from './players';
 import table from './table';
 
 // helpers
@@ -28,13 +29,7 @@ const rootReducer = combineReducers({
   attacker,
   hands,
   messages,
-  players: handleActions(
-    {
-      [actions.game.players.set]: set,
-      [actions.game.players.add]: append,
-    },
-    [],
-  ),
+  players,
   table,
   username: handleActions(
     {
