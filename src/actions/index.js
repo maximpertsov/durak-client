@@ -15,6 +15,7 @@ export default createActions({
     PLAYERS: {
       ADD: undefined,
       SET: undefined,
+      ROTATE: undefined,
     },
     YIELDED: {
       ADD: undefined,

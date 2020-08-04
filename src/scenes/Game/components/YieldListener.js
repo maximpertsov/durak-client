@@ -49,8 +49,8 @@ const YieldListener = () => {
       }
     }
 
-    // TODO: ROTATE ATTACKERS
-    console.log("ROTATE ATTACKERS");
+    dispatch(actions.game.players.rotate());
+    dispatch(actions.game.yielded.clear());
   }, [dispatch, drawPile, hands, hasDefended, players]);
 
   return null;
