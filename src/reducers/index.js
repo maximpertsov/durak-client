@@ -8,6 +8,7 @@ import sample from 'lodash/sample';
 import actions from 'actions';
 import update from 'immutability-helper';
 
+import attacker from './attacker';
 // TODO: remove player import after it comes from server
 import hands, { players as handPlayers } from './hands';
 import table from './table';
@@ -23,13 +24,7 @@ const getUsername = () => {
 };
 
 const rootReducer = combineReducers({
-  attacker: handleActions(
-    {
-      [actions.game.attacker.set]: set,
-    },
-    // TODO: remove hard-coded attacker
-    'anna',
-  ),
+  attacker,
   hands,
   messages: handleActions(
     {
