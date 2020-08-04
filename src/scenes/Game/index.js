@@ -42,27 +42,32 @@ const Game = () => {
     isEqual,
   );
 
-  const renderGame = () => (
-    <Wrapper>
-      <div />
-      <Player player={player3} />
-      <DrawPile />
-      <Player player={player2} />
-      <Table />
-      <Player player={player4} />
-      <div />
-      <Hand />
-      <div />
-    </Wrapper>
-  );
-
   // TODO: guarded by magic player count, should be a query (e.g. game is full)
+  const renderGame = () => {
+    if (size(hands) !== 4) return null;
+    if (playerCount !== 4) return null;
+
+    return (
+      <Wrapper>
+        <div />
+        <Player player={player3} />
+        <DrawPile />
+        <Player player={player2} />
+        <Table />
+        <Player player={player4} />
+        <div />
+        <Hand />
+        <div />
+      </Wrapper>
+    );
+  };
+
   return (
     <div className="Game">
       <GameInitializer />
       <WebSocketEventListener />
       <YieldListener />
-      {size(hands) === 4 && playerCount === 4 && renderGame()}
+      {renderGame()}
       <Messages />
     </div>
   );
