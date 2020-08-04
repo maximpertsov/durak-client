@@ -8,6 +8,7 @@ import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
 
+import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -45,7 +46,7 @@ const Game = () => {
     <Wrapper>
       <div />
       <Player player={player3} />
-      <div />
+      <DrawPile />
       <Player player={player2} />
       <Table />
       <Player player={player4} />
