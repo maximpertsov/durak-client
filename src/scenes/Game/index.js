@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import zipObject from 'lodash/zipObject';
 
@@ -26,16 +27,18 @@ const TopBottomWrapper = styled.div({
 });
 
 const mapStateToProps = createSelector(
+  state => state,
   state => getPlayersFromUser(state),
 
-  playersFromUser => ({
+  (state, playersFromUser) => ({
+    hands: state.hands,
     playerCount: playersFromUser.length,
     ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
 const Game = () => {
-  const { playerCount, user, player2, player3, player4 } = useSelector(
+  const { hands, playerCount, user, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );
@@ -62,7 +65,7 @@ const Game = () => {
   return (
     <div className="Game">
       <WebSocketEventListener />
-      {playerCount === 4 && renderGame()}
+      {!isEmpty(hands) && playerCount === 4 && renderGame()}
       <Messages />
     </div>
   );

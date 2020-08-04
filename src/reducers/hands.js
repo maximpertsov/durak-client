@@ -1,6 +1,8 @@
 import { handleActions } from 'redux-actions';
 import chunk from 'lodash/chunk';
+import concat from 'lodash/concat';
 import findIndex from 'lodash/findIndex';
+import get from 'lodash/get';
 import sampleSize from 'lodash/sampleSize';
 import zipObject from 'lodash/zipObject';
 
@@ -13,11 +15,11 @@ const handSize = 6;
 // TODO: remove hard-coded players
 export const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
-const startingHands = chunk(
-  sampleSize(cards, handSize * players.length),
-  handSize,
-);
-
+// const startingHands = chunk(
+//   sampleSize(cards, handSize * players.length),
+//   handSize,
+// );
+//
 // const playersWithStartingHands = zipObject(players, startingHands);
 
 // TODO: hard-coded starting game state
@@ -128,6 +130,16 @@ const playersWithStartingHands = {
   ],
 };
 
+const add = (state, action) => {
+  const {
+    payload: { cards, player },
+  } = action;
+
+  const playerHand = get(state, player, []);
+  const newHand = concat(playerHand, cards);
+  return update(state, { [player]: { $set: newHand } });
+};
+
 const remove = (state, action) => {
   const {
     payload: { rank, suit, user },
@@ -142,6 +154,7 @@ const remove = (state, action) => {
 
 const hands = handleActions(
   {
+    [actions.game.hand.add]: add,
     [actions.game.hand.remove]: remove,
   },
   playersWithStartingHands,
