@@ -23,10 +23,6 @@ const Wrapper = styled.div({
   gridTemplateRows: '1fr 2fr 1fr',
   gridGap: '0.25rem',
 });
-const TopBottomWrapper = styled.div({
-  gridColumnStart: 1,
-  gridColumnEnd: 4,
-});
 
 const mapStateToProps = createSelector(
   state => state,
@@ -40,26 +36,22 @@ const mapStateToProps = createSelector(
 );
 
 const Game = () => {
-  const { hands, playerCount, user, player2, player3, player4 } = useSelector(
+  const { hands, playerCount, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );
 
   const renderGame = () => (
     <Wrapper>
-      {player3 && (
-        <TopBottomWrapper>
-          <Player player={player3} />
-        </TopBottomWrapper>
-      )}
-      {player2 && <Player player={player2} />}
+      <div />
+      <Player player={player3} />
+      <div />
+      <Player player={player2} />
       <Table />
-      {player4 && <Player player={player4} />}
-      {user && (
-        <TopBottomWrapper>
-          <Hand />
-        </TopBottomWrapper>
-      )}
+      <Player player={player4} />
+      <div />
+      <Hand />
+      <div />
     </Wrapper>
   );
 
