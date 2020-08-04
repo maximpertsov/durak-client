@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import sample from 'lodash/sample';
 
 import actions from 'actions';
-import update from 'immutability-helper';
 
 import attacker from './attacker';
 // TODO: remove player import after it comes from server
@@ -14,10 +13,10 @@ import hands, { players as handPlayers } from './hands';
 import messages from './messages';
 import players from './players';
 import table from './table';
+import yielded from './yielded';
 
 // helpers
 const set = (state, action) => action.payload;
-const append = (state, action) => update(state, { $push: [action.payload] });
 
 // TODO: get at login
 const getUsername = () => {
@@ -37,13 +36,7 @@ const rootReducer = combineReducers({
     },
     getUsername(),
   ),
-  yielded: handleActions(
-    {
-      [actions.game.yielded.add]: append,
-      [actions.game.yielded.clear]: () => [],
-    },
-    [],
-  ),
+  yielded,
 });
 
 export default rootReducer;
