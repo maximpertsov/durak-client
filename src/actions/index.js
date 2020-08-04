@@ -5,9 +5,6 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
-    ATTACKER: {
-      SET: undefined,
-    },
     DRAW_PILE: {
       SET: undefined,
     },

@@ -3,7 +3,6 @@ import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 
-import attacker from './attacker';
 import drawPile from './drawPile';
 import hands from './hands';
 import messages from './messages';
@@ -13,7 +12,6 @@ import user from './user';
 import yielded from './yielded';
 
 const rootReducer = combineReducers({
-  attacker,
   drawPile,
   hands,
   messages,
