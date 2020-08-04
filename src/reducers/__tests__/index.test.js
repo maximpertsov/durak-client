@@ -25,13 +25,13 @@ describe('getDefender', () => {
 
 describe('getPlayersFromUser', () => {
   test.each`
-    username    | expected
+    user    | expected
     ${'anna'}   | ${['anna', 'vasyl', 'igor', 'grusha']}
     ${'vasyl'}  | ${['vasyl', 'igor', 'grusha', 'anna']}
     ${'igor'}   | ${['igor', 'grusha', 'anna', 'vasyl']}
     ${'grusha'} | ${['grusha', 'anna', 'vasyl', 'igor']}
-  `('$username attacks', ({ username, expected }) => {
-  const state = { players, username };
+  `('$user attacks', ({ user, expected }) => {
+  const state = { players, user };
   expect(getPlayersFromUser(state)).toStrictEqual(expected);
 });
 });

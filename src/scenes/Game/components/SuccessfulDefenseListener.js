@@ -14,7 +14,7 @@ const mapStateToProps = createSelector(
 
   (state, defender, notYielded) => ({
     hasDefended:
-      isEqual(state.username, defender) && isEqual(notYielded, [defender]),
+      isEqual(state.user, defender) && isEqual(notYielded, [defender]),
   }),
 );
 

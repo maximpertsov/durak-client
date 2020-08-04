@@ -11,10 +11,10 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const username = useSelector(state => state.username);
+  const user = useSelector(state => state.user);
 
   const createMessage = (type, payload) => {
-    const messagePayload = { user: username, ...payload };
+    const messagePayload = { user: user, ...payload };
     return { type, payload: messagePayload };
   };
 

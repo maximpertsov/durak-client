@@ -9,22 +9,22 @@ import YieldButton from './YieldButton';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => state.username,
+  state => state.user,
 
-  (state, username) => ({
-    cards: state.hands[username],
-    username,
+  (state, user) => ({
+    cards: state.hands[user],
+    user,
   }),
 );
 
 const Hand = () => {
-  const { cards, username } = useSelector(mapStateToProps, isEqual);
+  const { cards, user } = useSelector(mapStateToProps, isEqual);
 
   return (
     <div className="Hand">
       <SuccessfulDefenseListener />
       <YieldButton />
-      <h2>{username}</h2>
+      <h2>{user}</h2>
       <Cards cards={cards} />
     </div>
   );

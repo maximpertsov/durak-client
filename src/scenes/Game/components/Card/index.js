@@ -22,8 +22,8 @@ const Wrapper = styled.div(props => {
 });
 
 const Card = ({ suit, rank }) => {
-  const username = useSelector(state => state.username, isEqual);
-  const hand = useSelector(state => state.hands[username], isEqual);
+  const user = useSelector(state => state.user, isEqual);
+  const hand = useSelector(state => state.hands[user], isEqual);
 
   const canDrag = () => some(hand, { suit, rank });
 

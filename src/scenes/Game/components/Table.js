@@ -21,7 +21,7 @@ const mapStateToProps = createSelector(
   state => getAttackers(state),
 
   (state, attackers) => ({
-    userCanAttack: attackers.includes(state.username),
+    userCanAttack: attackers.includes(state.user),
     table: state.table,
   }),
 );

@@ -24,7 +24,7 @@ export default createActions({
       APPEND: undefined,
       STACK: undefined,
     },
-    USERNAME: {
+    USER: {
       SET: undefined,
     },
   },

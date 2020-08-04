@@ -9,13 +9,13 @@ import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => state.username,
+  state => state.user,
 
-  (state, username) => ({
-    hasYielded: state.yielded.includes(username),
-    isDefender: username === getDefender(state),
+  (state, user) => ({
+    hasYielded: state.yielded.includes(user),
+    isDefender: user === getDefender(state),
     table: state.table,
-    username,
+    user,
     unbeatenCards: getUnbeatenCards(state),
   }),
 );
@@ -27,12 +27,12 @@ const YieldButton = () => {
     hasYielded,
     isDefender,
     table,
-    username,
+    user,
     unbeatenCards,
   } = useSelector(mapStateToProps, isEqual);
 
   const yieldAttack = () => {
-    io.send('yielded_attack', { user: username });
+    io.send('yielded_attack', { user: user });
   };
 
   if (hasYielded) return null;
