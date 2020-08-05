@@ -16,6 +16,7 @@ const fetchEvents = () => async dispatch => {
     const event = events.pop();
     if (!event) {
       clearInterval(timerId);
+      dispatch(actions.game.remoteDataState.set('REPLAYED_EVENTS'));
       return;
     }
     dispatch(actions.messages.append(event));
