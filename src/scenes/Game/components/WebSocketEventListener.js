@@ -4,15 +4,14 @@ import get from 'lodash/get';
 import last from 'lodash/last';
 
 import attack from 'actions/attack';
+import collect from 'actions/collect';
 import defend from 'actions/defend';
-import draw from 'actions/draw';
 import yieldAttack from 'actions/yieldAttack';
-// import client from 'utils/client';
 
 const eventActions = {
   attacked: attack,
+  collect_cards: collect,
   defended: defend,
-  draw_cards: draw,
   yielded_attack: yieldAttack,
 };
 
