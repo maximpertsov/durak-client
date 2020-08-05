@@ -1,5 +1,5 @@
 import actions from 'actions';
-import { dispatchEventAction } from 'scenes/Game/components/WebSocketEventListener';
+import handleWebSocketEvent from 'actions/handleWebSocketEvent';
 import client from 'utils/client';
 
 const fetchEvents = () => dispatch => {
@@ -7,7 +7,7 @@ const fetchEvents = () => dispatch => {
     dispatch(actions.game.remoteDataState.set('FETCHING_EVENTS'));
 
     response.data.events.forEach(event => {
-      dispatchEventAction(dispatch, event);
+      dispatch(handleWebSocketEvent(event));
     });
 
     dispatch(actions.game.remoteDataState.set('FETCHED_EVENTS'));
