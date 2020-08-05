@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import first from 'lodash/first';
 import isEqual from 'lodash/isEqual';
 
 import Cards from './Cards';
@@ -13,18 +14,25 @@ const mapStateToProps = createSelector(
 
   (state, user) => ({
     cards: state.hands[user],
+    isInitialAttacker: first(state.players) === user,
     user,
   }),
 );
 
 const Hand = () => {
-  const { cards, user } = useSelector(mapStateToProps, isEqual);
+  const { cards, isInitialAttacker, user } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   return (
     <div className="Hand">
       <YieldButton />
       <CollectButton />
-      <h2>{user}</h2>
+      <h2>
+        {user}
+        {isInitialAttacker ? '*' : ''}
+      </h2>
       <Cards cards={cards} />
     </div>
   );
