@@ -20,7 +20,7 @@ const dispatchEventAction = (dispatch, message) => {
   if (!action) {
     return;
   }
-  dispatch(action(message.payload));
+  dispatch(action({ user: message.user, ...message.payload }));
 };
 
 const getLastMessage = ({ messages }) => last(messages);

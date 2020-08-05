@@ -23,13 +23,13 @@ const mapStateToProps = createSelector(
 const CollectButton = () => {
   const io = useWebSocketContext();
 
-  const { isDefender, table, user, unbeatenCards } = useSelector(
+  const { isDefender, table, unbeatenCards } = useSelector(
     mapStateToProps,
     isEqual,
   );
 
   const collectAttack = () => {
-    io.send('collect_cards', { player: user, table });
+    io.send('collect_cards', { table });
   };
 
   if (!isDefender) return null;
