@@ -15,7 +15,7 @@ const eventActions = {
   yielded_attack: yieldAttack,
 };
 
-const dispatchEventAction = (dispatch, message) => {
+export const dispatchEventAction = (dispatch, message) => {
   const action = get(eventActions, message.type);
   if (!action) {
     return;

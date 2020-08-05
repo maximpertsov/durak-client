@@ -2,6 +2,7 @@ import React, { createContext, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import actions from 'actions';
+import client from 'utils/client';
 
 export const WebSocketContext = createContext(null);
 
@@ -23,11 +24,10 @@ export const WebSocketProvider = ({ children }) => {
 
   const send = (type, payload) => {
     const message = createMessage(type, payload);
-    socket.send(JSON.stringify(message));
-  };
 
-  const sendRaw = event => {
-    socket.send(JSON.stringify(event));
+    client.post('game/abc123/events', message).then(() => {
+      socket.send(JSON.stringify(message));
+    });
   };
 
   if (!socket) {
@@ -38,7 +38,7 @@ export const WebSocketProvider = ({ children }) => {
       dispatch(actions.messages.append(message));
     };
 
-    io = { socket, send, sendRaw };
+    io = { socket, send };
   }
 
   return (
