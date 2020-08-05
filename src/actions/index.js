@@ -21,6 +21,13 @@ export default createActions({
       ADD: undefined,
       CLEAR: undefined,
     },
+    ROTATIONS: {
+      SET: {
+        ZERO: () => 0,
+        ONE: () => 1,
+        TWO: () => 2,
+      },
+    },
     TABLE: {
       APPEND: undefined,
       STACK: undefined,
