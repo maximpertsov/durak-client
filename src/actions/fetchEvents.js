@@ -1,11 +1,10 @@
 import actions from 'actions';
-import handleWebSocketEvent from 'actions/handleWebSocketEvent';
 import client from 'utils/client';
 
-const fetchEvents = () => dispatch => {
+const fetchEvents = () => async dispatch => {
   let events = [];
 
-  client.get('game/abc123/events').then(response => {
+  await client.get('game/abc123/events').then(response => {
     dispatch(actions.game.remoteDataState.set('FETCHING_EVENTS'));
 
     events = response.data.events.reverse();
@@ -19,9 +18,8 @@ const fetchEvents = () => dispatch => {
       clearInterval(timerId);
       return;
     }
-    dispatch(handleWebSocketEvent(event));
-    dispatch(actions.messages.append({sse: true, ...event}));
-  }, 200);
+    dispatch(actions.messages.append(event));
+  }, 0);
 };
 
 export default fetchEvents;

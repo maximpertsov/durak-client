@@ -12,7 +12,6 @@ const WebSocketEventListener = () => {
 
   useEffect(() => {
     if (!lastMessage) return;
-    if (lastMessage.sse) return;
 
     dispatch(handleWebSocketEvent(lastMessage));
   }, [dispatch, lastMessage]);
