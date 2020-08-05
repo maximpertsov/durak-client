@@ -24,14 +24,15 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { suit, rank } = cardOrStack || {};
-  return <Card suit={suit} rank={rank} />;
+  const { flipped, suit, rank } = cardOrStack || {};
+  return <Card flipped={flipped} suit={suit} rank={rank} />;
 };
 
 const Cards = ({ cards }) => {
-  const renderCards = () => cards.map((cardOrStack, index) => (
-    <CardOrStack key={index} cardOrStack={cardOrStack} />
-  ));
+  const renderCards = () =>
+    cards.map((cardOrStack, index) => (
+      <CardOrStack key={index} cardOrStack={cardOrStack} />
+    ));
 
   return <Wrapper className="Game">{renderCards()}</Wrapper>;
 };

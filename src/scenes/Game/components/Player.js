@@ -8,6 +8,8 @@ const Player = ({ player }) => {
   const cards = useSelector(state => state.hands[player], isEqual);
 
   // TODO: this should not be visible in a real game
+  if (!player) return <div />;
+
   return (
     <div className="Player">
       <h2>{player}</h2>

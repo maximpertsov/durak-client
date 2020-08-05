@@ -8,6 +8,9 @@ import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
 
+import DrawListener from './components/DrawListener';
+import DrawPile from './components/DrawPile';
+import DurakListener from './components/DurakListener';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -23,10 +26,6 @@ const Wrapper = styled.div({
   gridTemplateRows: '1fr 2fr 1fr',
   gridGap: '0.25rem',
 });
-const TopBottomWrapper = styled.div({
-  gridColumnStart: 1,
-  gridColumnEnd: 4,
-});
 
 const mapStateToProps = createSelector(
   state => state,
@@ -40,36 +39,39 @@ const mapStateToProps = createSelector(
 );
 
 const Game = () => {
-  const { hands, playerCount, user, player2, player3, player4 } = useSelector(
+  const { hands, playerCount, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );
 
-  const renderGame = () => (
-    <Wrapper>
-      {player3 && (
-        <TopBottomWrapper>
-          <Player player={player3} />
-        </TopBottomWrapper>
-      )}
-      {player2 && <Player player={player2} />}
-      <Table />
-      {player4 && <Player player={player4} />}
-      {user && (
-        <TopBottomWrapper>
-          <Hand />
-        </TopBottomWrapper>
-      )}
-    </Wrapper>
-  );
-
   // TODO: guarded by magic player count, should be a query (e.g. game is full)
+  const renderGame = () => {
+    if (size(hands) !== 4) return null;
+    if (playerCount !== 4) return null;
+
+    return (
+      <Wrapper>
+        <div />
+        <Player player={player3} />
+        <DrawPile />
+        <Player player={player2} />
+        <Table />
+        <Player player={player4} />
+        <div />
+        <Hand />
+        <div />
+      </Wrapper>
+    );
+  };
+
   return (
     <div className="Game">
       <GameInitializer />
+      <DurakListener />
       <WebSocketEventListener />
       <YieldListener />
-      {size(hands) === 4 && playerCount === 4 && renderGame()}
+      <DrawListener />
+      {renderGame()}
       <Messages />
     </div>
   );

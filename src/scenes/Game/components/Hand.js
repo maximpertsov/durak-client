@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 
 import Cards from './Cards';
+import CollectButton from './CollectButton';
 import YieldButton from './YieldButton';
 
 const mapStateToProps = createSelector(
@@ -22,6 +23,7 @@ const Hand = () => {
   return (
     <div className="Hand">
       <YieldButton />
+      <CollectButton />
       <h2>{user}</h2>
       <Cards cards={cards} />
     </div>

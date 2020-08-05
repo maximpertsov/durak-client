@@ -52,6 +52,7 @@ import spades10 from './assets/049.png';
 import spadesJack from './assets/050.png';
 import spadesQueen from './assets/051.png';
 import spadesKing from './assets/052.png';
+import backOfCard from './assets/055.png';
 
 const cardsBySuitRank = {
   clubs: {
@@ -119,3 +120,5 @@ const cardsBySuitRank = {
 const getCardImage = ({ rank, suit }) => get(cardsBySuitRank, [suit, rank]);
 
 export default getCardImage;
+
+export const getBackOfCard = () => backOfCard;
