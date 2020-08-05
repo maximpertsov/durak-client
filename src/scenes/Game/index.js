@@ -58,7 +58,7 @@ const Game = () => {
         <Player player={player2} />
         <Table />
         <Player player={player4} />
-        <div />
+        <Messages />
         <Hand />
         <div />
       </Wrapper>
@@ -73,7 +73,6 @@ const Game = () => {
       <YieldListener />
       <DrawListener />
       {renderGame()}
-      <Messages />
     </div>
   );
 };

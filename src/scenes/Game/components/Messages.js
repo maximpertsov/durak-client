@@ -3,15 +3,22 @@ import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
+  height: '100%',
+  overflowY: 'scroll',
+  textAlign: 'left',
 });
 
 const Messages = () => {
   const messages = useSelector(state => state.messages);
 
   const renderMessages = () =>
-    messages.map(message => <div>{JSON.stringify(message)}</div>);
+    messages.map(message => (
+      <div>
+        {message.user}
+        {' '}
+        {message.type}
+      </div>
+    ));
 
   return <Wrapper>{renderMessages()}</Wrapper>;
 };
