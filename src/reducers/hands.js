@@ -17,6 +17,16 @@ const add = (state, action) => {
   return update(state, { [player]: { $set: newHand } });
 };
 
+const add = (state, action) => {
+  const {
+    payload: { cards, player },
+  } = action;
+
+  const playerHand = get(state, player, []);
+  const newHand = compact(concat(playerHand, cards));
+  return update(state, { [player]: { $set: newHand } });
+};
+
 const remove = (state, action) => {
   const {
     payload: { rank, suit, user },
