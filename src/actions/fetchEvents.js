@@ -20,6 +20,7 @@ const fetchEvents = () => dispatch => {
       return;
     }
     dispatch(handleWebSocketEvent(event));
+    dispatch(actions.messages.append({sse: true, ...event}));
   }, 200);
 };
 
