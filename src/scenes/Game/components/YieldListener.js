@@ -30,6 +30,7 @@ const YieldListener = () => {
   useEffect(() => {
     if (!hasDefended) return;
 
+    dispatch(actions.game.table.clear());
     dispatch(actions.game.yielded.clear());
     dispatch(actions.game.rotations.set.one());
   }, [dispatch, drawPile, hands, hasDefended, players]);

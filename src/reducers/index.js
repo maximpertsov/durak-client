@@ -7,6 +7,7 @@ import drawPile from './drawPile';
 import hands from './hands';
 import messages from './messages';
 import players from './players';
+import remoteDataState from './remoteDataState';
 import rotations from './rotations';
 import table from './table';
 import user from './user';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   hands,
   messages,
   players,
+  remoteDataState,
   rotations,
   table,
   user,

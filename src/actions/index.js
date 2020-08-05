@@ -5,6 +5,9 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
+    REMOTE_DATA_STATE: {
+      SET: undefined,
+    },
     DRAW_PILE: {
       SET: undefined,
     },

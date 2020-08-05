@@ -2,6 +2,7 @@ import React, { createContext, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import actions from 'actions';
+import client from 'utils/client';
 
 export const WebSocketContext = createContext(null);
 
@@ -13,14 +14,20 @@ export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
-  const createMessage = (type, payload) => {
-    const messagePayload = { user: user, ...payload };
-    return { type, payload: messagePayload };
-  };
+  // TODO: remove hardcoded game
+  const createMessage = (type, payload) => ({
+    type,
+    game: 'abc123',
+    user,
+    payload,
+  });
 
   const send = (type, payload) => {
     const message = createMessage(type, payload);
-    socket.send(JSON.stringify(message));
+
+    client.post('game/abc123/events', message).then(() => {
+      socket.send(JSON.stringify(message));
+    });
   };
 
   if (!socket) {

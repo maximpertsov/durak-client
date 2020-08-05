@@ -8,6 +8,8 @@ import client from 'utils/client';
 const handSize = 6;
 
 const fetchGame = () => dispatch => {
+  dispatch(actions.game.remoteDataState.set('FETCHING_GAME'));
+
   client.get('game/abc123').then(response => {
     const {
       data: { drawPile, players },
@@ -28,6 +30,8 @@ const fetchGame = () => dispatch => {
         dispatch(actions.game.hand.add({ cards: [card], player }));
       });
     }
+
+    dispatch(actions.game.remoteDataState.set('FETCHED_GAME'));
   });
 };
 
