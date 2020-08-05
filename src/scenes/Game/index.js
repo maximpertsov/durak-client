@@ -9,6 +9,7 @@ import zipObject from 'lodash/zipObject';
 import { getPlayersFromUser } from 'reducers';
 
 import DrawPile from './components/DrawPile';
+import DurakListener from './components/DurakListener';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -65,6 +66,7 @@ const Game = () => {
   return (
     <div className="Game">
       <GameInitializer />
+      <DurakListener />
       <WebSocketEventListener />
       <YieldListener />
       {renderGame()}
