@@ -26,6 +26,10 @@ export const WebSocketProvider = ({ children }) => {
     socket.send(JSON.stringify(message));
   };
 
+  const sendRaw = event => {
+    socket.send(JSON.stringify(event));
+  };
+
   if (!socket) {
     socket = new WebSocket(process.env.REACT_APP_WS_URL);
 
@@ -34,7 +38,7 @@ export const WebSocketProvider = ({ children }) => {
       dispatch(actions.messages.append(message));
     };
 
-    io = { socket, send };
+    io = { socket, send, sendRaw };
   }
 
   return (
