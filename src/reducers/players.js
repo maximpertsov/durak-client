@@ -8,7 +8,20 @@ import update from 'immutability-helper';
 
 const set = (state, action) => action.payload;
 const append = (state, action) => update(state, { $push: [action.payload] });
-const rotate = state => concat(tail(state), head(state));
+const rotate = (state, action) => {
+  let newState = [ ...state ];
+
+  const { skipPlayers } = action.payload;
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < tail(state).length; i++) {
+    newState = concat(tail(newState), head(newState));
+    if (!skipPlayers) return newState;
+    if (!skipPlayers.includes(head(newState))) return newState;
+  }
+
+  return newState;
+};
 
 const players = handleActions(
   {
