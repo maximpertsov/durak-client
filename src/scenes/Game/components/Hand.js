@@ -4,18 +4,20 @@ import { createSelector } from 'reselect';
 import first from 'lodash/first';
 import isEqual from 'lodash/isEqual';
 
+import { getAttackers } from 'reducers';
+
 import Cards from './Cards';
 import CollectButton from './CollectButton';
 import YieldButton from './YieldButton';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => state.user,
+  state => getAttackers(state),
 
-  (state, user) => ({
-    cards: state.hands[user],
-    isInitialAttacker: first(state.players) === user,
-    user,
+  (state, attackers) => ({
+    cards: state.hands[state.user],
+    isInitialAttacker: first(attackers) === state.user,
+    user: state.user,
   }),
 );
 
