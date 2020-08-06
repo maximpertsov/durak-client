@@ -16,7 +16,7 @@ const Messages = () => {
       <div>
         {message.user}
         {' '}
-        {message.type}
+        {message.text || message.type}
       </div>
     ));
 
