@@ -20,7 +20,7 @@ const fetchEvents = () => async dispatch => {
       return;
     }
     dispatch(actions.messages.append(event));
-  }, 0);
+  }, 10);
 };
 
 export default fetchEvents;
