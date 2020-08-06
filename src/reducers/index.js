@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
+import compact from 'lodash/compact';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
+import reject from 'lodash/reject';
 
 import drawPile from './drawPile';
 import hands from './hands';
@@ -27,18 +29,24 @@ const rootReducer = combineReducers({
 
 export default rootReducer;
 
-export const getDefender = state => state.players[1];
+const getPlayersWithCards = state =>
+  reject(state.players, player => isEmpty(compact(state.hands[player])));
 
-export const getPlayersFromUser = ({ user, players }) => {
-  const offset = findIndex(players, player => player === user);
-  return players.map((_, index) => players[(index + offset) % players.length]);
+export const getDefender = state => getPlayersWithCards(state)[1];
+
+export const getPlayersFromUser = state => {
+  const offset = findIndex(state.players, player => player === state.user);
+  return state.players.map(
+    (_, index) => state.players[(index + offset) % state.players.length],
+  );
 };
 
 export const getAttackers = state => {
-  if (isEmpty(state.table)) return [state.players[0]];
+  const playersWithCards = getPlayersWithCards(state);
+  if (isEmpty(state.table)) return [playersWithCards[0]];
 
   const defender = getDefender(state);
-  return state.players.filter(player => player !== defender);
+  return reject(playersWithCards, player => player === defender);
 };
 
 export const getUnbeatenCards = state =>
