@@ -29,10 +29,10 @@ const rootReducer = combineReducers({
 
 export default rootReducer;
 
-const getPlayersWithCards = state =>
+const getPlayersWithCardsOrAttacked = state =>
   reject(state.players, player => isEmpty(state.hands[player]));
 
-export const getDefender = state => getPlayersWithCards(state)[1];
+export const getDefender = state => getPlayersWithCardsOrAttacked(state)[1];
 
 export const getPlayersFromUser = state => {
   const offset = findIndex(state.players, player => player === state.user);
@@ -42,7 +42,7 @@ export const getPlayersFromUser = state => {
 };
 
 export const getAttackers = state => {
-  const playersWithCards = getPlayersWithCards(state);
+  const playersWithCards = getPlayersWithCardsOrAttacked(state);
   if (isEmpty(state.table)) return [playersWithCards[0]];
 
   const defender = getDefender(state);
