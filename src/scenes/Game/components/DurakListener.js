@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import compact from 'lodash/compact';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
+
+import actions from 'actions';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -20,6 +22,7 @@ const mapStateToProps = createSelector(
 );
 
 const DurakListener = () => {
+  const dispatch = useDispatch();
   const { drawPile, playersWithCards } = useSelector(mapStateToProps, isEqual);
 
   useEffect(() => {
@@ -27,8 +30,8 @@ const DurakListener = () => {
     if (size(playersWithCards) !== 1) return;
 
     const [durak] = playersWithCards;
-    console.log(`${durak} is the durak!`);
-  }, [drawPile, playersWithCards]);
+    dispatch(actions.messages.append({ text: `${durak} is the durak!` }));
+  }, [dispatch, drawPile, playersWithCards]);
 
   return null;
 };

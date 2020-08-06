@@ -1,18 +1,32 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import first from 'lodash/first';
 import isEqual from 'lodash/isEqual';
 
+import { getAttackers } from 'reducers';
+
 import Cards from './Cards';
 
+const mapStateToProps = createSelector(
+  state => state,
+  state => getAttackers(state),
+  (_, props) => props.player,
+
+  (state, attackers, player) => ({
+    cards: state.hands[player],
+    isInitialAttacker: first(attackers) === player,
+  }),
+);
+
 const Player = ({ player }) => {
-  const cards = useSelector(state => state.hands[player], isEqual);
-  const players = useSelector(state => state.players, isEqual);
+  const { cards, isInitialAttacker } = useSelector(
+    state => mapStateToProps(state, { player }),
+    isEqual,
+  );
 
   // TODO: this should not be visible in a real game
   if (!player) return <div />;
-
-  const isInitialAttacker = first(players) === player;
 
   return (
     <div className="Player">

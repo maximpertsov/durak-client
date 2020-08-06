@@ -44,11 +44,15 @@ const DrawListener = () => {
       }
     }
 
+    const skipPlayers = players.filter(player =>
+      isEmpty(compact(hands[player])),
+    );
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < rotations; i++) {
-      dispatch(actions.game.players.rotate());
+      dispatch(actions.game.players.rotate({ skipPlayers }));
     }
     dispatch(actions.game.rotations.set.zero());
+    dispatch(actions.game.hand.compact());
   }, [dispatch, drawPile, hands, players, rotations]);
 
   return null;

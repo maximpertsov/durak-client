@@ -13,7 +13,7 @@ import Cards from './Cards';
 
 const Wrapper = styled.div({
   backgroundColor: 'green',
-  height: '100%',
+  height: '250px',
 });
 
 const mapStateToProps = createSelector(
