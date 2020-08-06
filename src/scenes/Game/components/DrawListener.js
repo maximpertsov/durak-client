@@ -49,6 +49,7 @@ const DrawListener = () => {
       dispatch(actions.game.players.rotate());
     }
     dispatch(actions.game.rotations.set.zero());
+    dispatch(actions.game.hand.compact());
   }, [dispatch, drawPile, hands, players, rotations]);
 
   return null;

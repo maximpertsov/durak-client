@@ -27,6 +27,11 @@ describe('getDefender', () => {
     const expected = 'igor';
     expect(getDefender(state)).toEqual(expected);
   });
+  test('anna has no cards but is attacking', () => {
+    const state = { players, hands: { ...hands, anna: [null] } };
+    const expected = 'vasyl';
+    expect(getDefender(state)).toEqual(expected);
+  });
 });
 
 describe('getPlayersFromUser', () => {
@@ -67,6 +72,15 @@ describe('getAttackers', () => {
     test('anna and grusha attack', () => {
       const state = { table, players, hands: { ...hands, vasyl: [] } };
       const expected = ['anna', 'grusha'];
+      expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
+    });
+  });
+  describe('anna has no cards but is attacking', () => {
+    const table = ['card'];
+
+    test('all except vasyl attack', () => {
+      const state = { table, players, hands: { ...hands, anna: [null] } };
+      const expected = ['anna', 'igor', 'grusha'];
       expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
     });
   });

@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
 export default rootReducer;
 
 const getPlayersWithCards = state =>
-  reject(state.players, player => isEmpty(compact(state.hands[player])));
+  reject(state.players, player => isEmpty(state.hands[player]));
 
 export const getDefender = state => getPlayersWithCards(state)[1];
 

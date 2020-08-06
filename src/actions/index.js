@@ -13,6 +13,7 @@ export default createActions({
     },
     HAND: {
       ADD: undefined,
+      COMPACT: undefined,
       REMOVE: undefined,
     },
     PLAYERS: {

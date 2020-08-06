@@ -2,7 +2,9 @@ import { handleActions } from 'redux-actions';
 import compact from 'lodash/compact';
 import concat from 'lodash/concat';
 import findIndex from 'lodash/findIndex';
+import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
+import map from 'lodash/map';
 
 import actions from 'actions';
 import update from 'immutability-helper';
@@ -29,10 +31,14 @@ const remove = (state, action) => {
   return update(state, { [user]: { $set: newHand } });
 };
 
+const compactCards = state =>
+  fromPairs(map(state, (cards, player) => [player, compact(cards)]));
+
 const hands = handleActions(
   {
     [actions.game.hand.add]: add,
     [actions.game.hand.remove]: remove,
+    [actions.game.hand.compact]: compactCards,
   },
   {},
 );
