@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import chunk from 'lodash/chunk';
 import compact from 'lodash/compact';
 import first from 'lodash/first';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
-import take from 'lodash/take';
+import unzip from 'lodash/unzip';
 
 import { getAttackers } from 'reducers';
 
@@ -37,7 +38,10 @@ const Player = ({ player }) => {
         {player}
         {isInitialAttacker ? '*' : ''}
       </h2>
-      <Cards flipped cards={take(compact(cards), 6)} />
+      <Cards
+        flipped
+        cards={unzip(chunk(compact(cards), 6)).map(stack => compact(stack))}
+      />
       <div>{`${size(compact(cards))} cards`}</div>
       <div />
     </div>

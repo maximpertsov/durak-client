@@ -15,7 +15,7 @@ const DrawPile = () => {
 
   return (
     <div className="DrawPile">
-      <Cards flipped cards={[[lastCard, nextCard]]} />
+      <Cards cards={[[lastCard, nextCard]]} />
       <div>{displayText}</div>
     </div>
   );

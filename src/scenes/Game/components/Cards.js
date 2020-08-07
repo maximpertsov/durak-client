@@ -18,7 +18,7 @@ const CardOrStack = ({ flipped, cardOrStack }) => {
     return (
       <CardStack>
         {cardOrStack.map((card, index) => (
-          <CardOrStack key={index} cardOrStack={card} />
+          <CardOrStack key={index} flipped={flipped} cardOrStack={card} />
         ))}
       </CardStack>
     );
