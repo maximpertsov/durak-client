@@ -5,8 +5,8 @@ import styled from '@emotion/styled';
 import Message from './Message';
 
 const Wrapper = styled.div({
-  height: '100%',
-  overflowY: 'scroll',
+  height: '150px',
+  overflow: 'auto',
   textAlign: 'left',
 });
 
