@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import compact from 'lodash/compact';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';

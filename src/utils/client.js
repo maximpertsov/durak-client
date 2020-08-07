@@ -10,8 +10,6 @@ import axios from 'axios';
 axios.defaults.baseURL = process.env.REACT_APP_BASE_API_URL;
 axios.defaults.timeout = 1000;
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-axios.defaults.xsrfCookieName = 'csrftoken';
 
 const camelCase = string =>
   // Lodash's camel-casing function is too aggressive.

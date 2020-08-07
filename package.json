@@ -34,7 +34,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": "https://maximpertsov.github.io/spa",
+  "homepage": "https://xdurak.xyz",
   "browserslist": {
     "production": [
       ">0.2%",
