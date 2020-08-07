@@ -13,7 +13,7 @@ const Wrapper = styled.div({
   padding: '0 5%',
 });
 
-const CardOrStack = ({ cardOrStack }) => {
+const CardOrStack = ({ flipped, cardOrStack }) => {
   if (Array.isArray(cardOrStack)) {
     return (
       <CardStack>
@@ -24,14 +24,14 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { flipped, suit, rank } = cardOrStack || {};
-  return <Card flipped={flipped} suit={suit} rank={rank} />;
+  const { flipped: cardFlipped, suit, rank } = cardOrStack || {};
+  return <Card flipped={flipped || cardFlipped} suit={suit} rank={rank} />;
 };
 
-const Cards = ({ cards }) => {
+const Cards = ({ cards, flipped }) => {
   const renderCards = () =>
     cards.map((cardOrStack, index) => (
-      <CardOrStack key={index} cardOrStack={cardOrStack} />
+      <CardOrStack key={index} flipped={flipped} cardOrStack={cardOrStack} />
     ));
 
   return <Wrapper className="Game">{renderCards()}</Wrapper>;

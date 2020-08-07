@@ -34,7 +34,7 @@ const Player = ({ player }) => {
         {player}
         {isInitialAttacker ? '*' : ''}
       </h2>
-      <Cards cards={cards} />
+      <Cards flipped cards={cards} />
       <div />
     </div>
   );
