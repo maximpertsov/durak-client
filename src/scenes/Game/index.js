@@ -2,11 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import isEqual from 'lodash/isEqual';
-import size from 'lodash/size';
-import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
+import _ from 'utils/lodash';
 
 import DrawListener from './components/DrawListener';
 import DrawPile from './components/DrawPile';
@@ -34,12 +32,12 @@ const mapStateToProps = createSelector(
 
   (state, playersFromUser) => ({
     hands: state.hands,
-    ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
+    ..._.zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
 const Game = () => {
-  const { player2, player3, player4 } = useSelector(mapStateToProps, isEqual);
+  const { player2, player3, player4 } = useSelector(mapStateToProps, _.isEqual);
 
   const renderGame = () => (
     <Wrapper>
