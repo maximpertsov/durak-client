@@ -1,10 +1,12 @@
 import actions from 'actions';
 import client from 'utils/client';
 
-const fetchEvents = () => async dispatch => {
-  let events = [];
+const fetchEvents = ({ game }) => async dispatch => {
+  if (!game) return;
 
-  await client.get('game/abc123/events').then(response => {
+  let events;
+
+  await client.get(`game/${game}/events`).then(response => {
     dispatch(actions.game.remoteDataState.set('FETCHING_EVENTS'));
 
     events = response.data.events.reverse();

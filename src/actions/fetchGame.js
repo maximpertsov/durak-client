@@ -7,10 +7,12 @@ import client from 'utils/client';
 
 const handSize = 6;
 
-const fetchGame = () => dispatch => {
+const fetchGame = ({ game }) => dispatch => {
+  if (!game) return;
+
   dispatch(actions.game.remoteDataState.set('FETCHING_GAME'));
 
-  client.get('game/abc123').then(response => {
+  client.get(`game/${game}`).then(response => {
     const {
       data: { drawPile, players },
     } = response;

@@ -10,11 +10,11 @@ const getId = () => {
   return urlParams.get('g') || 'abc123';
 };
 
-const id = handleActions(
+const game = handleActions(
   {
-    [actions.game.players.set]: set,
+    [actions.game.id.set]: set,
   },
   getId,
 );
 
-export default id;
+export default game;
