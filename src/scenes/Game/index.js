@@ -34,36 +34,26 @@ const mapStateToProps = createSelector(
 
   (state, playersFromUser) => ({
     hands: state.hands,
-    playerCount: size(playersFromUser),
     ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
 const Game = () => {
-  const { hands, playerCount, player2, player3, player4 } = useSelector(
-    mapStateToProps,
-    isEqual,
+  const { player2, player3, player4 } = useSelector(mapStateToProps, isEqual);
+
+  const renderGame = () => (
+    <Wrapper>
+      <div />
+      <Player player={player3} />
+      <DrawPile />
+      <Player player={player2} />
+      <Table />
+      <Player player={player4} />
+      <Messages />
+      <Hand />
+      <div />
+    </Wrapper>
   );
-
-  // TODO: guarded by magic player count, should be a query (e.g. game is full)
-  const renderGame = () => {
-    if (size(hands) !== 4) return null;
-    if (playerCount !== 4) return null;
-
-    return (
-      <Wrapper>
-        <div />
-        <Player player={player3} />
-        <DrawPile />
-        <Player player={player2} />
-        <Table />
-        <Player player={player4} />
-        <Messages />
-        <Hand />
-        <div />
-      </Wrapper>
-    );
-  };
 
   return (
     <div className="Game">

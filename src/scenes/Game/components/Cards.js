@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Card from './Card';
@@ -38,3 +39,16 @@ const Cards = ({ cards, flipped }) => {
 };
 
 export default Cards;
+
+Cards.propTypes = {
+  flipped: PropTypes.bool,
+  cards: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape()),
+    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
+  ]),
+};
+
+Cards.defaultProps = {
+  flipped: false,
+  cards: [],
+};
