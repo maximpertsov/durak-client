@@ -1,21 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import first from 'lodash/first';
-import isEqual from 'lodash/isEqual';
-import last from 'lodash/last';
+
+import _ from 'utils/lodash';
 
 import Cards from './Cards';
 
 const DrawPile = () => {
-  const drawPile = useSelector(state => state.drawPile, isEqual);
+  const drawPile = useSelector(state => state.drawPile, _.isEqual);
 
-  const nextCard = { flipped: true, ...first(drawPile) };
-  const lastCard = last(drawPile);
-  const displayText = `${drawPile.length} left`;
+  const nextCard = { flipped: true, ..._.first(drawPile) };
+  const lastCard = _.last(drawPile);
+  const displayText = `${_.size(drawPile)} left`;
 
   return (
     <div className="DrawPile">
-      <Cards cards={[[lastCard, nextCard]]} />
+      {lastCard && <Cards cards={[[lastCard, nextCard]]} />}
       <div>{displayText}</div>
     </div>
   );
