@@ -1,3 +1,4 @@
+import compact from 'lodash/compact';
 import drop from 'lodash/drop';
 import first from 'lodash/first';
 import isEmpty from 'lodash/isEmpty';
@@ -9,6 +10,7 @@ import take from 'lodash/take';
 import zipObject from 'lodash/zipObject';
 
 const _ = {
+  compact,
   drop,
   reverse,
   take,
