@@ -40,6 +40,9 @@ export default createActions({
       STACK: undefined,
       CLEAR: undefined,
     },
+    TRUMP_SUIT: {
+      SET: undefined,
+    },
     USER: {
       SET: undefined,
     },

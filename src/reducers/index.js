@@ -12,6 +12,7 @@ import players from './players';
 import remoteDataState from './remoteDataState';
 import rotations from './rotations';
 import table from './table';
+import trumpSuit from './trumpSuit';
 import user from './user';
 import yielded from './yielded';
 
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   remoteDataState,
   rotations,
   table,
+  trumpSuit,
   user,
   yielded,
 });
