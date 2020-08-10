@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import last from 'lodash/last';
 
@@ -16,6 +17,7 @@ const CardStack = ({ children }) => {
 
   const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
   const isDefended = React.Children.count(children) > 1;
+  const trumpSuit = useSelector(state => state.trumpSuit);
 
   const drop = ({ suit, rank }) => {
     io.send('defended', { baseCard, card: { suit, rank } });
@@ -24,7 +26,11 @@ const CardStack = ({ children }) => {
   const canDrop = card => {
     if (isDefended) return false;
 
-    return canDefend({ attackCard: baseCard, defenseCard: card });
+    return canDefend({
+      attackCard: baseCard,
+      defenseCard: card,
+      trumpSuit,
+    });
   };
 
   const [{ isOver }, dropRef] = useDrop({

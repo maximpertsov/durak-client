@@ -1,16 +1,15 @@
-import drop from 'lodash/drop';
-import reverse from 'lodash/reverse';
-import take from 'lodash/take';
-
 import actions from 'actions';
 import client from 'utils/client';
+import _ from 'utils/lodash';
 
 const handSize = 6;
 
-const fetchGame = () => dispatch => {
+const fetchGame = ({ game }) => dispatch => {
+  if (!game) return;
+
   dispatch(actions.game.remoteDataState.set('FETCHING_GAME'));
 
-  client.get('game/abc123').then(response => {
+  client.get(`game/${game}`).then(response => {
     const {
       data: { drawPile, players },
     } = response;
@@ -19,11 +18,13 @@ const fetchGame = () => dispatch => {
     dispatch(actions.game.players.set(players));
 
     // setup draw pile
-    const cardsLeft = drop(drawPile, players.length * handSize);
+    const cardsLeft = _.drop(drawPile, players.length * handSize);
     dispatch(actions.game.drawPile.set(cardsLeft));
+    const { suit: trumpSuit } = _.last(drawPile);
+    dispatch(actions.game.trumpSuit.set(trumpSuit));
 
     // setup player hands (round-robin)
-    const cardsToDraw = reverse(take(drawPile, players.length * handSize));
+    const cardsToDraw = _.reverse(_.take(drawPile, players.length * handSize));
     while (cardsToDraw.length > 0) {
       players.forEach(player => {
         const card = cardsToDraw.pop();

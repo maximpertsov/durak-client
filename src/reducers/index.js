@@ -5,23 +5,27 @@ import isEmpty from 'lodash/isEmpty';
 import reject from 'lodash/reject';
 
 import drawPile from './drawPile';
+import game from './game';
 import hands from './hands';
 import messages from './messages';
 import players from './players';
 import remoteDataState from './remoteDataState';
 import rotations from './rotations';
 import table from './table';
+import trumpSuit from './trumpSuit';
 import user from './user';
 import yielded from './yielded';
 
 const rootReducer = combineReducers({
   drawPile,
+  game,
   hands,
   messages,
   players,
   remoteDataState,
   rotations,
   table,
+  trumpSuit,
   user,
   yielded,
 });

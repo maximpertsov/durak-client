@@ -13,11 +13,12 @@ export const WebSocketProvider = ({ children }) => {
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const game = useSelector(state => state.game);
 
   // TODO: remove hardcoded game
   const createMessage = (type, payload) => ({
     type,
-    game: 'abc123',
+    game,
     user,
     payload,
   });
@@ -25,7 +26,7 @@ export const WebSocketProvider = ({ children }) => {
   const send = (type, payload) => {
     const message = createMessage(type, payload);
 
-    client.post('game/abc123/events', message).then(() => {
+    client.post(`game/${game}/events`, message).then(() => {
       socket.send(JSON.stringify(message));
     });
   };

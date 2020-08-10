@@ -5,6 +5,9 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
+    ID: {
+      SET: undefined,
+    },
     REMOTE_DATA_STATE: {
       SET: undefined,
     },
@@ -36,6 +39,9 @@ export default createActions({
       APPEND: undefined,
       STACK: undefined,
       CLEAR: undefined,
+    },
+    TRUMP_SUIT: {
+      SET: undefined,
     },
     USER: {
       SET: undefined,
