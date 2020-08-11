@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
 import { Button, Form } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 
@@ -20,6 +21,15 @@ const mapStateToProps = createSelector(
     user,
   }),
 );
+
+const Wrapper = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+`;
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -57,7 +67,7 @@ const LoginForm = () => {
   };
 
   const renderLoggedOut = () => (
-    <div className="LoginForm">
+    <Wrapper className="LoginForm">
       <Form>
         <Form.Input
           icon="user"
@@ -80,7 +90,7 @@ const LoginForm = () => {
         <Button content="Login" primary onClick={handleClick} />
       </Form>
       <div>{formError}</div>
-    </div>
+    </Wrapper>
   );
 
   return isLoggedIn ? renderLoggedIn() : renderLoggedOut();
