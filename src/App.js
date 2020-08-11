@@ -3,9 +3,11 @@ import 'App.css';
 import React from 'react';
 
 import Game from 'scenes/Game';
+import Home from 'scenes/Home';
 
 const App = () => (
   <div className="App">
+    <Home />
     <Game />
   </div>
 );
