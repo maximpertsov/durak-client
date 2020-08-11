@@ -1,5 +1,6 @@
 import actions from 'actions';
 import updateLoginForm from 'actions/updateLoginForm';
+import Cookies from 'js-cookie';
 import fp from 'utils/lodashFp';
 
 // TODO: obviously for testing only
@@ -18,8 +19,13 @@ const login = ({ username, password }) => async dispatch => {
       throw new Error();
     }
     dispatch(actions.game.user.set(username));
+    // create cookie that expires in 1 minute
+    // https://github.com/js-cookie/js-cookie/issues/74
+    // https://github.com/js-cookie/js-cookie/wiki/Frequently-Asked-Questions#expire-cookies-in-less-than-a-day
+    Cookies.set('sid', username, { expires: (1 / 24) / 60 });
   } catch (error) {
     dispatch(updateLoginForm({ error: 'Login failed' }));
+    Cookies.remove('sid');
   } finally {
     dispatch(updateLoginForm({ username: '', password: '' }));
   }
