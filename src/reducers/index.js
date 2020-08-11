@@ -40,6 +40,8 @@ const getPlayersWithCardsOrAttacked = state =>
 export const getDefender = state => getPlayersWithCardsOrAttacked(state)[1];
 
 export const getPlayersFromUser = state => {
+  if (!state.user) return [];
+
   const offset = findIndex(state.players, player => player === state.user);
   return state.players.map(
     (_, index) => state.players[(index + offset) % state.players.length],

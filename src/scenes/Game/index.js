@@ -31,13 +31,19 @@ const mapStateToProps = createSelector(
   state => getPlayersFromUser(state),
 
   (state, playersFromUser) => ({
-    hands: state.hands,
-    ..._.zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
+    user: state.user,
+    ..._.zipObject(
+      ['player1', 'player2', 'player3', 'player4'],
+      playersFromUser,
+    ),
   }),
 );
 
 const Game = () => {
-  const { player2, player3, player4 } = useSelector(mapStateToProps, _.isEqual);
+  const { user, player2, player3, player4 } = useSelector(
+    mapStateToProps,
+    _.isEqual,
+  );
 
   const renderGame = () => (
     <Wrapper>
@@ -52,6 +58,8 @@ const Game = () => {
       <div />
     </Wrapper>
   );
+
+  if (!user) return null;
 
   return (
     <div className="Game">

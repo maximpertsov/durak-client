@@ -10,14 +10,14 @@ import updateLoginForm from 'actions/updateLoginForm';
 
 const mapStateToProps = createSelector(
   state => state.loginForm,
-  state => state.username,
+  state => state.user,
 
-  (loginForm, username) => ({
-    isLoggedIn: username !== null,
+  (loginForm, user) => ({
+    isLoggedIn: user !== null,
     formUsername: loginForm.username,
     formPassword: loginForm.password,
     formError: loginForm.error,
-    username,
+    user,
   }),
 );
 
@@ -28,7 +28,7 @@ const LoginForm = () => {
     formUsername,
     formPassword,
     formError,
-    username,
+    user,
   } = useSelector(state => mapStateToProps(state), isEqual);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const LoginForm = () => {
   };
 
   const renderLoggedIn = () => {
-    const loggedInMessage = `Welcome ${username}`;
+    const loggedInMessage = `Welcome ${user}`;
     return <div>{loggedInMessage}</div>;
   };
 

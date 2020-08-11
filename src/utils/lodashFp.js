@@ -3,6 +3,7 @@ import compact from 'lodash/fp/compact';
 import drop from 'lodash/fp/drop';
 import first from 'lodash/fp/first';
 import flow from 'lodash/fp/flow';
+import get from 'lodash/fp/get';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -16,6 +17,7 @@ import zipObject from 'lodash/fp/zipObject';
 const fp = Object.freeze({
   chunk,
   compact,
+  get,
   drop,
   flow,
   reverse,
