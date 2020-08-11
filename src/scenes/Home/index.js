@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Game from 'scenes/Game';
+import LoginForm from './components/LoginForm';
 
 const Home = () => (
   <div className="Home">
+    <LoginForm />
   </div>
 );
 

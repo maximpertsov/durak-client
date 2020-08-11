@@ -7,6 +7,7 @@ import reject from 'lodash/reject';
 import drawPile from './drawPile';
 import game from './game';
 import hands from './hands';
+import loginForm from './loginForm';
 import messages from './messages';
 import players from './players';
 import remoteDataState from './remoteDataState';
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   drawPile,
   game,
   hands,
+  loginForm,
   messages,
   players,
   remoteDataState,
