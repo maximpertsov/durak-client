@@ -1,51 +1,58 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
-import chunk from 'lodash/chunk';
-import compact from 'lodash/compact';
-import first from 'lodash/first';
-import isEqual from 'lodash/isEqual';
-import size from 'lodash/size';
-import unzip from 'lodash/unzip';
 
 import { getAttackers } from 'reducers';
+import fp from 'utils/lodashFp';
 
 import Cards from './Cards';
+
+const getCardCount = fp.flow(fp.compact, fp.size);
+const getDisplayCards = fp.flow(
+  fp.compact,
+  fp.chunk(6),
+  fp.unzip,
+  fp.map(fp.compact),
+);
 
 const mapStateToProps = createSelector(
   state => state,
   state => getAttackers(state),
   (_, props) => props.player,
+  (state, props) => state.hands[props.player],
 
-  (state, attackers, player) => ({
-    cards: state.hands[player],
-    isInitialAttacker: first(attackers) === player,
+  (state, attackers, player, cards) => ({
+    isInitialAttacker: fp.first(attackers) === player,
+    cardCount: getCardCount(cards),
+    displayCards: getDisplayCards(cards),
   }),
 );
 
 const Player = ({ player }) => {
-  const { cards, isInitialAttacker } = useSelector(
+  const { cardCount, displayCards, isInitialAttacker } = useSelector(
     state => mapStateToProps(state, { player }),
-    isEqual,
+    fp.isEqual,
   );
 
-  // TODO: this should not be visible in a real game
   if (!player) return <div />;
 
   return (
     <div className="Player">
-      <h2>
-        {player}
-        {isInitialAttacker ? '*' : ''}
-      </h2>
-      <Cards
-        flipped
-        cards={unzip(chunk(compact(cards), 6)).map(stack => compact(stack))}
-      />
-      <div>{`${size(compact(cards))} cards`}</div>
+      <h2>{`${player} ${isInitialAttacker ? '*' : ''}`}</h2>
+      <Cards flipped cards={displayCards} />
+      <div>{`${cardCount} cards`}</div>
       <div />
     </div>
   );
 };
 
 export default Player;
+
+Player.propTypes = {
+  player: PropTypes.string,
+};
+
+Player.defaultProps = {
+  player: null,
+};

@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import first from 'lodash/first';
-import isEqual from 'lodash/isEqual';
 
 import { getAttackers } from 'reducers';
+import fp from 'utils/lodashFp';
 
 import Cards from './Cards';
 import CollectButton from './CollectButton';
@@ -16,7 +15,7 @@ const mapStateToProps = createSelector(
 
   (state, attackers) => ({
     cards: state.hands[state.user],
-    isInitialAttacker: first(attackers) === state.user,
+    isInitialAttacker: fp.first(attackers) === state.user,
     user: state.user,
   }),
 );
@@ -24,17 +23,14 @@ const mapStateToProps = createSelector(
 const Hand = () => {
   const { cards, isInitialAttacker, user } = useSelector(
     mapStateToProps,
-    isEqual,
+    fp.isEqual,
   );
 
   return (
     <div className="Hand">
       <YieldButton />
       <CollectButton />
-      <h2>
-        {user}
-        {isInitialAttacker ? '*' : ''}
-      </h2>
+      <h2>{`${user} ${isInitialAttacker ? '*' : ''}`}</h2>
       <Cards cards={cards} />
     </div>
   );
