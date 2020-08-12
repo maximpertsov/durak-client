@@ -1,7 +1,7 @@
 import React from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Comment, Icon } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 
 // TODO move to utils
 const maxAgeInSeconds = 10;
