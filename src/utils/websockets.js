@@ -15,8 +15,8 @@ export const WebSocketProvider = ({ children }) => {
   const user = useSelector(state => state.user);
   const game = useSelector(state => state.game);
 
-  // TODO: remove hardcoded game
   const createMessage = (type, payload) => ({
+    createdAt: new Date().toISOString(),
     type,
     game,
     user,

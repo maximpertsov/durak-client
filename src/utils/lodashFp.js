@@ -1,6 +1,7 @@
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
 import drop from 'lodash/fp/drop';
+import filter from 'lodash/fp/filter';
 import first from 'lodash/fp/first';
 import flow from 'lodash/fp/flow';
 import isEmpty from 'lodash/fp/isEmpty';
@@ -19,6 +20,7 @@ const fp = Object.freeze({
   compact,
   drop,
   flow,
+  filter,
   first,
   isEmpty,
   isEqual,

@@ -6,6 +6,11 @@ import fp from 'utils/lodashFp';
 
 import Message from './Message';
 
+// TODO move to utils
+const maxAgeInSeconds = 10;
+const getAgeInSeconds = createdAt =>
+  (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
+
 const Wrapper = styled.div({
   height: '150px',
   overflow: 'auto',
@@ -17,14 +22,16 @@ const Messages = () => {
 
   const renderMessages = () =>
     fp.flow(
-      fp.takeRight(5),
-      fp.map((message, i) => (
+      fp.filter(
+        ({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds,
+      ),
+      fp.map(message => (
         <Message
-          key={i}
+          key={message.createdAt}
+          createdAt={message.createdAt}
           text={`${message.user || ''} ${message.text || message.type}`}
         />
       )),
-      fp.reverse,
     )(messages);
 
   return <Wrapper>{renderMessages()}</Wrapper>;
