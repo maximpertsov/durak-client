@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import actions from 'actions';
 import client from 'utils/client';
+import _ from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
 
@@ -39,7 +40,7 @@ export const WebSocketProvider = ({ children }) => {
       dispatch(actions.messages.append(message));
     };
 
-    io = { socket, send };
+    io = { socket, send: _.debounce(send, 1000, { leading: true }) };
   }
 
   return (

@@ -1,5 +1,6 @@
 import chunk from 'lodash/chunk';
 import compact from 'lodash/compact';
+import debounce from 'lodash/debounce';
 import drop from 'lodash/drop';
 import first from 'lodash/first';
 import isEmpty from 'lodash/isEmpty';
@@ -14,6 +15,7 @@ import zipObject from 'lodash/zipObject';
 const _ = Object.freeze({
   chunk,
   compact,
+  debounce,
   drop,
   reverse,
   take,
