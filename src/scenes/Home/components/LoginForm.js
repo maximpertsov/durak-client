@@ -33,13 +33,10 @@ const Wrapper = styled.div`
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const {
-    isLoggedIn,
-    formUsername,
-    formPassword,
-    formError,
-    user,
-  } = useSelector(state => mapStateToProps(state), isEqual);
+  const { isLoggedIn, formUsername, formPassword, formError } = useSelector(
+    state => mapStateToProps(state),
+    isEqual,
+  );
 
   useEffect(() => {
     dispatch(authenticate());
@@ -61,12 +58,9 @@ const LoginForm = () => {
     );
   };
 
-  const renderLoggedIn = () => {
-    const loggedInMessage = `Welcome ${user}`;
-    return <div>{loggedInMessage}</div>;
-  };
+  if (isLoggedIn) return null;
 
-  const renderLoggedOut = () => (
+  return (
     <Wrapper className="LoginForm">
       <Form>
         <Form.Input
@@ -92,8 +86,6 @@ const LoginForm = () => {
       <div>{formError}</div>
     </Wrapper>
   );
-
-  return isLoggedIn ? renderLoggedIn() : renderLoggedOut();
 };
 
 export default LoginForm;
