@@ -10,6 +10,7 @@ import map from 'lodash/fp/map';
 import reverse from 'lodash/fp/reverse';
 import size from 'lodash/fp/size';
 import take from 'lodash/fp/take';
+import takeRight from 'lodash/fp/takeRight';
 import unzip from 'lodash/fp/unzip';
 import zipObject from 'lodash/fp/zipObject';
 
@@ -18,14 +19,15 @@ const fp = Object.freeze({
   compact,
   drop,
   flow,
-  reverse,
-  map,
-  take,
   first,
   isEmpty,
   isEqual,
-  size,
   last,
+  map,
+  reverse,
+  size,
+  take,
+  takeRight,
   zipObject,
   unzip,
 });
