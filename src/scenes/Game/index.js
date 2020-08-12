@@ -41,13 +41,13 @@ const Game = () => {
 
   const renderGame = () => (
     <Wrapper>
-      <div />
-      <Player player={player3} />
-      <DrawPile />
-      <Player player={player2} />
-      <Table />
       <Player player={player4} />
       <Messages />
+      <div />
+      <Player player={player3} />
+      <Table />
+      <DrawPile />
+      <Player player={player2} />
       <Hand />
       <div />
     </Wrapper>
