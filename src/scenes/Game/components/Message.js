@@ -1,6 +1,7 @@
 import React from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
+import { Comment, Icon } from 'semantic-ui-react';
 
 // TODO move to utils
 const maxAgeInSeconds = 10;
@@ -27,8 +28,13 @@ const Wrapper = styled.div(({ createdAt }) => {
   };
 });
 
-const Message = ({ createdAt, text }) => (
-  <Wrapper createdAt={createdAt}>{text}</Wrapper>
+const Message = ({ createdAt, text, user }) => (
+  <Wrapper createdAt={createdAt}>
+    <Comment>
+      <Comment.Author>{user}</Comment.Author>
+      <Comment.Text>{text}</Comment.Text>
+    </Comment>
+  </Wrapper>
 );
 
 export default Message;

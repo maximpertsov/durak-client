@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { Comment } from 'semantic-ui-react';
 
 import fp from 'utils/lodashFp';
 
@@ -29,12 +30,17 @@ const Messages = () => {
         <Message
           key={message.createdAt}
           createdAt={message.createdAt}
-          text={`${message.user || ''} ${message.text || message.type}`}
+          user={message.user}
+          text={`${message.text || message.type}`}
         />
       )),
     )(messages);
 
-  return <Wrapper>{renderMessages()}</Wrapper>;
+  return (
+    <Wrapper>
+      <Comment.Group size="tiny">{renderMessages()}</Comment.Group>
+    </Wrapper>
+  );
 };
 
 export default Messages;
