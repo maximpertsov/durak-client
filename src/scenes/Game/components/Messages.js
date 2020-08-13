@@ -1,27 +1,46 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { Comment } from 'semantic-ui-react';
+
+import fp from 'utils/lodashFp';
 
 import Message from './Message';
+
+// TODO move to utils
+const maxAgeInSeconds = 10;
+const getAgeInSeconds = createdAt =>
+  (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
 
 const Wrapper = styled.div({
   height: '150px',
   overflow: 'auto',
-  textAlign: 'left',
+  textAlign: 'center',
 });
 
 const Messages = () => {
   const messages = useSelector(state => state.messages);
 
   const renderMessages = () =>
-    messages.map((message, i) => (
-      <Message
-        key={i}
-        text={`${message.user || ''} ${message.text || message.type}`}
-      />
-    ));
+    fp.flow(
+      fp.filter(
+        ({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds,
+      ),
+      fp.map(message => (
+        <Message
+          key={message.createdAt}
+          createdAt={message.createdAt}
+          user={message.user}
+          text={`${message.text || message.type}`}
+        />
+      )),
+    )(messages);
 
-  return <Wrapper>{renderMessages()}</Wrapper>;
+  return (
+    <Wrapper>
+      <Comment.Group size="tiny">{renderMessages()}</Comment.Group>
+    </Wrapper>
+  );
 };
 
 export default Messages;
