@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
+import isEqual from 'lodash/isEqual';
+import zipObject from 'lodash/zipObject';
+
 import { getPlayersFromUser } from 'reducers';
-import _ from 'utils/lodash';
 
 import DrawListener from './components/DrawListener';
 import DrawPile from './components/DrawPile';
@@ -17,6 +19,16 @@ import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
 import YieldListener from './components/YieldListener';
 
+const mapStateToProps = createSelector(
+  state => state,
+  state => getPlayersFromUser(state),
+
+  (state, playersFromUser) => ({
+    hands: state.hands,
+    ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
+  }),
+);
+
 const Wrapper = styled.div({
   alignItems: 'center',
   display: 'grid',
@@ -26,18 +38,8 @@ const Wrapper = styled.div({
   height: '500px',
 });
 
-const mapStateToProps = createSelector(
-  state => state,
-  state => getPlayersFromUser(state),
-
-  (state, playersFromUser) => ({
-    hands: state.hands,
-    ..._.zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
-  }),
-);
-
 const Game = () => {
-  const { player2, player3, player4 } = useSelector(mapStateToProps, _.isEqual);
+  const { player2, player3, player4 } = useSelector(mapStateToProps, isEqual);
 
   const renderGame = () => (
     <Wrapper>
