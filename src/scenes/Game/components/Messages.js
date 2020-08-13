@@ -15,7 +15,7 @@ const getAgeInSeconds = createdAt =>
 const Wrapper = styled.div({
   height: '150px',
   overflow: 'auto',
-  textAlign: 'left',
+  textAlign: 'center',
 });
 
 const Messages = () => {
