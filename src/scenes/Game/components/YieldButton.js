@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
@@ -10,26 +11,34 @@ import { useWebSocketContext } from 'utils/websockets';
 const mapStateToProps = createSelector(
   state => state,
   state => state.user,
+  state => state.yielded,
 
-  (state, user) => ({
-    hasYielded: state.yielded.includes(user),
+  (state, user, yielded) => ({
+    hasYielded: yielded.includes(user),
+    hands: state.hands,
     isDefender: user === getDefender(state),
+    players: state.players,
     table: state.table,
-    user,
     unbeatenCards: getUnbeatenCards(state),
+    yielded,
   }),
 );
 
 const YieldButton = () => {
   const io = useWebSocketContext();
 
-  const { hasYielded, isDefender, table, unbeatenCards } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    hasYielded,
+    hands,
+    isDefender,
+    players,
+    table,
+    unbeatenCards,
+    yielded,
+  } = useSelector(mapStateToProps, isEqual);
 
   const yieldAttack = () => {
-    io.send('yielded_attack', {});
+    io.send('yielded_attack', { hands, players, yielded });
   };
 
   // TODO: add auto-yield if no cards can be thrown

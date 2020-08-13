@@ -17,7 +17,6 @@ import Messages from './components/Messages';
 import Player from './components/Player';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
-import YieldListener from './components/YieldListener';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -60,7 +59,6 @@ const Game = () => {
       <GameInitializer />
       <DurakListener />
       <WebSocketEventListener />
-      <YieldListener />
       <DrawListener />
       {renderGame()}
     </div>
