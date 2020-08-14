@@ -3,8 +3,3 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
-global.mockStore = configureStore([thunk]);

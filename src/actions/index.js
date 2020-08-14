@@ -18,7 +18,6 @@ export default createActions({
       ADD: undefined,
       COMPACT: undefined,
       REMOVE: undefined,
-      SET: undefined,
     },
     PLAYERS: {
       ADD: undefined,
