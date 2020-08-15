@@ -23,9 +23,17 @@ export const WebSocketProvider = ({ children }) => {
     payload,
   });
 
+  const wsPersistedTypes = ['attacked'];
+
   const send = (type, payload) => {
     const message = createMessage(type, payload);
 
+    if (wsPersistedTypes.includes(type)) {
+      socket.send(JSON.stringify(message));
+    }
+
+    // TODO: Legacy logic -- you can retire once the websocket
+    // server handles persisting all message types
     client.post(`game/${game}/events`, message).then(() => {
       socket.send(JSON.stringify(message));
     });
