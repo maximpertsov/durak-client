@@ -25,6 +25,7 @@ const mapStateToProps = createSelector(
   (state, attackers, defender, unbeatenCards) => ({
     freeDefenseCardCount:
       _.size(_.compact(state.hands[defender])) - _.size(unbeatenCards),
+    hands: state.hands,
     table: state.table,
     userCanAttack: attackers.includes(state.user),
   }),
@@ -32,7 +33,7 @@ const mapStateToProps = createSelector(
 
 const Table = () => {
   const io = useWebSocketContext();
-  const { freeDefenseCardCount, table, userCanAttack } = useSelector(
+  const { freeDefenseCardCount, hands, table, userCanAttack } = useSelector(
     mapStateToProps,
     _.isEqual,
   );
@@ -42,11 +43,16 @@ const Table = () => {
     if (!userCanAttack) return false;
     if (freeDefenseCardCount < 1) return false;
 
-    return canAttack({ table, card });
+    return canAttack({ hands, table });
   };
 
   const drop = item => {
-    io.send('attacked', item);
+    io.send('attacked', {
+      ...item,
+      card: { rank: item.rank, suit: item.suit },
+      hands,
+      table,
+    });
   };
 
   const [{ isOver }, dropRef] = useDrop({
