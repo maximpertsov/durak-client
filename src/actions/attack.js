@@ -9,7 +9,7 @@ const attack = message => dispatch => {
   } = message;
 
   dispatch(actions.game.table.append({ suit, rank }));
-  dispatch(actions.game.hand.remove({ suit, rank, user }));
+  dispatch(actions.game.hands.remove({ suit, rank, user }));
   dispatch(actions.game.yielded.clear());
 };
 

@@ -52,7 +52,7 @@ const DrawListener = () => {
       dispatch(actions.game.players.rotate({ skipPlayers }));
     }
     dispatch(actions.game.rotations.set.zero());
-    dispatch(actions.game.hand.compact());
+    dispatch(actions.game.hands.compact());
   }, [dispatch, drawPile, hands, players, rotations]);
 
   return null;

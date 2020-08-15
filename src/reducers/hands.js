@@ -36,9 +36,9 @@ const compactCards = state =>
 
 const hands = handleActions(
   {
-    [actions.game.hand.add]: add,
-    [actions.game.hand.remove]: remove,
-    [actions.game.hand.compact]: compactCards,
+    [actions.game.hands.add]: add,
+    [actions.game.hands.remove]: remove,
+    [actions.game.hands.compact]: compactCards,
   },
   {},
 );

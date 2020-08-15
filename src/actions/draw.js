@@ -11,7 +11,7 @@ const draw = ({ drawPile, hands, player }) => dispatch => {
   const drawnCards = take(drawPile, cardsNeeded);
   const cardsLeftInPile = drop(drawPile, cardsNeeded);
 
-  dispatch(actions.game.hand.add({ cards: drawnCards, player }));
+  dispatch(actions.game.hands.add({ cards: drawnCards, player }));
   dispatch(actions.game.drawPile.set(cardsLeftInPile));
 };
 

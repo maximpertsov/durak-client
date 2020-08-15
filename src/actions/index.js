@@ -14,7 +14,7 @@ export default createActions({
     DRAW_PILE: {
       SET: undefined,
     },
-    HAND: {
+    HANDS: {
       ADD: undefined,
       COMPACT: undefined,
       REMOVE: undefined,
