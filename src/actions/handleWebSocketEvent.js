@@ -17,7 +17,9 @@ const handleWebSocketEvent = message => dispatch => {
   if (!action) {
     return;
   }
-  dispatch(action({ user: message.user, ...message.payload }));
+  dispatch(
+    action({ user: message.user, result: message.result, ...message.payload }),
+  );
 };
 
 export default handleWebSocketEvent;
