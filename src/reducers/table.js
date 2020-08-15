@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+
 import findIndex from 'lodash/findIndex';
 import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
@@ -19,11 +20,14 @@ const stack = (state, action) => {
   return update(state, { $splice: [[index, 1, newCardStack]] });
 };
 
+const set = (state, action) => action.payload;
+
 const table = handleActions(
   {
     [actions.game.table.append]: add,
     [actions.game.table.stack]: stack,
     [actions.game.table.clear]: () => [],
+    [actions.game.table.set]: set,
   },
   [],
 );

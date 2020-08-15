@@ -18,15 +18,12 @@ export default createActions({
       ADD: undefined,
       COMPACT: undefined,
       REMOVE: undefined,
+      SET: undefined,
     },
     PLAYERS: {
       ADD: undefined,
       SET: undefined,
       ROTATE: undefined,
-    },
-    YIELDED: {
-      ADD: undefined,
-      CLEAR: undefined,
     },
     ROTATIONS: {
       SET: {
@@ -37,13 +34,19 @@ export default createActions({
     },
     TABLE: {
       APPEND: undefined,
-      STACK: undefined,
       CLEAR: undefined,
+      SET: undefined,
+      STACK: undefined,
     },
     TRUMP_SUIT: {
       SET: undefined,
     },
     USER: {
+      SET: undefined,
+    },
+    YIELDED: {
+      ADD: undefined,
+      CLEAR: undefined,
       SET: undefined,
     },
   },

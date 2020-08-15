@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+
 import compact from 'lodash/compact';
 import concat from 'lodash/concat';
 import findIndex from 'lodash/findIndex';
@@ -34,11 +35,14 @@ const remove = (state, action) => {
 const compactCards = state =>
   fromPairs(map(state, (cards, player) => [player, compact(cards)]));
 
+const set = (state, action) => action.payload;
+
 const hands = handleActions(
   {
     [actions.game.hands.add]: add,
     [actions.game.hands.remove]: remove,
     [actions.game.hands.compact]: compactCards,
+    [actions.game.hands.set]: set,
   },
   {},
 );
