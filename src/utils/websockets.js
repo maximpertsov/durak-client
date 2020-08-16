@@ -6,7 +6,6 @@ import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 
 import actions from 'actions';
-import client from 'utils/client';
 import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
@@ -38,24 +37,13 @@ export const WebSocketProvider = ({ children }) => {
       type,
       game,
       user,
-      fromState: pick(store.getState(), ['hands', 'table', 'users']),
+      fromState: pick(store.getState(), ['hands', 'table', 'yielded']),
       payload,
     });
 
-  const wsPersistedTypes = ['attacked'];
-
   const send = (type, payload) => {
     const message = createMessage(type, payload);
-
-    if (wsPersistedTypes.includes(type)) {
-      socket.send(JSON.stringify(message));
-    } else {
-      // TODO: Legacy logic -- you can retire once the websocket
-      // server handles persisting all message types
-      client.post(`game/${game}/events`, message).then(() => {
-        socket.send(JSON.stringify(message));
-      });
-    }
+    socket.send(JSON.stringify(message));
   };
 
   if (!socket) {
