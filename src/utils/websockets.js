@@ -21,6 +21,9 @@ const mapStateToProps = createDeepEqualSelector(
   }),
 );
 
+const getGameState = store =>
+  pick(store.getState(), ['hands', 'players', 'table', 'yielded']);
+
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
   let socket;
@@ -37,7 +40,7 @@ export const WebSocketProvider = ({ children }) => {
       type,
       game,
       user,
-      fromState: pick(store.getState(), ['hands', 'table', 'yielded']),
+      fromState: getGameState(store),
       payload,
     });
 
