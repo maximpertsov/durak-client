@@ -1,8 +1,9 @@
 import React, { createContext, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
 
 import isEqual from 'lodash/isEqual';
+import pick from 'lodash/pick';
 
 import actions from 'actions';
 import client from 'utils/client';
@@ -10,15 +11,12 @@ import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
 
-const mapStateToProps = createSelector(
+const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
+
+const mapStateToProps = createDeepEqualSelector(
   state => state,
 
   state => ({
-    fromState: {
-      hands: state.hands,
-      table: state.table,
-      yielded: state.yielded,
-    },
     game: state.game,
     user: state.user,
   }),
@@ -30,7 +28,8 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const { fromState, game, user } = useSelector(mapStateToProps, isEqual);
+  const { game, user } = useSelector(mapStateToProps, isEqual);
+  const store = useStore();
 
   const createMessage = (type, payload) =>
     // TODO: maybe the server should take care of the snake-casing?
@@ -39,7 +38,7 @@ export const WebSocketProvider = ({ children }) => {
       type,
       game,
       user,
-      fromState,
+      fromState: pick(store.getState(), ['hands', 'table', 'users']),
       payload,
     });
 
