@@ -1,10 +1,28 @@
 import React, { createContext, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
 import client from 'utils/client';
+import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
+
+const mapStateToProps = createSelector(
+  state => state,
+
+  state => ({
+    fromState: {
+      hands: state.hands,
+      table: state.table,
+      yielded: state.yielded,
+    },
+    game: state.game,
+    user: state.user,
+  }),
+);
 
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
@@ -12,16 +30,18 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
-  const game = useSelector(state => state.game);
+  const { fromState, game, user } = useSelector(mapStateToProps, isEqual);
 
-  const createMessage = (type, payload) => ({
-    createdAt: new Date().toISOString(),
-    type,
-    game,
-    user,
-    payload,
-  });
+  const createMessage = (type, payload) =>
+    // TODO: maybe the server should take care of the snake-casing?
+    deepSnakeCase({
+      createdAt: new Date().toISOString(),
+      type,
+      game,
+      user,
+      fromState,
+      payload,
+    });
 
   const wsPersistedTypes = ['attacked'];
 
@@ -43,7 +63,8 @@ export const WebSocketProvider = ({ children }) => {
     socket = new WebSocket(process.env.REACT_APP_WS_URL);
 
     socket.onmessage = event => {
-      const message = JSON.parse(event.data);
+      // TODO: be careful not to camelcase player names
+      const message = deepCamelCase(JSON.parse(event.data));
       dispatch(actions.messages.append(message));
     };
 

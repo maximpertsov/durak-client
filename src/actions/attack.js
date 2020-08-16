@@ -5,7 +5,7 @@ const attack = message => dispatch => {
     user,
     suit,
     rank,
-    result: { hands, table, yielded },
+    toState: { hands, table, yielded },
   } = message;
 
   dispatch(actions.game.table.set(table));
