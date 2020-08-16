@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
+import compact from 'lodash/compact';
+import isEqual from 'lodash/isEqual';
+import size from 'lodash/size';
+
 import { getAttackers, getDefender, getUnbeatenCards } from 'reducers';
 import { canAttack } from 'utils/gameLogic';
-import _ from 'utils/lodash';
 import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
@@ -24,7 +27,7 @@ const mapStateToProps = createSelector(
 
   (state, attackers, defender, unbeatenCards) => ({
     freeDefenseCardCount:
-      _.size(_.compact(state.hands[defender])) - _.size(unbeatenCards),
+      size(compact(state.hands[defender])) - size(unbeatenCards),
     hands: state.hands,
     table: state.table,
     userCanAttack: attackers.includes(state.user),
@@ -35,7 +38,7 @@ const Table = () => {
   const io = useWebSocketContext();
   const { freeDefenseCardCount, hands, table, userCanAttack } = useSelector(
     mapStateToProps,
-    _.isEqual,
+    isEqual,
   );
 
   const canDrop = (card, monitor) => {
@@ -48,10 +51,7 @@ const Table = () => {
 
   const drop = item => {
     io.send('attacked', {
-      ...item,
       card: { rank: item.rank, suit: item.suit },
-      hands,
-      table,
     });
   };
 
