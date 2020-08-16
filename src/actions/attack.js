@@ -2,9 +2,6 @@ import actions from 'actions';
 
 const attack = message => dispatch => {
   const {
-    user,
-    suit,
-    rank,
     toState: { hands, table, yielded },
   } = message;
 

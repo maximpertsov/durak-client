@@ -46,7 +46,7 @@ const Table = () => {
     if (!userCanAttack) return false;
     if (freeDefenseCardCount < 1) return false;
 
-    return canAttack({ hands, table });
+    return canAttack({ card, table });
   };
 
   const drop = item => {
