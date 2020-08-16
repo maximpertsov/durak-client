@@ -9,6 +9,7 @@ const fetchEvents = ({ game }) => async dispatch => {
   await client.get(`game/${game}/events`).then(response => {
     dispatch(actions.game.remoteDataState.set('FETCHING_EVENTS'));
 
+    // TODO: maybe this should be done server-side?
     events = response.data.events.reverse();
 
     dispatch(actions.game.remoteDataState.set('FETCHED_EVENTS'));
