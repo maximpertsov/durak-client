@@ -13,8 +13,9 @@ const getAgeInSeconds = createdAt =>
   (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
 
 const Wrapper = styled.div({
-  height: '150px',
-  overflow: 'auto',
+  display: 'flex',
+  justifyContent: 'center',
+  height: '100px',
 });
 
 const Messages = () => {
@@ -25,6 +26,7 @@ const Messages = () => {
       fp.filter(
         ({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds,
       ),
+      fp.takeRight(3),
       fp.map(message => (
         <Message
           key={message.createdAt}
@@ -37,7 +39,7 @@ const Messages = () => {
 
   return (
     <Wrapper>
-      <Comment.Group size="tiny">{renderMessages()}</Comment.Group>
+      <Comment.Group size="massive">{renderMessages()}</Comment.Group>
     </Wrapper>
   );
 };
