@@ -25,13 +25,6 @@ export default createActions({
       SET: undefined,
       ROTATE: undefined,
     },
-    ROTATIONS: {
-      SET: {
-        ZERO: () => 0,
-        ONE: () => 1,
-        TWO: () => 2,
-      },
-    },
     TABLE: {
       APPEND: undefined,
       CLEAR: undefined,
