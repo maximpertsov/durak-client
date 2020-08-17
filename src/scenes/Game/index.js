@@ -30,10 +30,10 @@ const mapStateToProps = createSelector(
 const Wrapper = styled.div({
   alignItems: 'center',
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridTemplateRows: '1fr 2fr 1fr',
+  gridTemplateColumns: '2fr 1fr',
   gridGap: '0.25rem',
   height: '500px',
+  padding: '10px',
 });
 
 const Game = () => {
@@ -41,15 +41,14 @@ const Game = () => {
 
   const renderGame = () => (
     <Wrapper>
-      <Player player={player4} />
       <Messages />
-      <div />
-      <Player player={player3} />
-      <Table />
       <DrawPile />
+      <Table />
       <Player player={player2} />
       <Hand />
+      <Player player={player3} />
       <div />
+      <Player player={player4} />
     </Wrapper>
   );
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+
 import last from 'lodash/last';
 
 import { canDefend } from 'utils/gameLogic';
