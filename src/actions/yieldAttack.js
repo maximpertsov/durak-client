@@ -1,25 +1,15 @@
-import difference from 'lodash/difference';
-import isEqual from 'lodash/isEqual';
-import union from 'lodash/union';
-
 import actions from 'actions';
-import { getDefender } from 'reducers';
 
-const hasDefended = ({ hands, players, yielded }) => {
-  const defender = getDefender({ hands, players });
-  const notYielded = difference(players, yielded);
+const yieldAttack = message => dispatch => {
+  const {
+    toState: { drawPile, hands, players, table, yielded },
+  } = message;
 
-  return isEqual(notYielded, [defender]);
-};
-
-const yieldAttack = ({ user, yielded, players, hands }) => dispatch => {
-  dispatch(actions.game.yielded.add(user));
-
-  if (!hasDefended({ yielded: union(yielded, [user]), hands, players })) return;
-
-  dispatch(actions.game.table.clear());
-  dispatch(actions.game.yielded.clear());
-  dispatch(actions.game.rotations.set.one());
+  dispatch(actions.game.drawPile.set(drawPile));
+  dispatch(actions.game.hands.set(hands));
+  dispatch(actions.game.players.set(players));
+  dispatch(actions.game.table.set(table));
+  dispatch(actions.game.yielded.set(yielded));
 };
 
 export default yieldAttack;

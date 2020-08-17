@@ -38,7 +38,7 @@ const YieldButton = () => {
   } = useSelector(mapStateToProps, isEqual);
 
   const yieldAttack = () => {
-    io.send('yielded_attack', { hands, players, yielded });
+    io.send('yielded_attack', {});
   };
 
   // TODO: add auto-yield if no cards can be thrown
