@@ -15,27 +15,19 @@ const mapStateToProps = createSelector(
 
   (state, user, yielded) => ({
     hasYielded: yielded.includes(user),
-    hands: state.hands,
     isDefender: user === getDefender(state),
-    players: state.players,
     table: state.table,
     unbeatenCards: getUnbeatenCards(state),
-    yielded,
   }),
 );
 
 const YieldButton = () => {
   const io = useWebSocketContext();
 
-  const {
-    hasYielded,
-    hands,
-    isDefender,
-    players,
-    table,
-    unbeatenCards,
-    yielded,
-  } = useSelector(mapStateToProps, isEqual);
+  const { hasYielded, isDefender, table, unbeatenCards } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   const yieldAttack = () => {
     io.send('yielded_attack', {});
