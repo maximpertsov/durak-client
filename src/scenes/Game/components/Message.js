@@ -31,8 +31,12 @@ const Wrapper = styled.div(({ createdAt }) => {
 const Message = ({ createdAt, text, user }) => (
   <Wrapper createdAt={createdAt}>
     <Comment>
-      <Comment.Author>{user}</Comment.Author>
-      <Comment.Text>{text}</Comment.Text>
+      <Comment.Content>
+        <Comment.Author as="span">{user}</Comment.Author>
+        <Comment.Metadata>
+          <div>{text}</div>
+        </Comment.Metadata>
+      </Comment.Content>
     </Comment>
   </Wrapper>
 );
