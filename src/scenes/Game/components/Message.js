@@ -3,10 +3,32 @@ import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Comment } from 'semantic-ui-react';
 
+import get from 'lodash/get';
+
 // TODO move to utils
 const maxAgeInSeconds = 10;
 const getAgeInSeconds = createdAt =>
   (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
+
+const suitCodepoints = Object.freeze({
+  spades: String.fromCodePoint(0x2660),
+  hearts: String.fromCodePoint(0x2665),
+  diamonds: String.fromCodePoint(0x2666),
+  clubs: String.fromCodePoint(0x2663),
+});
+
+const getSuitText = suit => get(suitCodepoints, suit, '');
+
+const getText = ({ type, payload }) => {
+  switch (type) {
+    case 'attacked':
+      return `attacked with ${payload.card.rank}${getSuitText(
+        payload.card.suit,
+      )}`;
+    default:
+      return '???';
+  }
+};
 
 const fadeOut = keyframes({
   '0%': {
@@ -28,13 +50,13 @@ const Wrapper = styled.div(({ createdAt }) => {
   };
 });
 
-const Message = ({ createdAt, text, user }) => (
-  <Wrapper createdAt={createdAt}>
+const Message = ({ message }) => (
+  <Wrapper createdAt={message.createdAt}>
     <Comment>
       <Comment.Content>
-        <Comment.Author as="span">{user}</Comment.Author>
+        <Comment.Author as="span">{message.user}</Comment.Author>
         <Comment.Metadata>
-          <div>{text}</div>
+          <div>{getText(message)}</div>
         </Comment.Metadata>
       </Comment.Content>
     </Comment>
