@@ -28,7 +28,6 @@ const mapStateToProps = createSelector(
   (state, attackers, defender, unbeatenCards) => ({
     freeDefenseCardCount:
       size(compact(state.hands[defender])) - size(unbeatenCards),
-    hands: state.hands,
     table: state.table,
     userCanAttack: attackers.includes(state.user),
   }),
@@ -36,7 +35,7 @@ const mapStateToProps = createSelector(
 
 const Table = () => {
   const io = useWebSocketContext();
-  const { freeDefenseCardCount, hands, table, userCanAttack } = useSelector(
+  const { freeDefenseCardCount, table, userCanAttack } = useSelector(
     mapStateToProps,
     isEqual,
   );
