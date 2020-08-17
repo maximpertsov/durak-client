@@ -7,7 +7,7 @@ import yieldAttack from 'actions/yieldAttack';
 
 const eventActions = {
   attacked: attack,
-  collect_cards: collect,
+  collected: collect,
   defended: defend,
   yielded_attack: yieldAttack,
 };

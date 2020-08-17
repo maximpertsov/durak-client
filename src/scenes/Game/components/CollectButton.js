@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
@@ -29,7 +30,7 @@ const CollectButton = () => {
   );
 
   const collectAttack = () => {
-    io.send('collect_cards', { table });
+    io.send('collected', {});
   };
 
   if (!isDefender) return null;

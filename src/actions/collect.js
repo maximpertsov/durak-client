@@ -1,12 +1,15 @@
-import flatten from 'lodash/flatten';
-
 import actions from 'actions';
 
-const collect = ({ user, table }) => dispatch => {
-  dispatch(actions.game.yielded.clear());
-  dispatch(actions.game.hands.add({ cards: flatten(table), player: user }));
-  dispatch(actions.game.table.clear());
-  dispatch(actions.game.rotations.set.two());
+const collect = message => dispatch => {
+  const {
+    toState: { drawPile, hands, players, table, yielded },
+  } = message;
+
+  dispatch(actions.game.drawPile.set(drawPile));
+  dispatch(actions.game.hands.set(hands));
+  dispatch(actions.game.players.set(players));
+  dispatch(actions.game.table.set(table));
+  dispatch(actions.game.yielded.set(yielded));
 };
 
 export default collect;
