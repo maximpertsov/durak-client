@@ -4,25 +4,13 @@ import client from 'utils/client';
 const fetchEvents = ({ game }) => async dispatch => {
   if (!game) return;
 
-  let events;
-
   await client.get(`game/${game}/events`).then(response => {
-    dispatch(actions.game.remoteDataState.set('FETCHING_EVENTS'));
-
-    events = response.data.events.reverse();
-
     dispatch(actions.game.remoteDataState.set('FETCHED_EVENTS'));
+    response.data.events.forEach(event => {
+      dispatch(actions.messages.append(event));
+    });
+    dispatch(actions.game.remoteDataState.set('REPLAYED_EVENTS'));
   });
-
-  const timerId = setInterval(() => {
-    const event = events.pop();
-    if (!event) {
-      clearInterval(timerId);
-      dispatch(actions.game.remoteDataState.set('REPLAYED_EVENTS'));
-      return;
-    }
-    dispatch(actions.messages.append(event));
-  }, 10);
 };
 
 export default fetchEvents;

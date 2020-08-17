@@ -28,7 +28,7 @@ const fetchGame = ({ game }) => dispatch => {
     while (cardsToDraw.length > 0) {
       players.forEach(player => {
         const card = cardsToDraw.pop();
-        dispatch(actions.game.hand.add({ cards: [card], player }));
+        dispatch(actions.game.hands.add({ cards: [card], player }));
       });
     }
 

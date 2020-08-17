@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
@@ -10,12 +11,12 @@ import { useWebSocketContext } from 'utils/websockets';
 const mapStateToProps = createSelector(
   state => state,
   state => state.user,
+  state => state.yielded,
 
-  (state, user) => ({
-    hasYielded: state.yielded.includes(user),
+  (state, user, yielded) => ({
+    hasYielded: yielded.includes(user),
     isDefender: user === getDefender(state),
     table: state.table,
-    user,
     unbeatenCards: getUnbeatenCards(state),
   }),
 );
