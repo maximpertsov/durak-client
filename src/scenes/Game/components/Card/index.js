@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
+
 import isEqual from 'lodash/isEqual';
 import some from 'lodash/some';
 
@@ -15,10 +16,10 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
 
   const glow = keyframes({
     '0%': {
-      boxShadow: '0 0 15px #d35400',
+      boxShadow: '0 0 20px #d35400',
     },
     '100%': {
-      boxShadow: '0 0 0 0',
+      boxShadow: '0 0 10px #d35400',
     },
   });
 
