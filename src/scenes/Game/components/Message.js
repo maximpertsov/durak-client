@@ -19,14 +19,22 @@ const suitCodepoints = Object.freeze({
 
 const getSuitText = suit => get(suitCodepoints, suit, '');
 
+const getCardText = ({ rank, suit }) => `${rank}${getSuitText(suit)}`;
+
 const getText = ({ type, payload }) => {
   switch (type) {
     case 'attacked':
-      return `attacked with ${payload.card.rank}${getSuitText(
-        payload.card.suit,
+      return `attacked with ${getCardText(payload.card)}`;
+    case 'defended':
+      return `defended ${getCardText(payload.baseCard)} with ${getCardText(
+        payload.card,
       )}`;
+    case 'collected':
+      return `collected cards ${String.fromCodePoint(0x1f3f3)}`;
+    case 'yielded_attack':
+      return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
     default:
-      return '???';
+      return type;
   }
 };
 
