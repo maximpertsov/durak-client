@@ -19,7 +19,8 @@ const suitCodepoints = Object.freeze({
 
 const getSuitText = suit => get(suitCodepoints, suit, '');
 
-const getCardText = ({ rank, suit }) => `${rank}${getSuitText(suit)}`;
+const getCardText = ({ rank, suit }) =>
+  `${isNaN(rank) ? rank.charAt(0).toUpperCase() : rank}${getSuitText(suit)}`;
 
 const getText = ({ type, payload }) => {
   switch (type) {
