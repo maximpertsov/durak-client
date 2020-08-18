@@ -58,7 +58,7 @@ const PassCards = () => {
     return canPass({ card, table });
   };
 
-  const canDropAny = () => some(hand, canDrop);
+  const canDropAny = () => some(hand, card => card && canDrop(card));
 
   const drop = item => {
     io.send('passed', {
