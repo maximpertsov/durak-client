@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 
-import { getAttackers } from 'reducers';
+import { getDefender } from 'reducers';
 import fp from 'utils/lodashFp';
 
 import Cards from './Cards';
@@ -18,19 +18,18 @@ const getDisplayCards = fp.flow(
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getAttackers(state),
   (_, props) => props.player,
   (state, props) => state.hands[props.player],
 
-  (state, attackers, player, cards) => ({
-    isInitialAttacker: fp.first(attackers) === player,
+  (state, player, cards) => ({
+    isDefender: getDefender(state) === player,
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
   }),
 );
 
 const Player = ({ player }) => {
-  const { cardCount, displayCards, isInitialAttacker } = useSelector(
+  const { cardCount, displayCards, isDefender } = useSelector(
     state => mapStateToProps(state, { player }),
     fp.isEqual,
   );
@@ -39,7 +38,7 @@ const Player = ({ player }) => {
 
   return (
     <div className="Player">
-      <h2>{`${player} ${isInitialAttacker ? '*' : ''}`}</h2>
+      <h2>{`${player}${isDefender ? String.fromCodePoint(0x1f6e1) : ''}`}</h2>
       <Cards flipped cards={displayCards} />
       <div>{`${cardCount} cards`}</div>
       <div />

@@ -30,9 +30,7 @@ const Messages = () => {
       fp.map(message => (
         <Message
           key={message.createdAt}
-          createdAt={message.createdAt}
-          user={message.user}
-          text={`${message.text || message.type}`}
+          message={message}
         />
       )),
     )(messages);
