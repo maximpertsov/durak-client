@@ -16,6 +16,7 @@ import Cards from './Cards';
 
 const Wrapper = styled.div({
   backgroundColor: 'green',
+  flexGrow: 4,
   height: '250px',
   padding: '10px',
 });

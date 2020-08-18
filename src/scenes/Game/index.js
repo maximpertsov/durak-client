@@ -13,6 +13,7 @@ import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
+import PassCards from './components/PassCards';
 import Player from './components/Player';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
@@ -35,6 +36,11 @@ const Wrapper = styled.div({
   padding: '5px 20px',
 });
 
+const TableWrapper = styled.div({
+  alignItems: 'stretch',
+  display: 'flexbox',
+});
+
 const Game = () => {
   const { isLoading, player2, player3, player4 } = useSelector(
     mapStateToProps,
@@ -45,7 +51,10 @@ const Game = () => {
     <Wrapper>
       <div>
         <Messages />
-        <Table />
+        <TableWrapper>
+          <Table />
+          <PassCards />
+        </TableWrapper>
         <Hand />
       </div>
       <div>
