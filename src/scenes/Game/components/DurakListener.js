@@ -30,7 +30,7 @@ const DurakListener = () => {
     if (size(playersWithCards) !== 1) return;
 
     const [durak] = playersWithCards;
-    dispatch(actions.messages.append({ text: `${durak} is the durak!` }));
+    // dispatch(actions.messages.append({ text: `${durak} is the durak!` }));
   }, [dispatch, drawPile, playersWithCards]);
 
   return null;
