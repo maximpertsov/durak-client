@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
+import { handleAction } from 'redux-actions';
+
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import reject from 'lodash/reject';
+
+import actions from 'actions';
 
 import drawPile from './drawPile';
 import game from './game';
@@ -22,6 +26,11 @@ const rootReducer = combineReducers({
   messages,
   players,
   remoteDataState,
+  sendInProgress: handleAction(
+    actions.messages.sendInProgress,
+    (state, action) => action.payload,
+    false,
+  ),
   table,
   trumpSuit,
   user,

@@ -17,6 +17,7 @@ const mapStateToProps = createDeepEqualSelector(
 
   state => ({
     game: state.game,
+    sendInProgress: state.sendInProgress,
     user: state.user,
   }),
 );
@@ -30,7 +31,7 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const { game, user } = useSelector(mapStateToProps, isEqual);
+  const { sendInProgress, game, user } = useSelector(mapStateToProps, isEqual);
   const store = useStore();
 
   const createMessage = (type, payload) =>
@@ -45,8 +46,14 @@ export const WebSocketProvider = ({ children }) => {
     });
 
   const send = (type, payload) => {
+    if (sendInProgress) return;
+
+    dispatch(actions.messages.sendInProgress.set(true));
+
     const message = createMessage(type, payload);
     socket.send(JSON.stringify(message));
+
+    // TODO: set timeout to revert send in progress if it fails?
   };
 
   if (!socket) {
