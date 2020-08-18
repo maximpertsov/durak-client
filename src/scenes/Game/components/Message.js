@@ -33,6 +33,8 @@ const getText = ({ type, payload }) => {
       return `collected cards ${String.fromCodePoint(0x1f3f3)}`;
     case 'yielded_attack':
       return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
+    case 'passed':
+      return `passed with ${getCardText(payload.card)}`;
     default:
       return type;
   }
