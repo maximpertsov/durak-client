@@ -66,10 +66,18 @@ const Hand = () => {
     return null;
   };
 
+  const renderButtons = () => {
+    if (isDurak) return null;
+    if (isOutOfGame) return null;
+    if (isInitialAttacker) return <YieldButton />;
+    if (isDefender) return <CollectButton />;
+
+    return null;
+  };
+
   return (
     <div className="Hand">
-      <YieldButton />
-      <CollectButton />
+      <div>{renderButtons()}</div>
       <h2>{renderMessage()}</h2>
       <h2>{user}</h2>
       <Cards cards={cards} />
