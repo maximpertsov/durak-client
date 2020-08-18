@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 import zipObject from 'lodash/zipObject';
@@ -22,6 +23,7 @@ const mapStateToProps = createSelector(
 
   (state, playersFromUser) => ({
     hands: state.hands,
+    isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
@@ -34,7 +36,10 @@ const Wrapper = styled.div({
 });
 
 const Game = () => {
-  const { player2, player3, player4 } = useSelector(mapStateToProps, isEqual);
+  const { isLoading, player2, player3, player4 } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   const renderGame = () => (
     <Wrapper>
@@ -56,7 +61,10 @@ const Game = () => {
     <div className="Game">
       <GameInitializer />
       <WebSocketEventListener />
-      {renderGame()}
+      <Dimmer active={isLoading}>
+        <Loader />
+      </Dimmer>
+      {!isLoading && renderGame()}
     </div>
   );
 };
