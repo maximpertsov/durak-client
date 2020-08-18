@@ -69,10 +69,9 @@ const Hand = () => {
   const renderButtons = () => {
     if (isDurak) return null;
     if (isOutOfGame) return null;
-    if (isInitialAttacker) return <YieldButton />;
     if (isDefender) return <CollectButton />;
 
-    return null;
+    return <YieldButton />;;
   };
 
   return (
