@@ -27,15 +27,16 @@ const Hand = () => {
     fp.isEqual,
   );
 
+  const dagger = String.fromCodePoint(0x1f5e1);
+  const shield = String.fromCodePoint(0x1f6e1);
+
   return (
     <div className="Hand">
       <YieldButton />
       <CollectButton />
-      <h2>
-        {`${user} ${isInitialAttacker ? '*' : ''}${
-          isDefender ? String.fromCodePoint(0x1f6e1) : ''
-        }`}
-      </h2>
+      {isInitialAttacker && <h2>{`${`${dagger} You are attacking ${dagger}`}`}</h2>}
+      {isDefender && <h2>{`${`${shield} You are defending ${shield}`}`}</h2>}
+      <h2>{user}</h2>
       <Cards cards={cards} />
     </div>
   );
