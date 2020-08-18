@@ -6,8 +6,10 @@ import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
 import findIndex from 'lodash/findIndex';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
+import some from 'lodash/some';
 
 import { getDefender, getUnbeatenCards } from 'reducers';
 import { canPass } from 'utils/gameLogic';
@@ -27,21 +29,23 @@ const mapStateToProps = createSelector(
   (state, nextPlayer, unbeatenCards) => ({
     freeDefenseCardCount:
       size(compact(state.hands[nextPlayer])) - size(unbeatenCards),
+    hand: get(state.hands, state.user),
     isDefender: state.user === getDefender(state),
     table: state.table,
   }),
 );
 
-const Wrapper = styled.div({
+const Wrapper = styled.div(props => ({
   backgroundColor: 'blue',
-  flexGrow: 1,
   height: '250px',
+  opacity: props.isOver ? '90%' : '100%',
   padding: '10px',
-});
+  width: '20%',
+}));
 
 const PassCards = () => {
   const io = useWebSocketContext();
-  const { freeDefenseCardCount, isDefender, table } = useSelector(
+  const { freeDefenseCardCount, hand, isDefender, table } = useSelector(
     mapStateToProps,
     isEqual,
   );
@@ -54,6 +58,8 @@ const PassCards = () => {
     return canPass({ card, table });
   };
 
+  const canDropAny = () => some(hand, canDrop);
+
   const drop = item => {
     io.send('passed', {
       card: { rank: item.rank, suit: item.suit },
@@ -64,9 +70,18 @@ const PassCards = () => {
     accept: 'CARD',
     drop,
     canDrop,
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
   });
 
-  return <Wrapper className="PassCards" isOver={isOver} ref={dropRef} />;
+  if (!canDropAny()) return null;
+
+  return (
+    <Wrapper className="PassCards" isOver={isOver} ref={dropRef}>
+      <h2>Drop card here to pass</h2>
+    </Wrapper>
+  );
 };
 
 export default PassCards;

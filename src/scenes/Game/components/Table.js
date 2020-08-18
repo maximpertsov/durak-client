@@ -14,12 +14,13 @@ import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
 
-const Wrapper = styled.div({
+const Wrapper = styled.div(props => ({
   backgroundColor: 'green',
-  flexGrow: 4,
+  flexGrow: 1,
   height: '250px',
+  opacity: props.isOver ? '90%' : '100%',
   padding: '10px',
-});
+}));
 
 const mapStateToProps = createSelector(
   state => state,
@@ -60,6 +61,9 @@ const Table = () => {
     accept: 'CARD',
     drop,
     canDrop,
+    collect: monitor => ({
+      isOver: !!monitor.isOver({ shallow: true }),
+    }),
   });
 
   return (
