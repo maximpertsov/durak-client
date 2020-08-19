@@ -14,6 +14,7 @@ import hands from './hands';
 import messages from './messages';
 import players from './players';
 import remoteDataState from './remoteDataState';
+import selectedCards from './selectedCards';
 import table from './table';
 import trumpSuit from './trumpSuit';
 import user from './user';
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     (state, action) => action.payload,
     false,
   ),
+  selectedCards,
   table,
   trumpSuit,
   user,

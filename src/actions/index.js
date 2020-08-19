@@ -28,6 +28,11 @@ export default createActions({
       SET: undefined,
       ROTATE: undefined,
     },
+    SELECTED_CARDS: {
+      ADD: undefined,
+      CLEAR: undefined,
+      REMOVE: undefined,
+    },
     TABLE: {
       APPEND: undefined,
       CLEAR: undefined,
