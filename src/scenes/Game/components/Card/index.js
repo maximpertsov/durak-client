@@ -7,7 +7,9 @@ import styled from '@emotion/styled';
 
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
+import size from 'lodash/size';
 import some from 'lodash/some';
+import uniqBy from 'lodash/uniqBy';
 
 import actions from 'actions';
 
@@ -15,12 +17,14 @@ import getCardImage, { getBackOfCard } from './images';
 
 const mapStateToProps = createSelector(
   state => state,
+  state => state.selectedCards,
   (_, props) => props.rank,
   (_, props) => props.suit,
 
-  (state, rank, suit) => ({
+  (state, selectedCards, rank, suit) => ({
     hand: state.hands[state.user],
-    selectedCard: find(state.selectedCards, { suit, rank }),
+    selectedCard: find(selectedCards, { suit, rank }),
+    selectedAreSameRank: size(uniqBy(selectedCards, 'rank')) === 1,
     trumpSuit: state.trumpSuit,
   }),
 );
@@ -64,7 +68,7 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
 
 const Card = ({ suit, rank, flipped }) => {
   const dispatch = useDispatch();
-  const { hand, selectedCard, trumpSuit } = useSelector(
+  const { hand, selectedCard, selectedAreSameRank, trumpSuit } = useSelector(
     state => mapStateToProps(state, { rank, suit }),
     isEqual,
   );
@@ -74,6 +78,8 @@ const Card = ({ suit, rank, flipped }) => {
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', suit, rank },
     begin: () => {
+      if (selectedAreSameRank) return;
+
       hand.forEach(card => {
         dispatch(actions.game.selectedCards.remove(card));
       });
