@@ -47,24 +47,16 @@ export const WebSocketProvider = ({ children }) => {
       { skipKeys: ['hands'] },
     );
 
-  const _send = (type, payload) => {
-    const message = createMessage(type, payload);
-    socket.send(JSON.stringify(message));
-  };
-
-  const sendMany = messages => {
+  const send = (type, payload) => {
     if (sendInProgress) return;
 
     dispatch(actions.messages.sendInProgress.set(true));
 
-    messages.forEach(([type, payload]) => _send(type, payload));
+    const message = createMessage(type, payload);
+    socket.send(JSON.stringify(message));
 
     // TODO: set timeout to revert send in progress if it fails?
     // Set a timeout that checks the message count
-  };
-
-  const send = (type, payload) => {
-    sendMany([[type, payload]]);
   };
 
   if (!socket) {

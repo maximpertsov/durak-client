@@ -1,13 +1,15 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
+import actions from 'actions';
 import { getAttackers, getDefender, getUnbeatenCards } from 'reducers';
 import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
@@ -31,17 +33,21 @@ const mapStateToProps = createSelector(
   (state, attackers, defender, unbeatenCards) => ({
     freeDefenseCardCount:
       size(compact(state.hands[defender])) - size(unbeatenCards),
+    selectedCards: state.selectedCards,
     table: state.table,
     userCanAttack: attackers.includes(state.user),
   }),
 );
 
 const Table = () => {
+  const dispatch = useDispatch();
   const io = useWebSocketContext();
-  const { freeDefenseCardCount, table, userCanAttack } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    freeDefenseCardCount,
+    selectedCards,
+    table,
+    userCanAttack,
+  } = useSelector(mapStateToProps, isEqual);
 
   const canDrop = (card, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;
@@ -51,10 +57,20 @@ const Table = () => {
     return canAttack({ card, table });
   };
 
+  // TODO: move logic to action?
   const drop = item => {
-    io.send('attacked', {
-      card: { rank: item.rank, suit: item.suit },
-    });
+    if (isEmpty(selectedCards)) {
+      io.send('attacked', {
+        card: { rank: item.rank, suit: item.suit },
+      });
+    } else {
+      io.send('attacked_with_many', {
+        cards: selectedCards.map(card => ({
+          card,
+        })),
+      });
+    }
+    dispatch(actions.game.selectedCards.clear());
   };
 
   const [{ isOver }, dropRef] = useDrop({
