@@ -14,7 +14,7 @@ import actions from 'actions';
 import getCardImage, { getBackOfCard } from './images';
 
 const mapStateToProps = createSelector(
-  (state) => state,
+  state => state,
   (_, props) => props.rank,
   (_, props) => props.suit,
 
@@ -25,7 +25,7 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const topAdjust = '156.67%'
+const topAdjust = '156.67%';
 
 const SelectionIndicator = styled.div({
   backgroundColor: 'rgba(30,179,0,0.3)',
@@ -65,7 +65,7 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
 const Card = ({ suit, rank, flipped }) => {
   const dispatch = useDispatch();
   const { hand, selectedCard, trumpSuit } = useSelector(
-    (state) => mapStateToProps(state, { rank, suit }),
+    state => mapStateToProps(state, { rank, suit }),
     isEqual,
   );
 
@@ -74,7 +74,7 @@ const Card = ({ suit, rank, flipped }) => {
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', suit, rank },
     canDrag,
-    collect: (monitor) => ({
+    collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
   });
