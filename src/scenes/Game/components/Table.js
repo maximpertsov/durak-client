@@ -52,7 +52,7 @@ const Table = () => {
   const canDrop = (card, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;
     if (!userCanAttack) return false;
-    if (freeDefenseCardCount < 1) return false;
+    if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
 
     return canAttack({ card, table });
   };
