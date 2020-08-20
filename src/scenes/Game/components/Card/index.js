@@ -73,14 +73,22 @@ const Card = ({ suit, rank, flipped }) => {
 
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', suit, rank },
+    begin: () => {
+      hand.forEach(card => {
+        dispatch(actions.game.selectedCards.remove(card));
+      });
+    },
     canDrag,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
   });
 
+  // TODO: move logic into action
   const onClick = () => {
     if (!selectedCard) {
+      if (!find(hand, { suit, rank })) return;
+
       dispatch(actions.game.selectedCards.add({ suit, rank }));
       return;
     }
