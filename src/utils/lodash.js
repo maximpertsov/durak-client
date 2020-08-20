@@ -4,6 +4,8 @@ import compact from 'lodash/compact';
 import drop from 'lodash/drop';
 import first from 'lodash/first';
 import fromPairs from 'lodash/fromPairs';
+import get from 'lodash/get';
+import has from 'lodash/has';
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -25,13 +27,14 @@ const camelCase = string =>
   // into 'a1A2'. This function makes sure that camel-casing
   // is only performed on strings that include an underscore
   // character.
-  (string.includes('_') ? _camelCase(string) : string);
+  string.includes('_') ? _camelCase(string) : string;
 
-// TODO: implement a way to not recursively camelcase certain objects
-const deepKeyTransform = (fn, obj) => {
+const deepKeyTransform = (fn, obj, options = {}) => {
+  const skipKeys = get(options, 'skipKeys', []);
+
   if (isPlainObject(obj)) {
     const pairs = toPairs(obj).map(([key, value]) => [
-      fn(key),
+      !!skipKeys && skipKeys.includes(key) ? value : fn(key),
       deepKeyTransform(fn, value),
     ]);
     return fromPairs(pairs);
