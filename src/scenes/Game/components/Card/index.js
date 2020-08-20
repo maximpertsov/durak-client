@@ -80,9 +80,7 @@ const Card = ({ suit, rank, flipped }) => {
     begin: () => {
       if (selectedAreSameRank) return;
 
-      hand.forEach(card => {
-        dispatch(actions.game.selectedCards.remove(card));
-      });
+      dispatch(actions.game.selectedCards.clear());
     },
     canDrag,
     collect: monitor => ({
