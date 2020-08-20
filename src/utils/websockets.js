@@ -45,15 +45,24 @@ export const WebSocketProvider = ({ children }) => {
       payload,
     });
 
-  const send = (type, payload) => {
+  const _send = (type, payload) => {
+    const message = createMessage(type, payload);
+    socket.send(JSON.stringify(message));
+  };
+
+  const sendMany = messages => {
     if (sendInProgress) return;
 
     dispatch(actions.messages.sendInProgress.set(true));
 
-    const message = createMessage(type, payload);
-    socket.send(JSON.stringify(message));
+    messages.forEach(([type, payload]) => _send(type, payload));
 
     // TODO: set timeout to revert send in progress if it fails?
+    // Set a timeout that checks the message count
+  };
+
+  const send = (type, payload) => {
+    sendMany([[type, payload]]);
   };
 
   if (!socket) {
