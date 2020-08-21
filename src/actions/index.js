@@ -23,6 +23,9 @@ export default createActions({
       REMOVE: undefined,
       SET: undefined,
     },
+    PASS_COUNT: {
+      SET: undefined,
+    },
     PLAYERS: {
       ADD: undefined,
       SET: undefined,
