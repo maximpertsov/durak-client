@@ -68,17 +68,45 @@ const Wrapper = styled.div(({ createdAt }) => {
   };
 });
 
-const Message = ({ message }) => (
-  <Wrapper createdAt={message.createdAt}>
-    <Comment>
-      <Comment.Content>
-        <Comment.Author as="span">{message.user}</Comment.Author>
-        <Comment.Metadata>
-          <div>{getText(message)}</div>
-        </Comment.Metadata>
-      </Comment.Content>
-    </Comment>
-  </Wrapper>
-);
+const Message = ({ message }) => {
+  const notify = React.useCallback(() => {
+    if (window.document.hasFocus()) return;
+
+    window.Notification(getText(message));
+  }, [message]);
+
+  React.useEffect(() => {
+    window.document.title = getText(message);
+
+    if (!('Notification' in window)) return;
+
+    switch (window.Notification.permission) {
+      case 'denied':
+        break;
+      case 'granted':
+        notify();
+        break;
+      default:
+        window.Notification.requestPermission(permission => {
+          if (permission !== 'granted') return;
+
+          notify();
+        });
+    }
+  }, [message, notify]);
+
+  return (
+    <Wrapper createdAt={message.createdAt}>
+      <Comment>
+        <Comment.Content>
+          <Comment.Author as="span">{message.user}</Comment.Author>
+          <Comment.Metadata>
+            <div>{getText(message)}</div>
+          </Comment.Metadata>
+        </Comment.Content>
+      </Comment>
+    </Wrapper>
+  );
+};
 
 export default Message;
