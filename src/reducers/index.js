@@ -25,10 +25,16 @@ const rootReducer = combineReducers({
   game,
   hands,
   messages,
+  // TODO: move this to the server?
+  passCount: handleAction(
+    actions.game.passCount.set,
+    (state, action) => action.payload,
+    0,
+  ),
   players,
   remoteDataState,
   sendInProgress: handleAction(
-    actions.messages.sendInProgress,
+    actions.messages.sendInProgress.set,
     (state, action) => action.payload,
     false,
   ),
