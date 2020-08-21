@@ -5,7 +5,6 @@ import drop from 'lodash/drop';
 import first from 'lodash/first';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
-import has from 'lodash/has';
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
