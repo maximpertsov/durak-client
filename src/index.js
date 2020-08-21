@@ -2,7 +2,7 @@ import 'index.css';
 
 import React from 'react';
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend'
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
@@ -28,7 +28,7 @@ const store = compose(
 ReactDOM.render(
   <Provider store={store}>
     <WebSocketProvider>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={TouchBackend}>
         <App />
       </DndProvider>
     </WebSocketProvider>
