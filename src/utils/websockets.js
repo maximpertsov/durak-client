@@ -23,7 +23,14 @@ const mapStateToProps = createDeepEqualSelector(
 );
 
 const getGameState = store =>
-  pick(store.getState(), ['drawPile', 'hands', 'players', 'table', 'yielded']);
+  pick(store.getState(), [
+    'drawPile',
+    'hands',
+    'passCount',
+    'players',
+    'table',
+    'yielded',
+  ]);
 
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
