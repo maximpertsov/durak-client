@@ -64,11 +64,7 @@ const Table = () => {
         card: { rank: item.rank, suit: item.suit },
       });
     } else {
-      io.send('attacked_with_many', {
-        cards: selectedCards.map(card => ({
-          card,
-        })),
-      });
+      io.send('attacked_with_many', { cards: selectedCards });
     }
     dispatch(actions.game.selectedCards.clear());
   };
