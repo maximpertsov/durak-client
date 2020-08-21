@@ -1,16 +1,18 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 import some from 'lodash/some';
 
+import actions from 'actions';
 import { getDefender, getUnbeatenCards } from 'reducers';
 import { canPass } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
@@ -31,6 +33,7 @@ const mapStateToProps = createSelector(
       size(compact(state.hands[nextPlayer])) - size(unbeatenCards),
     hand: get(state.hands, state.user),
     isDefender: state.user === getDefender(state),
+    selectedCards: state.selectedCards,
     table: state.table,
   }),
 );
@@ -44,16 +47,19 @@ const Wrapper = styled.div(props => ({
 }));
 
 const PassCards = () => {
+  const dispatch = useDispatch();
   const io = useWebSocketContext();
-  const { freeDefenseCardCount, hand, isDefender, table } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    freeDefenseCardCount,
+    hand,
+    isDefender,
+    selectedCards,
+    table,
+  } = useSelector(mapStateToProps, isEqual);
 
   const canDrop = card => {
     if (!isDefender) return false;
-    // TODO: allow player to throw multiple cards at once
-    if (freeDefenseCardCount < 1) return false;
+    if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
 
     return canPass({ card, table });
   };
@@ -61,9 +67,14 @@ const PassCards = () => {
   const canDropAny = () => some(compact(hand), canDrop);
 
   const drop = item => {
-    io.send('passed', {
-      card: { rank: item.rank, suit: item.suit },
-    });
+    if (isEmpty(selectedCards)) {
+      io.send('passed', {
+        card: { rank: item.rank, suit: item.suit },
+      });
+    } else {
+      io.send('passed_with_many', { cards: selectedCards });
+    }
+    dispatch(actions.game.selectedCards.clear());
   };
 
   const [{ isOver }, dropRef] = useDrop({

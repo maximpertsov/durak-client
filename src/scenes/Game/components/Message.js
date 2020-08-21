@@ -41,6 +41,8 @@ const getText = ({ type, payload }) => {
       return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
     case 'passed':
       return `passed with ${getCardText(payload.card)}`;
+    case 'passed_with_many':
+      return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     default:
       return type;
   }
