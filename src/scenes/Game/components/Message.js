@@ -72,11 +72,11 @@ const Message = ({ message }) => {
   const notify = React.useCallback(() => {
     if (window.document.hasFocus()) return;
 
-    new window.Notification(getText(message));
+    new window.Notification(`${message.user} ${getText(message)}`);
   }, [message]);
 
   React.useEffect(() => {
-    window.document.title = getText(message);
+    window.document.title = `${message.user} ${getText(message)}`;
 
     if (!('Notification' in window)) return;
 
