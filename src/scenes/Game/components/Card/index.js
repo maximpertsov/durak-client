@@ -12,7 +12,6 @@ import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
 
 import actions from 'actions';
-import { getDefender } from 'reducers';
 
 import getCardImage, { getBackOfCard } from './images';
 
@@ -23,7 +22,6 @@ const mapStateToProps = createSelector(
   (_, props) => props.suit,
 
   (state, selectedCards, rank, suit) => ({
-    isDefender: state.user === getDefender(state),
     hand: state.hands[state.user],
     selectedCard: find(selectedCards, { suit, rank }),
     selectedAreSameRank: size(uniqBy(selectedCards, 'rank')) === 1,
@@ -70,19 +68,10 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
 
 const Card = ({ suit, rank, flipped }) => {
   const dispatch = useDispatch();
-  const {
-    isDefender,
-    hand,
-    selectedCard,
-    selectedAreSameRank,
-    trumpSuit,
-  } = useSelector(state => mapStateToProps(state, { rank, suit }), isEqual);
-
-  React.useEffect(() => {
-    if (isDefender) {
-      dispatch(actions.game.selectedCards.clear());
-    }
-  }, [dispatch, isDefender]);
+  const { hand, selectedCard, selectedAreSameRank, trumpSuit } = useSelector(
+    state => mapStateToProps(state, { rank, suit }),
+    isEqual,
+  );
 
   const canDrag = () => some(hand, { suit, rank });
 
@@ -101,8 +90,6 @@ const Card = ({ suit, rank, flipped }) => {
 
   // TODO: move logic into action
   const onClick = () => {
-    if (isDefender) return;
-
     if (!selectedCard) {
       if (!find(hand, { suit, rank })) return;
 
