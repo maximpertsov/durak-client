@@ -35,15 +35,17 @@ export const WebSocketProvider = ({ children }) => {
   const store = useStore();
 
   const createMessage = (type, payload) =>
-    // TODO: maybe the server should take care of the snake-casing?
-    deepSnakeCase({
-      createdAt: new Date().toISOString(),
-      type,
-      game,
-      user,
-      fromState: getGameState(store),
-      payload,
-    });
+    deepSnakeCase(
+      {
+        createdAt: new Date().toISOString(),
+        type,
+        game,
+        user,
+        fromState: getGameState(store),
+        payload,
+      },
+      { skipKeys: ['hands'] },
+    );
 
   const send = (type, payload) => {
     if (sendInProgress) return;
@@ -54,14 +56,16 @@ export const WebSocketProvider = ({ children }) => {
     socket.send(JSON.stringify(message));
 
     // TODO: set timeout to revert send in progress if it fails?
+    // Set a timeout that checks the message count
   };
 
   if (!socket) {
     socket = new WebSocket(process.env.REACT_APP_WS_URL);
 
     socket.onmessage = event => {
-      // TODO: be careful not to camelcase player names
-      const message = deepCamelCase(JSON.parse(event.data));
+      const message = deepCamelCase(JSON.parse(event.data), {
+        skipKeys: ['hands'],
+      });
       dispatch(actions.messages.append(message));
     };
 

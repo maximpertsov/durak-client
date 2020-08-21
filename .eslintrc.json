@@ -118,6 +118,9 @@
             "^semantic-ui"
           ],
           [
+            "^lodash/fp"
+          ],
+          [
             "^lodash"
           ],
           [

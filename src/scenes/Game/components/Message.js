@@ -20,12 +20,17 @@ const suitCodepoints = Object.freeze({
 const getSuitText = suit => get(suitCodepoints, suit, '');
 
 const getCardText = ({ rank, suit }) =>
-  `${isNaN(rank) ? rank.charAt(0).toUpperCase() : rank}${getSuitText(suit)}`;
+  `${Number.isNaN(+rank) ? rank.charAt(0).toUpperCase() : rank}${getSuitText(
+    suit,
+  )}`;
 
+// eslint-disable-next-line complexity
 const getText = ({ type, payload }) => {
   switch (type) {
     case 'attacked':
       return `attacked with ${getCardText(payload.card)}`;
+    case 'attacked_with_many':
+      return `attacked with ${payload.cards.map(getCardText).join(' ')}`;
     case 'defended':
       return `defended ${getCardText(payload.baseCard)} with ${getCardText(
         payload.card,
@@ -36,6 +41,8 @@ const getText = ({ type, payload }) => {
       return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
     case 'passed':
       return `passed with ${getCardText(payload.card)}`;
+    case 'passed_with_many':
+      return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     default:
       return type;
   }
