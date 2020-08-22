@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Button } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -40,11 +41,7 @@ const YieldButton = () => {
   if (isEmpty(table)) return null;
   if (!isEmpty(unbeatenCards)) return null;
 
-  return (
-    <button type="button" onClick={yieldAttack}>
-      stop attacking
-    </button>
-  );
+  return <Button circular size="big" onClick={yieldAttack}>stop attacking</Button>;
 };
 
 export default YieldButton;

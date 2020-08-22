@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Button } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -38,9 +39,9 @@ const CollectButton = () => {
   if (isEmpty(unbeatenCards)) return null;
 
   return (
-    <button type="button" onClick={collectAttack}>
+    <Button circular size="big" onClick={collectAttack}>
       collect cards
-    </button>
+    </Button>
   );
 };
 
