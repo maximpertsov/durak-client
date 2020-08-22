@@ -24,8 +24,6 @@ const WebSocketEventListener = () => {
     dispatch(actions.game.players.set(players));
     dispatch(actions.game.table.set(table));
     dispatch(actions.game.yielded.set(yielded));
-
-    dispatch(actions.messages.sendInProgress.set(false));
   }, [dispatch, lastMessage]);
 
   return null;

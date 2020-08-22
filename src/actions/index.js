@@ -3,9 +3,6 @@ import { createActions } from 'redux-actions';
 export default createActions({
   MESSAGES: {
     APPEND: undefined,
-    SEND_IN_PROGRESS: {
-      SET: undefined,
-    },
   },
   GAME: {
     ID: {

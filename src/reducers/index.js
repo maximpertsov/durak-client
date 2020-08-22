@@ -33,11 +33,6 @@ const rootReducer = combineReducers({
   ),
   players,
   remoteDataState,
-  sendInProgress: handleAction(
-    actions.messages.sendInProgress.set,
-    (state, action) => action.payload,
-    false,
-  ),
   selectedCards,
   table,
   trumpSuit,

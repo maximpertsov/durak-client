@@ -54,15 +54,8 @@ export const WebSocketProvider = ({ children }) => {
     );
 
   const send = (type, payload) => {
-    if (store.getState().sendInProgress) return;
-
-    dispatch(actions.messages.sendInProgress.set(true));
-
     const message = createMessage(type, payload);
     socket.send(JSON.stringify(message));
-
-    // TODO: set timeout to revert send in progress if it fails?
-    // Set a timeout that checks the message count
   };
 
   if (!socket) {
