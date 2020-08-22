@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDrag } from 'react-dnd';
+import { DragPreviewImage, useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
@@ -75,7 +75,7 @@ const Card = ({ suit, rank, flipped }) => {
 
   const canDrag = () => some(hand, { suit, rank });
 
-  const [{ isDragging }, dragRef] = useDrag({
+  const [{ isDragging }, dragRef, preview] = useDrag({
     item: { type: 'CARD', suit, rank },
     begin: () => {
       if (selectedAreSameRank) return;
@@ -100,18 +100,21 @@ const Card = ({ suit, rank, flipped }) => {
   };
 
   return (
-    <Wrapper
-      className="Card"
-      onClick={onClick}
-      isDragging={isDragging}
-      flipped={flipped}
-      suit={suit}
-      trumpSuit={trumpSuit}
-      rank={rank}
-      ref={dragRef}
-    >
-      {!!selectedCard && <SelectionIndicator />}
-    </Wrapper>
+    <div>
+      <DragPreviewImage connect={preview} src={getCardImage({ suit, rank })} />
+      <Wrapper
+        className="Card"
+        onClick={onClick}
+        isDragging={isDragging}
+        flipped={flipped}
+        suit={suit}
+        trumpSuit={trumpSuit}
+        rank={rank}
+        ref={dragRef}
+      >
+        {!!selectedCard && <SelectionIndicator />}
+      </Wrapper>
+    </div>
   );
 };
 
