@@ -4,17 +4,11 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-import compact from 'lodash/compact';
-import first from 'lodash/first';
-import flatMap from 'lodash/flatMap';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import size from 'lodash/size';
 import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
 
-import tenguyscrambled from './assets/tenguyscrambled.png';
 import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
@@ -24,24 +18,12 @@ import Player from './components/Player';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
 
-const getDurak = ({ drawPile, hands }) => {
-  if (!isEmpty(drawPile)) return null;
-
-  const playersWithCards = flatMap(hands, (hand, player) =>
-    (isEmpty(compact(hand)) ? [] : [player]),
-  );
-  if (size(playersWithCards) !== 1) return null;
-
-  return first(playersWithCards);
-};
-
 const mapStateToProps = createSelector(
   state => state,
   state => getPlayersFromUser(state),
 
   (state, playersFromUser) => ({
     hands: state.hands,
-    isDurak: getDurak(state) === state.user,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
@@ -60,7 +42,7 @@ const TableWrapper = styled.div({
 });
 
 const Game = () => {
-  const { isLoading, isDurak, player2, player3, player4 } = useSelector(
+  const { isLoading, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );
@@ -75,9 +57,8 @@ const Game = () => {
   const renderGame = () => (
     <Wrapper>
       <div>
-        {!isDurak && <Messages />}
-        {!isDurak && renderTable()}
-        {isDurak && <img src={tenguyscrambled} alt="durak" />}
+        <Messages />
+        {renderTable()}
         <Hand />
       </div>
       <div>
