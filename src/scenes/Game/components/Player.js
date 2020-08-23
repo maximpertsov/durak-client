@@ -2,19 +2,22 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
+
+import chunk from 'lodash/fp/chunk';
+import compact from 'lodash/fp/compact';
+import flow from 'lodash/fp/flow';
+import isEqual from 'lodash/fp/isEqual';
+import map from 'lodash/fp/map';
+import size from 'lodash/fp/size';
+import unzip from 'lodash/fp/unzip';
 
 import { getDefender } from 'reducers';
-import fp from 'utils/lodashFp';
 
 import Cards from './Cards';
 
-const getCardCount = fp.flow(fp.compact, fp.size);
-const getDisplayCards = fp.flow(
-  fp.compact,
-  fp.chunk(6),
-  fp.unzip,
-  fp.map(fp.compact),
-);
+const getCardCount = flow(compact, size);
+const getDisplayCards = flow(compact, chunk(3), unzip, map(compact));
 
 const mapStateToProps = createSelector(
   state => state,
@@ -28,21 +31,34 @@ const mapStateToProps = createSelector(
   }),
 );
 
+const Wrapper = styled.div({
+  outline: '1px solid grey',
+  margin: '10px',
+  height: '20vh',
+});
+
+const CardsWrapper = styled.div({
+  transform: 'scale(0.5)',
+  transformOrigin: 'top center',
+});
+
 const Player = ({ player }) => {
   const { cardCount, displayCards, isDefender } = useSelector(
     state => mapStateToProps(state, { player }),
-    fp.isEqual,
+    isEqual,
   );
 
-  if (!player) return <div />;
+  if (!player) return <Wrapper />;
 
   return (
-    <div className="Player">
+    <Wrapper className="Player">
       <h2>{`${player}${isDefender ? String.fromCodePoint(0x1f6e1) : ''}`}</h2>
-      <Cards flipped cards={displayCards} />
       <div>{`${cardCount} cards`}</div>
+      <CardsWrapper>
+        <Cards flipped cards={displayCards} />
+      </CardsWrapper>
       <div />
-    </div>
+    </Wrapper>
   );
 };
 
