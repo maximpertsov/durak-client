@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Card as UICard } from 'semantic-ui-react';
 
 import compact from 'lodash/compact';
 import first from 'lodash/first';
@@ -20,12 +19,9 @@ import YieldButton from './YieldButton';
 const getDurak = ({ drawPile, hands }) => {
   if (!isEmpty(drawPile)) return null;
 
-  const playersWithCards = flatMap(hands, (hand, player) => {
-    if (isEmpty(compact(hand))) return [];
-
-    return [player];
-  });
-
+  const playersWithCards = flatMap(hands, (hand, player) =>
+    (isEmpty(compact(hand)) ? [] : [player]),
+  );
   if (size(playersWithCards) !== 1) return null;
 
   return first(playersWithCards);
@@ -63,9 +59,7 @@ const Hand = () => {
 
   const renderMessage = () => {
     if (isDurak) return `${rofl} You're the durak! ${rofl}`;
-    if (isOutOfGame) {
-      return `${popcorn} Relax, you're not the durak! ${popcorn}`;
-    }
+    if (isOutOfGame) return `${popcorn} Relax, you're not the durak! ${popcorn}`;
     if (isInitialAttacker) return `${dagger} You are attacking ${dagger}`;
     if (isDefender) return `${shield} You are defending ${shield}`;
 
@@ -77,23 +71,15 @@ const Hand = () => {
     if (isOutOfGame) return null;
     if (isDefender) return <CollectButton />;
 
-    return <YieldButton />;
+    return <YieldButton />;;
   };
 
   return (
     <div className="Hand">
-      <UICard fluid>
-        <UICard.Content>
-          <UICard.Header>{user}</UICard.Header>
-          <div>{renderMessage()}</div>
-        </UICard.Content>
-        <UICard.Content extra>
-          <Cards cards={cards} />
-        </UICard.Content>
-        <UICard.Content extra>
-          <div>{renderButtons()}</div>
-        </UICard.Content>
-      </UICard>
+      <div>{renderButtons()}</div>
+      <h2>{renderMessage()}</h2>
+      <h2>{user}</h2>
+      <Cards cards={cards} />
     </div>
   );
 };
