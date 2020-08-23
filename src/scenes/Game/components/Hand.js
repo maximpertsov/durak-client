@@ -71,14 +71,14 @@ const Hand = () => {
     if (isOutOfGame) return null;
     if (isDefender) return <CollectButton />;
 
-    return <YieldButton />;;
+    return <YieldButton />;
   };
 
   return (
     <div className="Hand">
       <div>{renderButtons()}</div>
-      <h2>{renderMessage()}</h2>
       <h2>{user}</h2>
+      <h2>{renderMessage()}</h2>
       <Cards cards={cards} />
     </div>
   );
