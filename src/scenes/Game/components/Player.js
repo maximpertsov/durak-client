@@ -53,10 +53,10 @@ const Player = ({ player }) => {
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper>
+    <Wrapper className="Player">
       <UICard fluid>
         <UICard.Content>
-          <UICard.Header>{`${player}`}</UICard.Header>
+          <UICard.Header>{player}</UICard.Header>
           {isDefender && <UICard.Meta>{`The defender ${shield}`}</UICard.Meta>}
         </UICard.Content>
         <UICard.Content extra>
