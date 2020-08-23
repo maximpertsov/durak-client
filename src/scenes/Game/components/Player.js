@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
+import { Card as UICard } from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -32,15 +33,16 @@ const mapStateToProps = createSelector(
 );
 
 const Wrapper = styled.div({
-  outline: '1px solid grey',
   margin: '10px',
-  height: '20vh',
 });
 
 const CardsWrapper = styled.div({
   transform: 'scale(0.5)',
   transformOrigin: 'top center',
+  height: '10vh',
 });
+
+const shield = String.fromCodePoint(0x1f6e1);
 
 const Player = ({ player }) => {
   const { cardCount, displayCards, isDefender } = useSelector(
@@ -51,13 +53,19 @@ const Player = ({ player }) => {
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper className="Player">
-      <h2>{`${player}${isDefender ? String.fromCodePoint(0x1f6e1) : ''}`}</h2>
-      <div>{`${cardCount} cards`}</div>
-      <CardsWrapper>
-        <Cards flipped cards={displayCards} />
-      </CardsWrapper>
-      <div />
+    <Wrapper>
+      <UICard fluid>
+        <UICard.Content>
+          <UICard.Header>{`${player}`}</UICard.Header>
+          {isDefender && <UICard.Meta>{`The defender ${shield}`}</UICard.Meta>}
+        </UICard.Content>
+        <UICard.Content extra>
+          <div>{`${cardCount} cards`}</div>
+          <CardsWrapper>
+            <Cards flipped cards={displayCards} />
+          </CardsWrapper>
+        </UICard.Content>
+      </UICard>
     </Wrapper>
   );
 };
