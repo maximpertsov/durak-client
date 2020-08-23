@@ -29,11 +29,14 @@ const mapStateToProps = createSelector(
   }),
 );
 
+const topAdjust = '156.67%';
+
 const SelectionIndicator = styled.div({
   backgroundColor: 'rgba(30,179,0,0.3)',
-  height: '100px',
+  height: '100%',
+  marginTop: `-${topAdjust}`,
   position: 'absolute',
-  width: '100px',
+  width: '100%',
   zIndex: '1',
 });
 
@@ -54,11 +57,12 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
     animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
     backgroundImage: `url(${cardImage})`,
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     borderRadius: '5px',
-    height: '100px',
-    width: '100px',
+    height: '0%',
     opacity: isDragging ? '30%' : '100%',
+    paddingTop: topAdjust,
+    position: 'relative',
   };
 });
 
