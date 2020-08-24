@@ -66,6 +66,7 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
   };
 });
 
+// TODO: make it so suit and rank can be omitted for hidden cards
 const Card = ({ suit, rank, flipped }) => {
   const dispatch = useDispatch();
   const { hand, selectedCard, selectedAreSameRank, trumpSuit } = useSelector(
