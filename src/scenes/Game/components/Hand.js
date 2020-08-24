@@ -13,6 +13,7 @@ import size from 'lodash/size';
 import { getAttackers, getDefender } from 'reducers';
 import client from 'utils/client';
 
+import styled from '@emotion/styled';
 import Cards from './Cards';
 import CollectButton from './CollectButton';
 import YieldButton from './YieldButton';
@@ -61,6 +62,10 @@ const RestartButton = () => {
   );
 };
 
+const ButtonWrapper = styled.div({
+  marginBottom: '15px',
+});
+
 const Hand = () => {
   const {
     cards,
@@ -98,7 +103,9 @@ const Hand = () => {
 
   return (
     <div className="Hand">
-      <div>{renderButtons()}</div>
+      <ButtonWrapper>
+        <div>{renderButtons()}</div>
+      </ButtonWrapper>
       <Cards cards={cards} />
       <h2>{user}</h2>
       <h2>{renderMessage()}</h2>
