@@ -99,9 +99,9 @@ const Hand = () => {
   return (
     <div className="Hand">
       <div>{renderButtons()}</div>
+      <Cards cards={cards} />
       <h2>{user}</h2>
       <h2>{renderMessage()}</h2>
-      <Cards cards={cards} />
     </div>
   );
 };
