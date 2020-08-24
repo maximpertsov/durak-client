@@ -12,7 +12,6 @@ import { getPlayersFromUser } from 'reducers';
 import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
-import Messages from './components/Messages';
 import PassCards from './components/PassCards';
 import Player from './components/Player';
 import Table from './components/Table';
@@ -57,7 +56,6 @@ const Game = () => {
   const renderGame = () => (
     <Wrapper>
       <div>
-        <Messages />
         {renderTable()}
         <Hand />
       </div>

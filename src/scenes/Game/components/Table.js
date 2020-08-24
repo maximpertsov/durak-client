@@ -24,7 +24,7 @@ import Cards from './Cards';
 const Wrapper = styled.div(props => {
   const noDurakStyle = {
     backgroundColor: 'green',
-    height: '25vh',
+    height: '50vh',
   };
   const durakAppears = keyframes({
     '0%': noDurakStyle,
