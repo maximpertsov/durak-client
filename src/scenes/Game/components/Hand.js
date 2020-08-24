@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Button } from 'semantic-ui-react';
 
 import compact from 'lodash/compact';
 import first from 'lodash/first';
@@ -10,6 +11,7 @@ import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
 import { getAttackers, getDefender } from 'reducers';
+import client from 'utils/client';
 
 import Cards from './Cards';
 import CollectButton from './CollectButton';
@@ -45,6 +47,20 @@ const mapStateToProps = createSelector(
   }),
 );
 
+const RestartButton = () => {
+  const game = useSelector(state => state.game);
+
+  const restartGame = () => {
+    client.post(`game/${game}/restart`);
+  };
+
+  return (
+    <Button circular size="big" onClick={restartGame}>
+      play again
+    </Button>
+  );
+};
+
 const Hand = () => {
   const {
     cards,
@@ -73,7 +89,7 @@ const Hand = () => {
   };
 
   const renderButtons = () => {
-    if (isDurak) return null;
+    if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
     if (isDefender) return <CollectButton />;
 
