@@ -5,13 +5,20 @@ import styled from '@emotion/styled';
 import Card from './Card';
 import CardStack from './CardStack';
 
-const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, 60px)',
-  gridGap: '0.25em',
-  justifyContent: 'center',
-  margin: '0 auto',
-  padding: '0 5%',
+const BASE_CARD_WIDTH_PIXELS = 60;
+
+const Wrapper = styled.div(props => {
+  const scaleFactor = props.scale ? props.scale : 1.0;
+  const cardWidthInPixels = scaleFactor * BASE_CARD_WIDTH_PIXELS;
+
+  return {
+    display: 'grid',
+    gridTemplateColumns: `repeat(auto-fit, ${cardWidthInPixels}px)`,
+    gridGap: '0.25em',
+    justifyContent: 'center',
+    margin: '0 auto',
+    padding: '0 5%',
+  };
 });
 
 const CardOrStack = ({ flipped, cardOrStack }) => {
@@ -29,13 +36,17 @@ const CardOrStack = ({ flipped, cardOrStack }) => {
   return <Card flipped={flipped || cardFlipped} suit={suit} rank={rank} />;
 };
 
-const Cards = ({ cards, flipped }) => {
+const Cards = ({ cards, flipped, scale }) => {
   const renderCards = () =>
     cards.map((cardOrStack, index) => (
       <CardOrStack key={index} flipped={flipped} cardOrStack={cardOrStack} />
     ));
 
-  return <Wrapper className="Game">{renderCards()}</Wrapper>;
+  return (
+    <Wrapper scale={scale} className="Game">
+      {renderCards()}
+    </Wrapper>
+  );
 };
 
 export default Cards;

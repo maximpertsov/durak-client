@@ -19,7 +19,7 @@ import { getAttackers, getDefender } from 'reducers';
 import Cards from './Cards';
 
 const getCardCount = flow(compact, size);
-const getDisplayCards = flow(compact, chunk(3), unzip, map(compact));
+const getDisplayCards = flow(compact, chunk(6), unzip, map(compact));
 
 const mapStateToProps = createSelector(
   state => state,
@@ -51,7 +51,6 @@ const Wrapper = styled.div(({ isDefender }) => {
 });
 
 const CardsWrapper = styled.div({
-  transform: 'scale(0.5)',
   transformOrigin: 'top center',
   height: '10vh',
 });
@@ -84,7 +83,7 @@ const Player = ({ player }) => {
         <UICard.Content extra>
           <div>{`${cardCount} cards`}</div>
           <CardsWrapper>
-            <Cards flipped cards={displayCards} />
+            <Cards flipped cards={displayCards} scale={0.4} />
           </CardsWrapper>
         </UICard.Content>
       </UICard>
