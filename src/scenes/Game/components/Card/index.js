@@ -58,7 +58,7 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
     backgroundImage: `url(${cardImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    borderRadius: '5px',
+    borderRadius: '1px',
     height: '0%',
     opacity: isDragging ? '30%' : '100%',
     paddingTop: topAdjust,
