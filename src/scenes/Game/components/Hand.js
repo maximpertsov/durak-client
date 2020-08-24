@@ -10,7 +10,6 @@ import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
 import { getAttackers, getDefender } from 'reducers';
-import fp from 'utils/lodashFp';
 
 import Cards from './Cards';
 import CollectButton from './CollectButton';
@@ -19,9 +18,12 @@ import YieldButton from './YieldButton';
 const getDurak = ({ drawPile, hands }) => {
   if (!isEmpty(drawPile)) return null;
 
-  const playersWithCards = flatMap(hands, (hand, player) =>
-    (isEmpty(compact(hand)) ? [] : [player]),
-  );
+  const playersWithCards = flatMap(hands, (hand, player) => {
+    if (isEmpty(compact(hand))) return [];
+
+    return [player];
+  });
+
   if (size(playersWithCards) !== 1) return null;
 
   return first(playersWithCards);
@@ -29,15 +31,16 @@ const getDurak = ({ drawPile, hands }) => {
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getAttackers(state),
+  state => getDefender(state),
   state => getDurak(state),
 
-  (state, attackers, durak) => ({
+  (state, defender, durak) => ({
     cards: state.hands[state.user],
-    isDefender: getDefender(state) === state.user,
-    isInitialAttacker: fp.first(attackers) === state.user,
+    isAttacker: getAttackers(state),
+    isDefender: defender === state.user,
     isOutOfGame: durak !== null || !state.players.includes(state.user),
     isDurak: durak === state.user,
+    defender,
     user: state.user,
   }),
 );
@@ -45,10 +48,11 @@ const mapStateToProps = createSelector(
 const Hand = () => {
   const {
     cards,
+    isAttacker,
     isDefender,
     isDurak,
-    isInitialAttacker,
     isOutOfGame,
+    defender,
     user,
   } = useSelector(mapStateToProps, isEqual);
 
@@ -59,8 +63,10 @@ const Hand = () => {
 
   const renderMessage = () => {
     if (isDurak) return `${rofl} You're the durak! ${rofl}`;
-    if (isOutOfGame) return `${popcorn} Relax, you're not the durak! ${popcorn}`;
-    if (isInitialAttacker) return `${dagger} You are attacking ${dagger}`;
+    if (isOutOfGame) {
+      return `${popcorn} Relax, you're not the durak! ${popcorn}`;
+    }
+    if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
     if (isDefender) return `${shield} You are defending ${shield}`;
 
     return null;
