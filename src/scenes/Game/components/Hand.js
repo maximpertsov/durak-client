@@ -36,7 +36,7 @@ const mapStateToProps = createSelector(
 
   (state, defender, durak) => ({
     cards: state.hands[state.user],
-    isAttacker: getAttackers(state),
+    isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
     isOutOfGame: durak !== null || !state.players.includes(state.user),
     isDurak: durak === state.user,
