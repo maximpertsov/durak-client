@@ -5,20 +5,26 @@ import styled from '@emotion/styled';
 import Card from './Card';
 import CardStack from './CardStack';
 
-const BASE_CARD_WIDTH_PIXELS = 60;
-
 const Wrapper = styled.div(props => {
   const scaleFactor = props.scale ? props.scale : 1.0;
-  const cardWidthInPixels = scaleFactor * BASE_CARD_WIDTH_PIXELS;
+  const getGridTemplateColumns = ({ basePixelWidth }) =>
+    `repeat(auto-fit, ${scaleFactor * basePixelWidth}px)`;
 
+  /* eslint-disable quote-props */
   return {
+    '@media (max-width: 720px)': {
+      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 40 }),
+    },
+    '@media (min-width: 720px)': {
+      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 60 }),
+    },
     display: 'grid',
-    gridTemplateColumns: `repeat(auto-fit, ${cardWidthInPixels}px)`,
     gridGap: '0.25em',
     justifyContent: 'center',
     margin: '0 auto',
     padding: '0 5%',
   };
+  /* eslint-enable quote-props */
 });
 
 const CardOrStack = ({ flipped, cardOrStack }) => {
