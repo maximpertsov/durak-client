@@ -13,6 +13,7 @@ import size from 'lodash/size';
 
 import { getAttackers, getDefender } from 'reducers';
 import client from 'utils/client';
+import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
 import CollectButton from './CollectButton';
@@ -50,9 +51,12 @@ const mapStateToProps = createSelector(
 
 const RestartButton = () => {
   const game = useSelector(state => state.game);
+  const io = useWebSocketContext();
 
   const restartGame = () => {
-    client.post(`game/${game}/restart`);
+    client.post(`game/${game}/restart`).then(() => {
+      io.send('restarted', {});
+    });
   };
 
   return (
