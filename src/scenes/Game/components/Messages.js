@@ -16,6 +16,7 @@ const Wrapper = styled.div({
   display: 'flex',
   justifyContent: 'center',
   height: '100px',
+  margin: '10px 0 0 0',
 });
 
 const Messages = () => {
@@ -27,17 +28,12 @@ const Messages = () => {
         ({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds,
       ),
       fp.takeRight(3),
-      fp.map(message => (
-        <Message
-          key={message.createdAt}
-          message={message}
-        />
-      )),
+      fp.map(message => <Message key={message.createdAt} message={message} />),
     )(messages);
 
   return (
     <Wrapper>
-      <Comment.Group size="massive">{renderMessages()}</Comment.Group>
+      <Comment.Group size="large">{renderMessages()}</Comment.Group>
     </Wrapper>
   );
 };

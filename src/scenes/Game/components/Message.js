@@ -48,6 +48,9 @@ const getText = ({ type, payload }) => {
   }
 };
 
+const getFullText = ({ user, type, payload }) =>
+  `${user} ${getText({ type, payload })}`;
+
 const fadeOut = keyframes({
   '0%': {
     opacity: 1,
@@ -72,11 +75,11 @@ const Message = ({ message }) => {
   const notify = React.useCallback(() => {
     if (window.document.hasFocus()) return;
 
-    new window.Notification(`${message.user} ${getText(message)}`);
+    new window.Notification(getFullText(message));
   }, [message]);
 
   React.useEffect(() => {
-    window.document.title = `${message.user} ${getText(message)}`;
+    window.document.title = getFullText(message);
 
     if (!('Notification' in window)) return;
 
@@ -99,10 +102,9 @@ const Message = ({ message }) => {
     <Wrapper createdAt={message.createdAt}>
       <Comment>
         <Comment.Content>
-          <Comment.Author as="span">{message.user}</Comment.Author>
-          <Comment.Metadata>
-            <div>{getText(message)}</div>
-          </Comment.Metadata>
+          <Comment.Text>
+            <div>{getFullText(message)}</div>
+          </Comment.Text>
         </Comment.Content>
       </Comment>
     </Wrapper>
