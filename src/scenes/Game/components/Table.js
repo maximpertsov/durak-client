@@ -2,7 +2,6 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
@@ -17,39 +16,17 @@ import { getAttackers, getDefender, getUnbeatenCards } from 'reducers';
 import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
-import tenguyscrambled from '../assets/tenguyscrambled.png';
 import Cards from './Cards';
 
 /* eslint-disable indent */
-const Wrapper = styled.div(props => {
-  const noDurakStyle = {
+const Wrapper = styled.div(props => ({
     backgroundColor: 'green',
     height: '40vh',
-  };
-  const durakAppears = keyframes({
-    '0%': noDurakStyle,
-    '100%': {
-      backgroundImage: `url(${tenguyscrambled})`,
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'contain',
-      height: '50vh',
-      zIndex: 2,
-    },
-  });
-
-  return {
-    ...(props.isDurak
-      ? {
-          animation: `${durakAppears} 1s linear forwards`,
-        }
-      : noDurakStyle),
     flexGrow: 1,
     margin: '0 0 10px 0',
     opacity: props.isOver ? '90%' : '100%',
     padding: '10px',
-  };
-});
+  }));
 /* eslint-enable indent */
 
 const getDurak = ({ drawPile, hands }) => {
