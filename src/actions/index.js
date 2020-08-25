@@ -32,6 +32,7 @@ export default createActions({
       ADD: undefined,
       CLEAR: undefined,
       REMOVE: undefined,
+      SET: undefined,
     },
     TABLE: {
       APPEND: undefined,
