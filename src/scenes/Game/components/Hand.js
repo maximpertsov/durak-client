@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Button } from 'semantic-ui-react';
+import styled from '@emotion/styled';
+import { Button, Segment } from 'semantic-ui-react';
 
 import compact from 'lodash/compact';
 import first from 'lodash/first';
@@ -13,7 +14,6 @@ import size from 'lodash/size';
 import { getAttackers, getDefender } from 'reducers';
 import client from 'utils/client';
 
-import styled from '@emotion/styled';
 import Cards from './Cards';
 import CollectButton from './CollectButton';
 import YieldButton from './YieldButton';
@@ -108,7 +108,11 @@ const Hand = () => {
       </ButtonWrapper>
       <Cards cards={cards} />
       <h2>{user}</h2>
-      <h2>{renderMessage()}</h2>
+      {renderMessage() && (
+        <Segment tertiary>
+          <h2>{renderMessage()}</h2>
+        </Segment>
+      )}
     </div>
   );
 };
