@@ -41,7 +41,7 @@ const mapStateToProps = createSelector(
 const Wrapper = styled.div(props => ({
   backgroundColor: 'blue',
   height: '40vh',
-  margin: '10px',
+  margin: '0 0 10px 0',
   opacity: props.isOver ? '90%' : '100%',
   padding: '10px',
   width: '20%',

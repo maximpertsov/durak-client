@@ -45,7 +45,7 @@ const Wrapper = styled.div(props => {
         }
       : noDurakStyle),
     flexGrow: 1,
-    margin: '10px',
+    margin: '0 0 10px 0',
     opacity: props.isOver ? '90%' : '100%',
     padding: '10px',
   };
