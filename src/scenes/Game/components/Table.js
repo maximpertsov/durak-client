@@ -5,8 +5,6 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
-import first from 'lodash/first';
-import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
@@ -29,19 +27,6 @@ const Wrapper = styled.div(props => ({
   }));
 /* eslint-enable indent */
 
-const getDurak = ({ drawPile, hands }) => {
-  if (!isEmpty(drawPile)) return null;
-
-  const playersWithCards = flatMap(hands, (hand, player) => {
-    if (isEmpty(compact(hand))) return [];
-
-    return [player];
-  });
-  if (size(playersWithCards) !== 1) return null;
-
-  return first(playersWithCards);
-};
-
 const mapStateToProps = createSelector(
   state => state,
   state => getAttackers(state),
@@ -51,7 +36,6 @@ const mapStateToProps = createSelector(
   (state, attackers, defender, unbeatenCards) => ({
     freeDefenseCardCount:
       size(compact(state.hands[defender])) - size(unbeatenCards),
-    isDurak: getDurak(state) === state.user,
     selectedCards: state.selectedCards,
     table: state.table,
     userCanAttack: attackers.includes(state.user),
@@ -63,19 +47,10 @@ const Table = () => {
   const io = useWebSocketContext();
   const {
     freeDefenseCardCount,
-    isDurak,
     selectedCards,
     table,
     userCanAttack,
   } = useSelector(mapStateToProps, isEqual);
-
-  React.useEffect(() => {
-    if (isDurak) {
-      setTimeout(() => {
-        dispatch(actions.game.table.set([]));
-      }, 1000);
-    }
-  }, [dispatch, isDurak]);
 
   const canDrop = (card, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;
@@ -107,7 +82,7 @@ const Table = () => {
   });
 
   return (
-    <Wrapper className="Table" isDurak={isDurak} isOver={isOver} ref={dropRef}>
+    <Wrapper className="Table" isOver={isOver} ref={dropRef}>
       <Cards cards={table} />
     </Wrapper>
   );
