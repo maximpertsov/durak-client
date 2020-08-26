@@ -29,7 +29,9 @@ const WebSocketEventListener = () => {
 
     switch (lastMessage.type) {
       case 'restarted':
-        dispatch(actions.game.remoteDataState.set('NOT_FETCHED'));
+        setTimeout(() => {
+          dispatch(actions.game.remoteDataState.set('NOT_FETCHED'));
+        }, 1000);
         break;
       default:
         updateGameState(dispatch, lastMessage);
