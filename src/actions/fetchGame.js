@@ -1,6 +1,11 @@
+import drop from 'lodash/drop';
+import fromPairs from 'lodash/fromPairs';
+import last from 'lodash/last';
+import reverse from 'lodash/reverse';
+import take from 'lodash/take';
+
 import actions from 'actions';
 import client from 'utils/client';
-import _ from 'utils/lodash';
 
 const handSize = 6;
 
@@ -18,13 +23,17 @@ const fetchGame = ({ game }) => dispatch => {
     dispatch(actions.game.players.set(players));
 
     // setup draw pile
-    const cardsLeft = _.drop(drawPile, players.length * handSize);
+    const cardsLeft = drop(drawPile, players.length * handSize);
     dispatch(actions.game.drawPile.set(cardsLeft));
-    const { suit: trumpSuit } = _.last(drawPile);
+    const { suit: trumpSuit } = last(drawPile);
     dispatch(actions.game.trumpSuit.set(trumpSuit));
 
+    // clear player hands (applies if this is a restart)
+    const clearHands = fromPairs(players.map(player => [player, []]));
+    dispatch(actions.game.hands.set(clearHands));
+
     // setup player hands (round-robin)
-    const cardsToDraw = _.reverse(_.take(drawPile, players.length * handSize));
+    const cardsToDraw = reverse(take(drawPile, players.length * handSize));
     while (cardsToDraw.length > 0) {
       players.forEach(player => {
         const card = cardsToDraw.pop();
