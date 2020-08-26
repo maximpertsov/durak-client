@@ -19,6 +19,9 @@ const fetchGame = ({ game }) => dispatch => {
       data: { drawPile, players },
     } = response;
 
+    // clear draws
+    dispatch(actions.game.passCount.set(0));
+
     // clear table
     dispatch(actions.game.table.clear());
 
