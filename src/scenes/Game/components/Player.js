@@ -19,7 +19,13 @@ import { getAttackers, getDefender } from 'reducers';
 import Cards from './Cards';
 
 const getCardCount = flow(compact, size);
-const getDisplayCards = flow(compact, chunk(6), unzip, map(compact));
+const getDisplayCards = flow(
+  compact,
+  chunk(6),
+  unzip,
+  map(compact),
+  map(() => ({ flipped: true })),
+);
 
 const mapStateToProps = createSelector(
   state => state,
@@ -83,7 +89,7 @@ const Player = ({ player }) => {
         <UICard.Content extra>
           <div>{`${cardCount} cards`}</div>
           <CardsWrapper>
-            <Cards flipped cards={displayCards} scale={0.4} />
+            <Cards cards={displayCards} scale={0.4} />
           </CardsWrapper>
         </UICard.Content>
       </UICard>

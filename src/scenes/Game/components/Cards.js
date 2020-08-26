@@ -27,25 +27,25 @@ const Wrapper = styled.div(props => {
   /* eslint-enable quote-props */
 });
 
-const CardOrStack = ({ flipped, cardOrStack }) => {
+const CardOrStack = ({ cardOrStack }) => {
   if (Array.isArray(cardOrStack)) {
     return (
       <CardStack>
         {cardOrStack.map((card, index) => (
-          <CardOrStack key={index} flipped={flipped} cardOrStack={card} />
+          <CardOrStack key={index} cardOrStack={card} />
         ))}
       </CardStack>
     );
   }
 
-  const { flipped: cardFlipped, suit, rank } = cardOrStack || {};
-  return <Card flipped={flipped || cardFlipped} suit={suit} rank={rank} />;
+  const { flipped, suit, rank } = cardOrStack || {};
+  return <Card flipped={flipped} suit={suit} rank={rank} />;
 };
 
-const Cards = ({ cards, flipped, scale }) => {
+const Cards = ({ cards, scale }) => {
   const renderCards = () =>
     cards.map((cardOrStack, index) => (
-      <CardOrStack key={index} flipped={flipped} cardOrStack={cardOrStack} />
+      <CardOrStack key={index} cardOrStack={cardOrStack} />
     ));
 
   return (
@@ -58,14 +58,14 @@ const Cards = ({ cards, flipped, scale }) => {
 export default Cards;
 
 Cards.propTypes = {
-  flipped: PropTypes.bool,
   cards: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.shape()),
     PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
   ]),
+  scale: PropTypes.number,
 };
 
 Cards.defaultProps = {
-  flipped: false,
   cards: [],
+  scale: 1.0,
 };
