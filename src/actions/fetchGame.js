@@ -19,6 +19,9 @@ const fetchGame = ({ game }) => dispatch => {
       data: { drawPile, players },
     } = response;
 
+    // clear table
+    dispatch(actions.game.table.clear());
+
     // setup players
     dispatch(actions.game.players.set(players));
 
