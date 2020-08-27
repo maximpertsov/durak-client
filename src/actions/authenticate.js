@@ -1,0 +1,28 @@
+import actions from 'actions';
+import logout from 'actions/logout';
+import updateLoginForm from 'actions/updateLoginForm';
+import jwtDecode from 'jwt-decode';
+import client, { isSuccess } from 'utils/client';
+
+const authenticate = () => async dispatch => {
+  try {
+    const response = await client.post('token/refresh', {
+      refresh: localStorage.getItem('refresh'),
+    });
+
+    if (isSuccess(response)) {
+      const { access } = response.data;
+      const { user } = jwtDecode(access);
+
+      localStorage.setItem('access', access);
+
+      dispatch(actions.game.user.set(user));
+    }
+  } catch (error) {
+    dispatch(logout());
+  } finally {
+    dispatch(updateLoginForm({ username: '', password: '' }));
+  }
+};
+
+export default authenticate;

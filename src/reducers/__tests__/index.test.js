@@ -41,6 +41,7 @@ describe('getPlayersFromUser', () => {
     ${'vasyl'}  | ${['vasyl', 'igor', 'grusha', 'anna']}
     ${'igor'}   | ${['igor', 'grusha', 'anna', 'vasyl']}
     ${'grusha'} | ${['grusha', 'anna', 'vasyl', 'igor']}
+    ${null}     | ${[]}
   `('$user attacks', ({ user, expected }) => {
   const state = { players, user };
   expect(getPlayersFromUser(state)).toStrictEqual(expected);

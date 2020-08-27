@@ -52,4 +52,17 @@ export default createActions({
       SET: undefined,
     },
   },
+  HOME: {
+    LOGIN_FORM: {
+      USERNAME: {
+        SET: undefined,
+      },
+      PASSWORD: {
+        SET: undefined,
+      },
+      ERROR: {
+        SET: undefined,
+      },
+    },
+  },
 });

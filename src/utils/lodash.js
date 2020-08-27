@@ -26,7 +26,7 @@ const camelCase = string =>
   // into 'a1A2'. This function makes sure that camel-casing
   // is only performed on strings that include an underscore
   // character.
-  string.includes('_') ? _camelCase(string) : string;
+  (string.includes('_') ? _camelCase(string) : string);
 
 const deepKeyTransform = (fn, obj, options = {}) => {
   const skipKeys = get(options, 'skipKeys', []);
@@ -51,14 +51,15 @@ const _ = Object.freeze({
   chunk,
   compact,
   drop,
+  get,
+  reverse,
+  take,
   first,
   isEmpty,
   isEqual,
   last,
   map,
-  reverse,
   size,
-  take,
   takeRight,
   zipObject,
   unzip,

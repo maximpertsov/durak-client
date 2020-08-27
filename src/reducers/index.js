@@ -11,6 +11,7 @@ import actions from 'actions';
 import drawPile from './drawPile';
 import game from './game';
 import hands from './hands';
+import loginForm from './loginForm';
 import messages from './messages';
 import players from './players';
 import remoteDataState from './remoteDataState';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   drawPile,
   game,
   hands,
+  loginForm,
   messages,
   // TODO: move this to the server?
   passCount: handleAction(
@@ -48,6 +50,8 @@ const getPlayersWithCardsOrAttacked = state =>
 export const getDefender = state => getPlayersWithCardsOrAttacked(state)[1];
 
 export const getPlayersFromUser = state => {
+  if (!state.user) return [];
+
   const offset = findIndex(state.players, player => player === state.user);
   return state.players.map(
     (_, index) => state.players[(index + offset) % state.players.length],
