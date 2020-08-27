@@ -1,4 +1,5 @@
 import actions from 'actions';
+import logout from 'actions/logout';
 import updateLoginForm from 'actions/updateLoginForm';
 import jwtDecode from 'jwt-decode';
 import client from 'utils/client';
@@ -26,7 +27,7 @@ const login = ({ username, password }) => async dispatch => {
     dispatch(actions.game.user.set(user));
   } catch (error) {
     dispatch(updateLoginForm({ error: 'Login failed' }));
-    dispatch(actions.game.user.set(null));
+    dispatch(logout());
   } finally {
     dispatch(updateLoginForm({ username: '', password: '' }));
   }
