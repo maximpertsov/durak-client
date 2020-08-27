@@ -25,7 +25,8 @@ const mapStateToProps = createSelector(
   (state, playersFromUser) => ({
     hands: state.hands,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
-    ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
+    user: state.user,
+    ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 

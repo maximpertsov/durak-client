@@ -19,13 +19,14 @@ const login = ({ username, password }) => async dispatch => {
       throw new Error();
     }
     dispatch(actions.game.user.set(username));
-    // create cookie that expires in 1 minute
+    // create cookie that expires in 1 hour
     // https://github.com/js-cookie/js-cookie/issues/74
     // https://github.com/js-cookie/js-cookie/wiki/Frequently-Asked-Questions#expire-cookies-in-less-than-a-day
-    Cookies.set('sid', username, { expires: (1 / 24) / 60 });
+    Cookies.set('sid', username, { expires: 1 / 24 });
   } catch (error) {
     dispatch(updateLoginForm({ error: 'Login failed' }));
     Cookies.remove('sid');
+    dispatch(actions.game.user.set(null));
   } finally {
     dispatch(updateLoginForm({ username: '', password: '' }));
   }
