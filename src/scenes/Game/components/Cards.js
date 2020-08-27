@@ -5,50 +5,67 @@ import styled from '@emotion/styled';
 import Card from './Card';
 import CardStack from './CardStack';
 
-const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, 60px)',
-  gridGap: '0.25em',
-  justifyContent: 'center',
-  margin: '0 auto',
-  padding: '0 5%',
+const Wrapper = styled.div(props => {
+  const scaleFactor = props.scale ? props.scale : 1.0;
+  const getGridTemplateColumns = ({ basePixelWidth }) =>
+    `repeat(auto-fit, ${scaleFactor * basePixelWidth}px)`;
+
+  /* eslint-disable quote-props */
+  return {
+    '@media (max-width: 720px)': {
+      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 40 }),
+    },
+    '@media (min-width: 720px)': {
+      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 60 }),
+    },
+    display: 'grid',
+    gridGap: '0.25em',
+    justifyContent: 'center',
+    margin: '0 auto',
+    padding: '0 5%',
+  };
+  /* eslint-enable quote-props */
 });
 
-const CardOrStack = ({ flipped, cardOrStack }) => {
+const CardOrStack = ({ cardOrStack }) => {
   if (Array.isArray(cardOrStack)) {
     return (
       <CardStack>
         {cardOrStack.map((card, index) => (
-          <CardOrStack key={index} flipped={flipped} cardOrStack={card} />
+          <CardOrStack key={index} cardOrStack={card} />
         ))}
       </CardStack>
     );
   }
 
-  const { flipped: cardFlipped, suit, rank } = cardOrStack || {};
-  return <Card flipped={flipped || cardFlipped} suit={suit} rank={rank} />;
+  const { flipped, suit, rank } = cardOrStack || {};
+  return <Card flipped={flipped} suit={suit} rank={rank} />;
 };
 
-const Cards = ({ cards, flipped }) => {
+const Cards = ({ cards, scale }) => {
   const renderCards = () =>
     cards.map((cardOrStack, index) => (
-      <CardOrStack key={index} flipped={flipped} cardOrStack={cardOrStack} />
+      <CardOrStack key={index} cardOrStack={cardOrStack} />
     ));
 
-  return <Wrapper className="Game">{renderCards()}</Wrapper>;
+  return (
+    <Wrapper scale={scale} className="Game">
+      {renderCards()}
+    </Wrapper>
+  );
 };
 
 export default Cards;
 
 Cards.propTypes = {
-  flipped: PropTypes.bool,
   cards: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.shape()),
     PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
   ]),
+  scale: PropTypes.number,
 };
 
 Cards.defaultProps = {
-  flipped: false,
   cards: [],
+  scale: 1.0,
 };

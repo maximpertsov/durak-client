@@ -2,60 +2,71 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
+import { Dimmer, Loader } from 'semantic-ui-react';
+
+import isEqual from 'lodash/isEqual';
+import zipObject from 'lodash/zipObject';
 
 import { getPlayersFromUser } from 'reducers';
-import _ from 'utils/lodash';
 
-import DrawListener from './components/DrawListener';
 import DrawPile from './components/DrawPile';
-import DurakListener from './components/DurakListener';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
+import PassCards from './components/PassCards';
 import Player from './components/Player';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
-import YieldListener from './components/YieldListener';
-
-const Wrapper = styled.div({
-  alignItems: 'center',
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridTemplateRows: '1fr 2fr 1fr',
-  gridGap: '0.25rem',
-  height: '500px',
-});
 
 const mapStateToProps = createSelector(
   state => state,
   state => getPlayersFromUser(state),
 
   (state, playersFromUser) => ({
-    user: state.user,
-    ..._.zipObject(
-      ['player1', 'player2', 'player3', 'player4'],
-      playersFromUser,
-    ),
+    hands: state.hands,
+    isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
+    ...zipObject(['user', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
+const Wrapper = styled.div({
+  display: 'grid',
+  gridTemplateColumns: '2fr 1fr',
+  gridGap: '0.25rem',
+  padding: '5px 20px',
+});
+
+const TableWrapper = styled.div({
+  alignItems: 'stretch',
+  display: 'flexbox',
+});
+
 const Game = () => {
-  const { user, player2, player3, player4 } = useSelector(
+  const { isLoading, user, player2, player3, player4 } = useSelector(
     mapStateToProps,
-    _.isEqual,
+    isEqual,
+  );
+
+  const renderTable = () => (
+    <TableWrapper>
+      <Table />
+      <PassCards />
+    </TableWrapper>
   );
 
   const renderGame = () => (
     <Wrapper>
-      <Player player={player4} />
-      <Messages />
-      <div />
-      <Player player={player3} />
-      <Table />
-      <DrawPile />
-      <Player player={player2} />
-      <Hand />
-      <div />
+      <div>
+        {renderTable()}
+        <Hand />
+        <Messages />
+      </div>
+      <div>
+        <DrawPile />
+        <Player player={player2} />
+        <Player player={player3} />
+        <Player player={player4} />
+      </div>
     </Wrapper>
   );
 
@@ -64,11 +75,11 @@ const Game = () => {
   return (
     <div className="Game">
       <GameInitializer />
-      <DurakListener />
       <WebSocketEventListener />
-      <YieldListener />
-      <DrawListener />
-      {renderGame()}
+      <Dimmer active={isLoading}>
+        <Loader />
+      </Dimmer>
+      {!isLoading && renderGame()}
     </div>
   );
 };

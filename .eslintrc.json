@@ -115,7 +115,12 @@
             "^redux",
             "^reselect",
             "^@emotion",
-            "^semantic-ui",
+            "^semantic-ui"
+          ],
+          [
+            "^lodash/fp"
+          ],
+          [
             "^lodash"
           ],
           [

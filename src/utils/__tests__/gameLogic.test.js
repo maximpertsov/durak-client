@@ -1,4 +1,4 @@
-import { canAttack, canDefend, cards } from '../gameLogic';
+import { canAttack, canDefend, canPass, cards } from '../gameLogic';
 
 /* eslint-disable max-len */
 describe('canDefend', () => {
@@ -54,6 +54,66 @@ describe('canAttack', () => {
       ${'diamonds'} | ${10}    | ${true}
     `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
   expect(canAttack({ table, card: { rank, suit } })).toBe(expected);
+});
+  });
+});
+
+describe('canPass', () => {
+  describe('empty table', () => {
+    const table = [];
+
+    test('always false', () => {
+      cards.forEach(card => {
+        expect(canPass({ table, card })).toBe(false);
+      });
+    });
+  });
+
+  describe('table with beaten cards', () => {
+    const table = [
+      [
+        { suit: 'hearts', rank: 10 },
+        { suit: 'spades', rank: 10 },
+      ],
+    ];
+
+    test('always false', () => {
+      cards.forEach(card => {
+        expect(canPass({ table, card })).toBe(false);
+      });
+    });
+  });
+
+  describe('table with non-uniform ranks', () => {
+    const table = [
+      [
+        { suit: 'hearts', rank: 9 },
+        { suit: 'spades', rank: 10 },
+      ],
+    ];
+
+    test('always false', () => {
+      cards.forEach(card => {
+        expect(canPass({ table, card })).toBe(false);
+      });
+    });
+  });
+
+  describe('table with uniform ranks', () => {
+    const table = [
+      [{ suit: 'hearts', rank: 10 }],
+      [{ suit: 'clubs', rank: 10 }],
+    ];
+
+    test.each`
+      suit          | rank     | expected
+      ${'spades'}   | ${7}     | ${false}
+      ${'spades'}   | ${8}     | ${false}
+      ${'spades'}   | ${'ace'} | ${false}
+      ${'spades'}   | ${10}    | ${true}
+      ${'diamonds'} | ${10}    | ${true}
+    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
+  expect(canPass({ table, card: { rank, suit } })).toBe(expected);
 });
   });
 });

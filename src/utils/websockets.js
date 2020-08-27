@@ -1,10 +1,35 @@
 import React, { createContext, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
+
+import isEqual from 'lodash/isEqual';
+import pick from 'lodash/pick';
 
 import actions from 'actions';
-import client from 'utils/client';
+import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
+
+const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
+
+const mapStateToProps = createDeepEqualSelector(
+  state => state,
+
+  state => ({
+    game: state.game,
+    user: state.user,
+  }),
+);
+
+const getGameState = store =>
+  pick(store.getState(), [
+    'drawPile',
+    'hands',
+    'passCount',
+    'players',
+    'table',
+    'yielded',
+  ]);
 
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
@@ -12,30 +37,34 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
-  const game = useSelector(state => state.game);
+  const { game, user } = useSelector(mapStateToProps, isEqual);
+  const store = useStore();
 
-  const createMessage = (type, payload) => ({
-    createdAt: new Date().toISOString(),
-    type,
-    game,
-    user,
-    payload,
-  });
+  const createMessage = (type, payload) =>
+    deepSnakeCase(
+      {
+        createdAt: new Date().toISOString(),
+        type,
+        game,
+        user,
+        fromState: getGameState(store),
+        payload,
+      },
+      { skipKeys: ['hands'] },
+    );
 
   const send = (type, payload) => {
     const message = createMessage(type, payload);
-
-    client.post(`game/${game}/events`, message).then(() => {
-      socket.send(JSON.stringify(message));
-    });
+    socket.send(JSON.stringify(message));
   };
 
   if (!socket) {
     socket = new WebSocket(process.env.REACT_APP_WS_URL);
 
     socket.onmessage = event => {
-      const message = JSON.parse(event.data);
+      const message = deepCamelCase(JSON.parse(event.data), {
+        skipKeys: ['hands'],
+      });
       dispatch(actions.messages.append(message));
     };
 

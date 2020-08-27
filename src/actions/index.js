@@ -14,36 +14,41 @@ export default createActions({
     DRAW_PILE: {
       SET: undefined,
     },
-    HAND: {
+    HANDS: {
       ADD: undefined,
       COMPACT: undefined,
       REMOVE: undefined,
+      SET: undefined,
+    },
+    PASS_COUNT: {
+      SET: undefined,
     },
     PLAYERS: {
       ADD: undefined,
       SET: undefined,
       ROTATE: undefined,
     },
-    YIELDED: {
+    SELECTED_CARDS: {
       ADD: undefined,
       CLEAR: undefined,
-    },
-    ROTATIONS: {
-      SET: {
-        ZERO: () => 0,
-        ONE: () => 1,
-        TWO: () => 2,
-      },
+      REMOVE: undefined,
+      SET: undefined,
     },
     TABLE: {
       APPEND: undefined,
-      STACK: undefined,
       CLEAR: undefined,
+      SET: undefined,
+      STACK: undefined,
     },
     TRUMP_SUIT: {
       SET: undefined,
     },
     USER: {
+      SET: undefined,
+    },
+    YIELDED: {
+      ADD: undefined,
+      CLEAR: undefined,
       SET: undefined,
     },
   },

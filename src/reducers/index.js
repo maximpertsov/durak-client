@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
+import { handleAction } from 'redux-actions';
+
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import reject from 'lodash/reject';
+
+import actions from 'actions';
 
 import drawPile from './drawPile';
 import game from './game';
@@ -11,7 +15,7 @@ import loginForm from './loginForm';
 import messages from './messages';
 import players from './players';
 import remoteDataState from './remoteDataState';
-import rotations from './rotations';
+import selectedCards from './selectedCards';
 import table from './table';
 import trumpSuit from './trumpSuit';
 import user from './user';
@@ -23,9 +27,15 @@ const rootReducer = combineReducers({
   hands,
   loginForm,
   messages,
+  // TODO: move this to the server?
+  passCount: handleAction(
+    actions.game.passCount.set,
+    (state, action) => action.payload,
+    0,
+  ),
   players,
   remoteDataState,
-  rotations,
+  selectedCards,
   table,
   trumpSuit,
   user,

@@ -3,6 +3,7 @@ import 'index.css';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
@@ -20,6 +21,17 @@ const getReduxDevExtOptions = () => {
   return window.__REDUX_DEVTOOLS_EXTENSION__();
 };
 
+// source: https://www.kirupa.com/html5/check_if_you_are_on_a_touch_enabled_device.htm
+const getDndBackend = () => {
+  const msTouchEnabled = window.navigator.msMaxTouchPoints;
+  const generalTouchEnabled = 'ontouchstart' in document.createElement('div');
+
+  if (msTouchEnabled || generalTouchEnabled) {
+    return TouchBackend;
+  }
+  return HTML5Backend;
+};
+
 const store = compose(
   applyMiddleware(thunk),
   getReduxDevExtOptions(),
@@ -28,7 +40,7 @@ const store = compose(
 ReactDOM.render(
   <Provider store={store}>
     <WebSocketProvider>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={getDndBackend()}>
         <App />
       </DndProvider>
     </WebSocketProvider>
