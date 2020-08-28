@@ -19,14 +19,17 @@ import {
   getPlayersFromUser,
 } from 'reducers';
 
+import CollectButton from './components/CollectButton';
 import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
 import PassCards from './components/PassCards';
 import Player from './components/Player';
+import RestartButton from './components/RestartButton';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
+import YieldButton from './components/YieldButton';
 
 const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
@@ -79,6 +82,10 @@ const TableWrapper = styled.div({
   display: 'flexbox',
 });
 
+const ButtonWrapper = styled.div({
+  marginBottom: '15px',
+});
+
 const Game = () => {
   const {
     defender,
@@ -119,11 +126,26 @@ const Game = () => {
       </Segment>
     );
 
+  const renderButton = () => {
+    if (isDurak) return <RestartButton />;
+    if (isOutOfGame) return null;
+    if (isDefender) return <CollectButton />;
+
+    return <YieldButton />;
+  };
+
+  const renderButtons = () => (
+    <ButtonWrapper>
+      <div>{renderButton()}</div>
+    </ButtonWrapper>
+  );
+
   const renderGame = () => (
     <Wrapper>
       <div>
         {renderTopMessage()}
         {renderTable()}
+        {renderButtons()}
         <Hand />
         <Messages />
       </div>
