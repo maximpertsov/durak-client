@@ -11,9 +11,9 @@ import Navigation from 'scenes/Home/components/Navigation';
 
 const App = () => (
   <div className="App">
-    <Navigation />
-    <LoginForm />
     <Router>
+      <Navigation />
+      <LoginForm />
       <Route exact path="/" component={Home} />
       <Route exact path="/:game" component={Game} />
     </Router>

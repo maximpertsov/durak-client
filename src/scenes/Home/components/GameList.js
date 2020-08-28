@@ -32,7 +32,6 @@ const GameList = () => {
 
   React.useEffect(() => {
     if (!user) return;
-    if (game) return;
     if (gameList !== null) return;
 
     client.get('games/me').then(response => {
@@ -46,7 +45,6 @@ const GameList = () => {
     ));
 
   if (!user) return null;
-  if (game) return null;
   if (gameList === null) return null;
 
   return (
