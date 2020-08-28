@@ -1,8 +1,6 @@
 import React, { createContext, useContext } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
-import { createSelectorCreator, defaultMemoize } from 'reselect';
+import { useDispatch, useStore } from 'react-redux';
 
-import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 
 import actions from 'actions';
@@ -10,26 +8,22 @@ import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
 
-const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
+const getGameState = store => {
+  const state = store.getState();
 
-const mapStateToProps = createDeepEqualSelector(
-  state => state,
-
-  state => ({
-    game: state.game,
+  return {
     user: state.user,
-  }),
-);
-
-const getGameState = store =>
-  pick(store.getState(), [
-    'drawPile',
-    'hands',
-    'passCount',
-    'players',
-    'table',
-    'yielded',
-  ]);
+    game: state.game,
+    fromState: pick(state, [
+      'drawPile',
+      'hands',
+      'passCount',
+      'players',
+      'table',
+      'yielded',
+    ]),
+  };
+};
 
 /* eslint-disable react/prop-types */
 export const WebSocketProvider = ({ children }) => {
@@ -37,7 +31,6 @@ export const WebSocketProvider = ({ children }) => {
   let io;
 
   const dispatch = useDispatch();
-  const { game, user } = useSelector(mapStateToProps, isEqual);
   const store = useStore();
 
   const createMessage = (type, payload) =>
@@ -45,10 +38,8 @@ export const WebSocketProvider = ({ children }) => {
       {
         createdAt: new Date().toISOString(),
         type,
-        game,
-        user,
-        fromState: getGameState(store),
         payload,
+        ...getGameState(store),
       },
       { skipKeys: ['hands'] },
     );
