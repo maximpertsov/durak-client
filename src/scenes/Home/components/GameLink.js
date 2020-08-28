@@ -6,15 +6,12 @@ import { Card as UICard } from 'semantic-ui-react';
 
 import reject from 'lodash/reject';
 
-import actions from 'actions';
-
 const GameLink = ({ history, players, slug }) => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
 
   const enterGame = () => {
-    dispatch(actions.game.id.set(slug));
     history.push(`/${slug}`);
   };
 

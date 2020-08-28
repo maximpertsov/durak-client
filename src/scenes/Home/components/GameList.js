@@ -19,7 +19,6 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    game: state.game,
     gameList: state.gameList,
     user: state.user,
   }),
@@ -28,7 +27,7 @@ const mapStateToProps = createSelector(
 const GameList = () => {
   const dispatch = useDispatch();
 
-  const { game, gameList, user } = useSelector(mapStateToProps, isEqual);
+  const { gameList, user } = useSelector(mapStateToProps, isEqual);
 
   React.useEffect(() => {
     if (!user) return;
@@ -37,7 +36,7 @@ const GameList = () => {
     client.get('games/me').then(response => {
       dispatch(actions.home.gameList.set(response.data));
     });
-  }, [dispatch, game, gameList, user]);
+  }, [dispatch, gameList, user]);
 
   const renderGameList = () =>
     gameList.map(({ players, slug }) => (

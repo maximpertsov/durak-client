@@ -5,9 +5,6 @@ export default createActions({
     APPEND: undefined,
   },
   GAME: {
-    ID: {
-      SET: undefined,
-    },
     REMOTE_DATA_STATE: {
       SET: undefined,
     },

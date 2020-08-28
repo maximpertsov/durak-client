@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import fetchEvents from 'actions/fetchEvents';
 import fetchGame from 'actions/fetchGame';
+import { getGame } from 'reducers';
 
 const GameInitializer = () => {
   const dispatch = useDispatch();
 
+  const game = useSelector(() => getGame());
   const remoteDataState = useSelector(state => state.remoteDataState);
-  const game = useSelector(state => state.game);
 
   useEffect(() => {
     if (!game) return;

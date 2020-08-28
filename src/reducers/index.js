@@ -9,7 +9,6 @@ import reject from 'lodash/reject';
 import actions from 'actions';
 
 import drawPile from './drawPile';
-import game from './game';
 import hands from './hands';
 import loginForm from './loginForm';
 import messages from './messages';
@@ -23,7 +22,6 @@ import yielded from './yielded';
 
 const rootReducer = combineReducers({
   drawPile,
-  game,
   hands,
   loginForm,
   messages,
@@ -48,6 +46,8 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
+export const getGame = () => window.location.pathname.split('/')[1] || null;
 
 const getPlayersWithCardsOrAttacked = state =>
   reject(state.players, player => isEmpty(state.hands[player]));

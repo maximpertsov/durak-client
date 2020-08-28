@@ -7,7 +7,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 import zipObject from 'lodash/zipObject';
 
-import { getPlayersFromUser } from 'reducers';
+import { getGame, getPlayersFromUser } from 'reducers';
 
 import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
@@ -23,7 +23,7 @@ const mapStateToProps = createSelector(
   state => getPlayersFromUser(state),
 
   (state, playersFromUser) => ({
-    game: state.game,
+    game: getGame(),
     hands: state.hands,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     user: state.user,
@@ -44,7 +44,7 @@ const TableWrapper = styled.div({
 });
 
 const Game = () => {
-  const { game, isLoading, user, player2, player3, player4 } = useSelector(
+  const { isLoading, game, user, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );

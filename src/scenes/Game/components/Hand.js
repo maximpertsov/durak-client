@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
-import { getAttackers, getDefender } from 'reducers';
+import { getAttackers, getDefender, getGame } from 'reducers';
 import client from 'utils/client';
 import { useWebSocketContext } from 'utils/websockets';
 
@@ -50,7 +50,7 @@ const mapStateToProps = createSelector(
 );
 
 const RestartButton = () => {
-  const game = useSelector(state => state.game);
+  const game = useSelector(() => getGame());
   const io = useWebSocketContext();
 
   const restartGame = () => {

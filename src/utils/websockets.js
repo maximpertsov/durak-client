@@ -4,6 +4,7 @@ import { useDispatch, useStore } from 'react-redux';
 import pick from 'lodash/pick';
 
 import actions from 'actions';
+import { getGame } from 'reducers';
 import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
@@ -13,7 +14,6 @@ const getGameState = store => {
 
   return {
     user: state.user,
-    game: state.game,
     fromState: pick(state, [
       'drawPile',
       'hands',
@@ -38,6 +38,7 @@ export const WebSocketProvider = ({ children }) => {
       {
         createdAt: new Date().toISOString(),
         type,
+        game: getGame(),
         payload,
         ...getGameState(store),
       },
