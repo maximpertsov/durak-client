@@ -33,6 +33,11 @@ const rootReducer = combineReducers({
     (state, action) => action.payload,
     0,
   ),
+  gameList: handleAction(
+    actions.home.gameList.set,
+    (state, action) => action.payload,
+    null,
+  ),
   players,
   remoteDataState,
   selectedCards,
