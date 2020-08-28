@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
 import { Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
@@ -9,6 +10,10 @@ import actions from 'actions';
 import client from 'utils/client';
 
 import GameLink from './GameLink';
+
+const Wrapper = styled.div`
+  margin: 10px;
+`;
 
 const mapStateToProps = createSelector(
   state => state,
@@ -36,13 +41,19 @@ const GameList = () => {
   }, [dispatch, game, gameList, user]);
 
   const renderGameList = () =>
-    gameList.map(({ slug }) => <GameLink key={slug} slug={slug} />);
+    gameList.map(({ players, slug }) => (
+      <GameLink key={slug} players={players} slug={slug} />
+    ));
 
   if (!user) return null;
   if (game) return null;
   if (gameList === null) return null;
 
-  return <UICard.Group className="GameList">{renderGameList()}</UICard.Group>;
+  return (
+    <Wrapper className="GameList">
+      <UICard.Group>{renderGameList()}</UICard.Group>
+    </Wrapper>
+  );
 };
 
 export default GameList;
