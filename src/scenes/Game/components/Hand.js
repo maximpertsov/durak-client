@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Button } from 'semantic-ui-react';
 
 import compact from 'lodash/compact';
 import first from 'lodash/first';
@@ -11,12 +10,11 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
-import { getDefender, getGame } from 'reducers';
-import client from 'utils/client';
-import { useWebSocketContext } from 'utils/websockets';
+import { getDefender } from 'reducers';
 
 import Cards from './Cards';
 import CollectButton from './CollectButton';
+import RestartButton from './RestartButton';
 import YieldButton from './YieldButton';
 
 const getDurak = ({ drawPile, hands }) => {
@@ -46,23 +44,6 @@ const mapStateToProps = createSelector(
     user: state.user,
   }),
 );
-
-const RestartButton = () => {
-  const game = useSelector(() => getGame());
-  const io = useWebSocketContext();
-
-  const restartGame = () => {
-    client.post(`game/${game}/restart`).then(() => {
-      io.send('restarted', {});
-    });
-  };
-
-  return (
-    <Button circular size="big" onClick={restartGame}>
-      play again
-    </Button>
-  );
-};
 
 const ButtonWrapper = styled.div({
   marginBottom: '15px',
