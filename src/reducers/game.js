@@ -4,10 +4,7 @@ import actions from 'actions';
 
 const set = (state, action) => action.payload;
 
-const getInitialValue = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('g') || null;
-};
+const getInitialValue = () => window.location.pathname.split('/')[1] || null;
 
 const game = handleActions(
   {
