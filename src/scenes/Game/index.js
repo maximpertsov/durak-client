@@ -23,6 +23,7 @@ const mapStateToProps = createSelector(
   state => getPlayersFromUser(state),
 
   (state, playersFromUser) => ({
+    game: state.game,
     hands: state.hands,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     user: state.user,
@@ -43,7 +44,7 @@ const TableWrapper = styled.div({
 });
 
 const Game = () => {
-  const { isLoading, user, player2, player3, player4 } = useSelector(
+  const { game, isLoading, user, player2, player3, player4 } = useSelector(
     mapStateToProps,
     isEqual,
   );
@@ -72,6 +73,7 @@ const Game = () => {
   );
 
   if (!user) return null;
+  if (!game) return null;
 
   return (
     <div className="Game">
