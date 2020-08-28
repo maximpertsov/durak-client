@@ -4,8 +4,7 @@ import actions from 'actions';
 
 const set = (state, action) => action.payload;
 
-// TODO: get at login/lobby
-const getId = () => {
+const getInitialValue = () => {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get('g') || null;
 };
@@ -14,7 +13,7 @@ const game = handleActions(
   {
     [actions.game.id.set]: set,
   },
-  getId,
+  getInitialValue(),
 );
 
 export default game;

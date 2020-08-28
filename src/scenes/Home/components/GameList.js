@@ -1,11 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
 import client from 'utils/client';
+
+import GameLink from './GameLink';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -32,13 +35,14 @@ const GameList = () => {
     });
   }, [dispatch, game, gameList, user]);
 
-  const renderGameList = () => gameList.map(({ slug }) => <div>{slug}</div>);
+  const renderGameList = () =>
+    gameList.map(({ slug }) => <GameLink key={slug} slug={slug} />);
 
   if (!user) return null;
   if (game) return null;
   if (gameList === null) return null;
 
-  return <div className="GameList">{renderGameList()}</div>;
+  return <UICard.Group className="GameList">{renderGameList()}</UICard.Group>;
 };
 
 export default GameList;
