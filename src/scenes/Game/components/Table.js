@@ -18,13 +18,13 @@ import Cards from './Cards';
 
 /* eslint-disable indent */
 const Wrapper = styled.div(props => ({
-    backgroundColor: 'green',
-    height: '40vh',
-    flexGrow: 1,
-    margin: '0 0 10px 0',
-    opacity: props.isOver ? '90%' : '100%',
-    padding: '10px',
-  }));
+  backgroundColor: 'green',
+  height: '40vh',
+  flexGrow: 1,
+  margin: '0 0 10px 0',
+  opacity: props.isOver ? '90%' : '100%',
+  padding: '10px',
+}));
 /* eslint-enable indent */
 
 const mapStateToProps = createSelector(
@@ -52,12 +52,17 @@ const Table = () => {
     userCanAttack,
   } = useSelector(mapStateToProps, isEqual);
 
-  const canDrop = (card, monitor) => {
-    if (!monitor.isOver({ shallow: true })) return false;
+  const canAttackWithCard = card => {
     if (!userCanAttack) return false;
     if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
 
     return canAttack({ card, table });
+  };
+
+  const canDrop = (card, monitor) => {
+    if (!monitor.isOver({ shallow: true })) return false;
+
+    return canAttackWithCard(card);
   };
 
   // TODO: move logic to action?
@@ -72,6 +77,14 @@ const Table = () => {
     dispatch(actions.game.selectedCards.clear());
   };
 
+  const attackWithSelectedCards = () => {
+    if (!isEmpty(selectedCards)) {
+      io.send('attacked_with_many', { cards: selectedCards });
+    }
+
+    dispatch(actions.game.selectedCards.clear());
+  };
+
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
     drop,
@@ -82,7 +95,12 @@ const Table = () => {
   });
 
   return (
-    <Wrapper className="Table" isOver={isOver} ref={dropRef}>
+    <Wrapper
+      className="Table"
+      onClick={attackWithSelectedCards}
+      isOver={isOver}
+      ref={dropRef}
+    >
       <Cards cards={table} />
     </Wrapper>
   );

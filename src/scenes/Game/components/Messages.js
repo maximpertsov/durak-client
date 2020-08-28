@@ -3,7 +3,11 @@ import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import { Comment } from 'semantic-ui-react';
 
-import fp from 'utils/lodashFp';
+import filter from 'lodash/fp/filter';
+import flow from 'lodash/fp/flow';
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+import takeRight from 'lodash/fp/takeRight';
 
 import Message from './Message';
 
@@ -23,12 +27,11 @@ const Messages = () => {
   const messages = useSelector(state => state.messages);
 
   const renderMessages = () =>
-    fp.flow(
-      fp.filter(
-        ({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds,
-      ),
-      fp.takeRight(3),
-      fp.map(message => <Message key={message.createdAt} message={message} />),
+    flow(
+      filter(({ createdAt }) => getAgeInSeconds(createdAt) < maxAgeInSeconds),
+      reject(({ noDisplay }) => noDisplay),
+      takeRight(3),
+      map(message => <Message key={message.createdAt} message={message} />),
     )(messages);
 
   return (
