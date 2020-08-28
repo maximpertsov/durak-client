@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Button, Segment } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 import compact from 'lodash/compact';
 import first from 'lodash/first';
@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
-import { getAttackers, getDefender, getGame } from 'reducers';
+import { getDefender, getGame } from 'reducers';
 import client from 'utils/client';
 import { useWebSocketContext } from 'utils/websockets';
 
@@ -40,11 +40,10 @@ const mapStateToProps = createSelector(
 
   (state, defender, durak) => ({
     cards: state.hands[state.user],
-    isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
     isOutOfGame: durak !== null || !state.players.includes(state.user),
     isDurak: durak === state.user,
-    defender,
+    user: state.user,
   }),
 );
 
@@ -70,30 +69,10 @@ const ButtonWrapper = styled.div({
 });
 
 const Hand = () => {
-  const {
-    cards,
-    isAttacker,
-    isDefender,
-    isDurak,
-    isOutOfGame,
-    defender,
-  } = useSelector(mapStateToProps, isEqual);
-
-  const dagger = String.fromCodePoint(0x1f5e1);
-  const shield = String.fromCodePoint(0x1f6e1);
-  const popcorn = String.fromCodePoint(0x1f37f);
-  const rofl = String.fromCodePoint(0x1f923);
-
-  const renderMessage = () => {
-    if (isDurak) return `${rofl} You're the durak! ${rofl}`;
-    if (isOutOfGame) {
-      return `${popcorn} Relax, you're not the durak! ${popcorn}`;
-    }
-    if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
-    if (isDefender) return `${shield} You are defending ${shield}`;
-
-    return null;
-  };
+  const { cards, isDefender, isDurak, isOutOfGame, user } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   const renderButtons = () => {
     if (isDurak) return <RestartButton />;
@@ -109,11 +88,7 @@ const Hand = () => {
         <div>{renderButtons()}</div>
       </ButtonWrapper>
       <Cards cards={cards} />
-      {renderMessage() && (
-        <Segment tertiary>
-          <h2>{renderMessage()}</h2>
-        </Segment>
-      )}
+      <h2>{user}</h2>
     </div>
   );
 };
