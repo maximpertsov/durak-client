@@ -45,7 +45,6 @@ const mapStateToProps = createSelector(
     isOutOfGame: durak !== null || !state.players.includes(state.user),
     isDurak: durak === state.user,
     defender,
-    user: state.user,
   }),
 );
 
@@ -78,7 +77,6 @@ const Hand = () => {
     isDurak,
     isOutOfGame,
     defender,
-    user,
   } = useSelector(mapStateToProps, isEqual);
 
   const dagger = String.fromCodePoint(0x1f5e1);
@@ -111,7 +109,6 @@ const Hand = () => {
         <div>{renderButtons()}</div>
       </ButtonWrapper>
       <Cards cards={cards} />
-      <h2>{user}</h2>
       {renderMessage() && (
         <Segment tertiary>
           <h2>{renderMessage()}</h2>
