@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Card as UICard } from 'semantic-ui-react';
@@ -7,8 +7,6 @@ import { Card as UICard } from 'semantic-ui-react';
 import reject from 'lodash/reject';
 
 const GameLink = ({ history, players, slug }) => {
-  const dispatch = useDispatch();
-
   const user = useSelector(state => state.user);
 
   const enterGame = () => {
