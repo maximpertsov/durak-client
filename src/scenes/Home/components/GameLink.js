@@ -33,7 +33,7 @@ const GameLink = ({ history, players, slug }) => {
 export default withRouter(GameLink);
 
 GameLink.propTypes = {
-  players: PropTypes.arrayOf([PropTypes.string]),
+  players: PropTypes.arrayOf(PropTypes.string),
   slug: PropTypes.string.isRequired,
 };
 
