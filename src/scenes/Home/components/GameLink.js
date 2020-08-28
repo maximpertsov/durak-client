@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Card as UICard } from 'semantic-ui-react';
 
@@ -7,13 +8,14 @@ import reject from 'lodash/reject';
 
 import actions from 'actions';
 
-const GameLink = ({ players, slug }) => {
+const GameLink = ({ history, players, slug }) => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
 
   const enterGame = () => {
     dispatch(actions.game.id.set(slug));
+    history.push(`/${slug}`);
   };
 
   const description = () => {
@@ -31,7 +33,7 @@ const GameLink = ({ players, slug }) => {
   );
 };
 
-export default GameLink;
+export default withRouter(GameLink);
 
 GameLink.propTypes = {
   players: PropTypes.arrayOf([PropTypes.string]),
