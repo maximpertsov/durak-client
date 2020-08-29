@@ -51,12 +51,15 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
-    animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
-    margin: '10px',
+    '@media (max-width: 720px)': {
+      width: '30vw',
+    },
+    'animation': isDefender ? `${glow} 1s ease alternate infinite` : null,
+    'margin': '10px',
   };
 });
 
-const WideScreenOnly = styled.div({
+const WideScreenOnly = styled.span({
   '@media (max-width: 720px)': {
     display: 'none',
   },
@@ -77,10 +80,23 @@ const Player = ({ player }) => {
   );
 
   const getContext = () => {
-    if (isAttacker) return `The attacker ${dagger}`;
-    if (isDefender) return `The defender ${shield}`;
+    if (isAttacker) return { text: 'The attacker', symbol: dagger };
+    if (isDefender) return { text: 'The defender', symbol: shield };
 
     return null;
+  };
+
+  const renderContext = () => {
+    const context = getContext();
+    if (!context) return null;
+
+    const { text, symbol } = context;
+    return (
+      <div>
+        <WideScreenOnly>{text}</WideScreenOnly>
+        <span>{symbol}</span>
+      </div>
+    );
   };
 
   if (!player) return <Wrapper />;
@@ -90,7 +106,7 @@ const Player = ({ player }) => {
       <UICard fluid>
         <UICard.Content>
           <UICard.Header>{`${player}`}</UICard.Header>
-          {getContext() && <UICard.Meta>{getContext()}</UICard.Meta>}
+          {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
         </UICard.Content>
         <UICard.Content extra>
           <div>{`${cardCount} cards`}</div>
