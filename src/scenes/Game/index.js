@@ -86,6 +86,10 @@ const ButtonWrapper = styled.div({
   marginBottom: '15px',
 });
 
+const GameWrapper = styled.div({});
+
+const PlayersWrapper = styled.div({});
+
 const Game = () => {
   const {
     defender,
@@ -142,18 +146,18 @@ const Game = () => {
 
   const renderGame = () => (
     <Wrapper>
-      <div>
+      <GameWrapper>
         {renderTopMessage()}
         {renderTable()}
         {renderButtons()}
         <Hand />
         <Messages />
-      </div>
-      <div>
+      </GameWrapper>
+      <PlayersWrapper>
         <Player player={player2} />
         <Player player={player3} />
         <Player player={player4} />
-      </div>
+      </PlayersWrapper>
     </Wrapper>
   );
 
