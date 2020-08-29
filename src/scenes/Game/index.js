@@ -18,6 +18,7 @@ import {
   getGame,
   getPlayersFromUser,
 } from 'reducers';
+import { MediaQuery } from 'styles';
 
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
@@ -70,14 +71,14 @@ const mapStateToProps = createSelector(
 );
 
 const Wrapper = styled.div({
-  '@media (max-width: 720px)': {
+  [MediaQuery.NARROW]: {
     flexDirection: 'column-reverse',
   },
-  '@media (min-width: 720px)': {
+  [MediaQuery.WIDE]: {
     flexDirection: 'row',
   },
-  'display': 'flex',
-  'margin': '5px 20px',
+  display: 'flex',
+  margin: '5px 20px',
 });
 
 const TableWrapper = styled.div({
@@ -95,14 +96,14 @@ const FlexSectionWrapper = styled.div({
 });
 
 const PlayersWrapper = styled.div({
-  '@media (max-width: 720px)': {
+  [MediaQuery.NARROW]: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  '@media (min-width: 720px)': {
+  [MediaQuery.WIDE]: {
     flexDirection: 'column',
   },
-  'display': 'flex',
+  display: 'flex',
 });
 
 const Game = () => {

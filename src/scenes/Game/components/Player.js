@@ -15,6 +15,7 @@ import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
 import { getAttackers, getDefender } from 'reducers';
+import { MediaQuery } from 'styles';
 
 import Cards from './Cards';
 
@@ -51,16 +52,16 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
-    '@media (max-width: 720px)': {
+    [MediaQuery.NARROW]: {
       width: '30vw',
     },
-    'animation': isDefender ? `${glow} 1s ease alternate infinite` : null,
-    'margin': '10px',
+    animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
+    margin: '10px',
   };
 });
 
 const WideScreenOnly = styled.span({
-  '@media (max-width: 720px)': {
+  [MediaQuery.NARROW]: {
     display: 'none',
   },
 });
