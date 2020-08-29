@@ -20,7 +20,6 @@ import {
 } from 'reducers';
 
 import CollectButton from './components/CollectButton';
-import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -150,7 +149,6 @@ const Game = () => {
         <Messages />
       </div>
       <div>
-        <DrawPile />
         <Player player={player2} />
         <Player player={player3} />
         <Player player={player4} />
