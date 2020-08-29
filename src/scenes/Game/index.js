@@ -72,8 +72,9 @@ const mapStateToProps = createSelector(
 const Wrapper = styled.div({
   display: 'grid',
   gridTemplateColumns: '2fr 1fr',
-  gridGap: '0.25rem',
-  padding: '5px 20px',
+  gridGap: '2vw',
+  margin: '5px 20px',
+  padding: '0px 1vw',
 });
 
 const TableWrapper = styled.div({
