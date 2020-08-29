@@ -4,8 +4,10 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
+import first from 'lodash/first';
 import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
+import size from 'lodash/size';
 
 import { getDefender } from 'reducers';
 import { canDefend } from 'utils/gameLogic';
@@ -16,6 +18,7 @@ const mapStateToProps = createSelector(
 
   state => ({
     isDefender: state.user === getDefender(state),
+    selectedCards: state.selectedCards,
     trumpSuit: state.trumpSuit,
   }),
 );
@@ -31,7 +34,10 @@ const CardStack = ({ children }) => {
   const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
   const isDefended = React.Children.count(children) > 1;
 
-  const { isDefender, trumpSuit } = useSelector(mapStateToProps, isEqual);
+  const { isDefender, selectedCards, trumpSuit } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   const drop = ({ suit, rank }) => {
     io.send('defended', { baseCard, card: { suit, rank } });
@@ -57,9 +63,26 @@ const CardStack = ({ children }) => {
     }),
   });
 
+  const defendWithSelectedCard = () => {
+    if (size(selectedCards) === 1) {
+      const card = first(selectedCards);
+
+      if (canDrop(card)) {
+        io.send('defended', { baseCard, card });
+      }
+    }
+    // HACK: No need clear cards since clicking the table also clears cards
+  };
+
   const renderCards = () =>
     React.Children.toArray(children).map((card, index) => (
-      <CardWrapper key={index} isOver={isOver} index={index} ref={dropRef}>
+      <CardWrapper
+        key={index}
+        onClick={defendWithSelectedCard}
+        isOver={isOver}
+        index={index}
+        ref={dropRef}
+      >
         {card}
       </CardWrapper>
     ));

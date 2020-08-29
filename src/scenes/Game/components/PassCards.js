@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
+import every from 'lodash/every';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -87,10 +88,25 @@ const PassCards = () => {
     }),
   });
 
+  const passWithSelectedCard = () => {
+    if (!isEmpty(selectedCards)) {
+      if (every(selectedCards, canDrop)) {
+        io.send('passed_with_many', { cards: selectedCards });
+      }
+    }
+
+    dispatch(actions.game.selectedCards.clear());
+  };
+
   if (!canDropAny()) return null;
 
   return (
-    <Wrapper className="PassCards" isOver={isOver} ref={dropRef}>
+    <Wrapper
+      className="PassCards"
+      onClick={passWithSelectedCard}
+      isOver={isOver}
+      ref={dropRef}
+    >
       <h2>Drop card here to pass</h2>
     </Wrapper>
   );
