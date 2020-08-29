@@ -18,6 +18,7 @@ import {
   getGame,
   getPlayersFromUser,
 } from 'reducers';
+import { MediaQuery } from 'styles';
 
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
@@ -70,11 +71,14 @@ const mapStateToProps = createSelector(
 );
 
 const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: '2fr 1fr',
-  gridGap: '2vw',
+  [MediaQuery.NARROW]: {
+    flexDirection: 'column-reverse',
+  },
+  [MediaQuery.WIDE]: {
+    flexDirection: 'row',
+  },
+  display: 'flex',
   margin: '5px 20px',
-  padding: '0px 1vw',
 });
 
 const TableWrapper = styled.div({
@@ -84,6 +88,22 @@ const TableWrapper = styled.div({
 
 const ButtonWrapper = styled.div({
   marginBottom: '15px',
+});
+
+const FlexSectionWrapper = styled.div({
+  flexGrow: 1,
+  padding: '0px 1vw',
+});
+
+const PlayersWrapper = styled.div({
+  [MediaQuery.NARROW]: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  [MediaQuery.WIDE]: {
+    flexDirection: 'column',
+  },
+  display: 'flex',
 });
 
 const Game = () => {
@@ -142,18 +162,20 @@ const Game = () => {
 
   const renderGame = () => (
     <Wrapper>
-      <div>
+      <FlexSectionWrapper>
         {renderTopMessage()}
         {renderTable()}
         {renderButtons()}
         <Hand />
         <Messages />
-      </div>
-      <div>
-        <Player player={player2} />
-        <Player player={player3} />
-        <Player player={player4} />
-      </div>
+      </FlexSectionWrapper>
+      <FlexSectionWrapper>
+        <PlayersWrapper>
+          <Player player={player2} />
+          <Player player={player3} />
+          <Player player={player4} />
+        </PlayersWrapper>
+      </FlexSectionWrapper>
     </Wrapper>
   );
 

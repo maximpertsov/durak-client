@@ -15,6 +15,7 @@ import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
 import { getAttackers, getDefender } from 'reducers';
+import { MediaQuery } from 'styles';
 
 import Cards from './Cards';
 
@@ -51,9 +52,18 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
+    [MediaQuery.NARROW]: {
+      width: '30vw',
+    },
     animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
     margin: '10px',
   };
+});
+
+const WideScreenOnly = styled.span({
+  [MediaQuery.NARROW]: {
+    display: 'none',
+  },
 });
 
 const CardsWrapper = styled.div({
@@ -71,10 +81,23 @@ const Player = ({ player }) => {
   );
 
   const getContext = () => {
-    if (isAttacker) return `The attacker ${dagger}`;
-    if (isDefender) return `The defender ${shield}`;
+    if (isAttacker) return { text: 'The attacker', symbol: dagger };
+    if (isDefender) return { text: 'The defender', symbol: shield };
 
     return null;
+  };
+
+  const renderContext = () => {
+    const context = getContext();
+    if (!context) return null;
+
+    const { text, symbol } = context;
+    return (
+      <div>
+        <WideScreenOnly>{text}</WideScreenOnly>
+        <span>{symbol}</span>
+      </div>
+    );
   };
 
   if (!player) return <Wrapper />;
@@ -84,13 +107,15 @@ const Player = ({ player }) => {
       <UICard fluid>
         <UICard.Content>
           <UICard.Header>{`${player}`}</UICard.Header>
-          {getContext() && <UICard.Meta>{getContext()}</UICard.Meta>}
+          {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
         </UICard.Content>
         <UICard.Content extra>
           <div>{`${cardCount} cards`}</div>
-          <CardsWrapper>
-            <Cards cards={displayCards} scale={0.4} />
-          </CardsWrapper>
+          <WideScreenOnly>
+            <CardsWrapper>
+              <Cards cards={displayCards} scale={0.4} />
+            </CardsWrapper>
+          </WideScreenOnly>
         </UICard.Content>
       </UICard>
     </Wrapper>

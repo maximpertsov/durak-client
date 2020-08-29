@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
+import { MediaQuery } from 'styles';
+
 import Card from './Card';
 import CardStack from './CardStack';
 
@@ -10,12 +12,11 @@ const Wrapper = styled.div(props => {
   const getGridTemplateColumns = ({ basePixelWidth }) =>
     `repeat(auto-fit, ${scaleFactor * basePixelWidth}px)`;
 
-  /* eslint-disable quote-props */
   return {
-    '@media (max-width: 720px)': {
+    [MediaQuery.NARROW]: {
       gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 40 }),
     },
-    '@media (min-width: 720px)': {
+    [MediaQuery.WIDE]: {
       gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 60 }),
     },
     display: 'grid',
@@ -24,7 +25,6 @@ const Wrapper = styled.div(props => {
     margin: '0 auto',
     padding: '0 5%',
   };
-  /* eslint-enable quote-props */
 });
 
 const CardOrStack = ({ cardOrStack }) => {
