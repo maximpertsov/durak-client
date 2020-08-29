@@ -56,6 +56,15 @@ const CardStack = ({ children }) => {
     });
   };
 
+  const [{ isOver }, dropRef] = useDrop({
+    accept: 'CARD',
+    drop,
+    canDrop,
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
+
   const defendWithSelectedCard = () => {
     if (size(selectedCards) === 1) {
       const card = first(selectedCards);
@@ -66,15 +75,6 @@ const CardStack = ({ children }) => {
     }
     // HACK: No need clear cards since clicking the table also clears cards
   };
-
-  const [{ isOver }, dropRef] = useDrop({
-    accept: 'CARD',
-    drop,
-    canDrop,
-    collect: monitor => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
 
   const renderCards = () =>
     React.Children.toArray(children).map((card, index) => (

@@ -78,6 +78,15 @@ const Table = () => {
     dispatch(actions.game.selectedCards.clear());
   };
 
+  const [{ isOver }, dropRef] = useDrop({
+    accept: 'CARD',
+    drop,
+    canDrop,
+    collect: monitor => ({
+      isOver: !!monitor.isOver({ shallow: true }),
+    }),
+  });
+
   const attackWithSelectedCards = () => {
     if (!isEmpty(selectedCards)) {
       if (every(selectedCards, canAttackWithCard)) {
@@ -87,15 +96,6 @@ const Table = () => {
 
     dispatch(actions.game.selectedCards.clear());
   };
-
-  const [{ isOver }, dropRef] = useDrop({
-    accept: 'CARD',
-    drop,
-    canDrop,
-    collect: monitor => ({
-      isOver: !!monitor.isOver({ shallow: true }),
-    }),
-  });
 
   return (
     <Wrapper
