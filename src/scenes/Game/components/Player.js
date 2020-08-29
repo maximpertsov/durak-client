@@ -56,6 +56,12 @@ const Wrapper = styled.div(({ isDefender }) => {
   };
 });
 
+const WideScreenOnly = styled.div({
+  '@media (max-width: 720px)': {
+    display: 'none',
+  },
+});
+
 const CardsWrapper = styled.div({
   transformOrigin: 'top center',
   height: '10vh',
@@ -88,9 +94,11 @@ const Player = ({ player }) => {
         </UICard.Content>
         <UICard.Content extra>
           <div>{`${cardCount} cards`}</div>
-          <CardsWrapper>
-            <Cards cards={displayCards} scale={0.4} />
-          </CardsWrapper>
+          <WideScreenOnly>
+            <CardsWrapper>
+              <Cards cards={displayCards} scale={0.4} />
+            </CardsWrapper>
+          </WideScreenOnly>
         </UICard.Content>
       </UICard>
     </Wrapper>
