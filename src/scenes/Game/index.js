@@ -79,7 +79,7 @@ const Wrapper = styled.div({
 
 const TableWrapper = styled.div({
   alignItems: 'stretch',
-  display: 'flexbox',
+  display: 'flex',
 });
 
 const ButtonWrapper = styled.div({
