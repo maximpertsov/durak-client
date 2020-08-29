@@ -16,17 +16,18 @@ import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
+import DrawPile from './DrawPile';
 
-/* eslint-disable indent */
 const Wrapper = styled.div(props => ({
   backgroundColor: 'green',
+  display: 'grid',
+  gridTemplateColumns: '65px 1fr',
   height: '40vh',
   flexGrow: 1,
   margin: '0 0 10px 0',
   opacity: props.isOver ? '90%' : '100%',
   padding: '10px',
 }));
-/* eslint-enable indent */
 
 const mapStateToProps = createSelector(
   state => state,
@@ -104,7 +105,12 @@ const Table = () => {
       isOver={isOver}
       ref={dropRef}
     >
-      <Cards cards={table} />
+      <div>
+        <DrawPile />
+      </div>
+      <div>
+        <Cards cards={table} />
+      </div>
     </Wrapper>
   );
 };

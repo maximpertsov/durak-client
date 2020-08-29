@@ -20,7 +20,6 @@ import {
 } from 'reducers';
 
 import CollectButton from './components/CollectButton';
-import DrawPile from './components/DrawPile';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
 import Messages from './components/Messages';
@@ -73,8 +72,9 @@ const mapStateToProps = createSelector(
 const Wrapper = styled.div({
   display: 'grid',
   gridTemplateColumns: '2fr 1fr',
-  gridGap: '0.25rem',
-  padding: '5px 20px',
+  gridGap: '2vw',
+  margin: '5px 20px',
+  padding: '0px 1vw',
 });
 
 const TableWrapper = styled.div({
@@ -150,7 +150,6 @@ const Game = () => {
         <Messages />
       </div>
       <div>
-        <DrawPile />
         <Player player={player2} />
         <Player player={player3} />
         <Player player={player4} />
