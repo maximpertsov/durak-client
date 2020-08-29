@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
@@ -9,7 +9,6 @@ import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
 import size from 'lodash/size';
 
-import actions from 'actions';
 import { getDefender } from 'reducers';
 import { canDefend } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
@@ -30,7 +29,6 @@ const CardWrapper = styled.div(props => ({
 }));
 
 const CardStack = ({ children }) => {
-  const dispatch = useDispatch();
   const io = useWebSocketContext();
 
   const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
