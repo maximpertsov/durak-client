@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
+import every from 'lodash/every';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
@@ -79,7 +80,9 @@ const Table = () => {
 
   const attackWithSelectedCards = () => {
     if (!isEmpty(selectedCards)) {
-      io.send('attacked_with_many', { cards: selectedCards });
+      if (every(selectedCards, canAttackWithCard)) {
+        io.send('attacked_with_many', { cards: selectedCards });
+      }
     }
 
     dispatch(actions.game.selectedCards.clear());
