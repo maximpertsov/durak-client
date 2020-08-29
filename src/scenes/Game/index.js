@@ -95,8 +95,16 @@ const GameWrapper = styled.div({
 });
 
 const PlayersWrapper = styled.div({
-  flexGrow: 1,
-  padding: '0px 1vw',
+  '@media (max-width: 720px)': {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  '@media (min-width: 720px)': {
+    flexDirection: 'column',
+  },
+  'display': 'flex',
+  'flexGrow': 1,
+  'padding': '0px 1vw',
 });
 
 const Game = () => {
