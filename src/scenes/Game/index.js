@@ -89,7 +89,7 @@ const ButtonWrapper = styled.div({
   marginBottom: '15px',
 });
 
-const GameWrapper = styled.div({
+const FlexSectionWrapper = styled.div({
   flexGrow: 1,
   padding: '0px 1vw',
 });
@@ -103,8 +103,6 @@ const PlayersWrapper = styled.div({
     flexDirection: 'column',
   },
   'display': 'flex',
-  'flexGrow': 1,
-  'padding': '0px 1vw',
 });
 
 const Game = () => {
@@ -163,18 +161,20 @@ const Game = () => {
 
   const renderGame = () => (
     <Wrapper>
-      <GameWrapper>
+      <FlexSectionWrapper>
         {renderTopMessage()}
         {renderTable()}
         {renderButtons()}
         <Hand />
         <Messages />
-      </GameWrapper>
-      <PlayersWrapper>
-        <Player player={player2} />
-        <Player player={player3} />
-        <Player player={player4} />
-      </PlayersWrapper>
+      </FlexSectionWrapper>
+      <FlexSectionWrapper>
+        <PlayersWrapper>
+          <Player player={player2} />
+          <Player player={player3} />
+          <Player player={player4} />
+        </PlayersWrapper>
+      </FlexSectionWrapper>
     </Wrapper>
   );
 
