@@ -70,11 +70,8 @@ const mapStateToProps = createSelector(
 );
 
 const Wrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: '2fr 1fr',
-  gridGap: '2vw',
+  display: 'flex',
   margin: '5px 20px',
-  padding: '0px 1vw',
 });
 
 const TableWrapper = styled.div({
@@ -86,9 +83,15 @@ const ButtonWrapper = styled.div({
   marginBottom: '15px',
 });
 
-const GameWrapper = styled.div({});
+const GameWrapper = styled.div({
+  flexGrow: 1,
+  padding: '0px 1vw',
+});
 
-const PlayersWrapper = styled.div({});
+const PlayersWrapper = styled.div({
+  flexGrow: 1,
+  padding: '0px 1vw',
+});
 
 const Game = () => {
   const {
