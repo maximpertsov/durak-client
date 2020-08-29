@@ -70,8 +70,14 @@ const mapStateToProps = createSelector(
 );
 
 const Wrapper = styled.div({
-  display: 'flex',
-  margin: '5px 20px',
+  '@media (max-width: 720px)': {
+    flexDirection: 'column-reverse',
+  },
+  '@media (min-width: 720px)': {
+    flexDirection: 'row',
+  },
+  'display': 'flex',
+  'margin': '5px 20px',
 });
 
 const TableWrapper = styled.div({
