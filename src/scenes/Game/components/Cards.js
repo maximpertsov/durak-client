@@ -46,7 +46,7 @@ const CardOrStack = ({ cardOrStack }) => {
 CardOrStack.propTypes = {
   cardOrStack: PropTypes.oneOfType([
     PropTypes.oneOf(allCards),
-    PropTypes.arrayOf(allCards),
+    PropTypes.arrayOf(PropTypes.oneOf(allCards)),
   ]).isRequired,
 };
 
@@ -68,7 +68,7 @@ export default Cards;
 Cards.propTypes = {
   cards: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.oneOf(allCards)),
-    PropTypes.arrayOf(PropTypes.arrayOf(allCards)),
+    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOf(allCards))),
   ]),
   scale: PropTypes.number,
 };
