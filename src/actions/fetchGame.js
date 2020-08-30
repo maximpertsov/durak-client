@@ -1,11 +1,13 @@
 import drop from 'lodash/drop';
 import fromPairs from 'lodash/fromPairs';
 import last from 'lodash/last';
+import map from 'lodash/map';
 import reverse from 'lodash/reverse';
 import take from 'lodash/take';
 
 import actions from 'actions';
 import client from 'utils/client';
+import { getSuit } from 'utils/gameLogic';
 
 const handSize = 6;
 
@@ -16,8 +18,9 @@ const fetchGame = ({ game }) => dispatch => {
 
   client.get(`game/${game}`).then(response => {
     const {
-      data: { drawPile, players },
+      data: { drawPile: drawPileData, players },
     } = response;
+    const drawPile = map(drawPileData, 'card');
 
     // clear draws
     dispatch(actions.game.passCount.set(0));
@@ -31,7 +34,7 @@ const fetchGame = ({ game }) => dispatch => {
     // setup draw pile
     const cardsLeft = drop(drawPile, players.length * handSize);
     dispatch(actions.game.drawPile.set(cardsLeft));
-    const { suit: trumpSuit } = last(drawPile);
+    const trumpSuit = getSuit(last(drawPile));
     dispatch(actions.game.trumpSuit.set(trumpSuit));
 
     // clear player hands (applies if this is a restart)
