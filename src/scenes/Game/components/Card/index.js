@@ -15,12 +15,12 @@ import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
-import { cards as allCards, getSuit } from 'utils/gameLogic';
+import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
 
 const uniqueCards = cards => uniqWith(cards, isEqual);
-const sameRank = cards => size(uniqBy(uniqueCards(cards), 'rank')) === 1;
+const sameRank = cards => size(uniqBy(uniqueCards(cards), getRank)) === 1;
 
 const mapStateToProps = createSelector(
   state => state,
