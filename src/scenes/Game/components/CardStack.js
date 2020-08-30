@@ -39,8 +39,8 @@ const CardStack = ({ children }) => {
     isEqual,
   );
 
-  const drop = ({ suit, rank }) => {
-    io.send('defended', { baseCard, card: { suit, rank } });
+  const drop = ({ card }) => {
+    io.send('defended', { baseCard, card });
   };
 
   const canDrop = card => {
