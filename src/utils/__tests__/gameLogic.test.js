@@ -1,6 +1,27 @@
-import { canAttack, canDefend, canPass, cards } from '../gameLogic';
+import {
+  canAttack,
+  canDefend,
+  canPass,
+  cards,
+  getRank,
+  getSuit,
+} from '../gameLogic';
 
-/* eslint-disable max-len */
+describe('getRank and getSuit', () => {
+  test.each`
+    card     | suit          | rank
+    ${'6H'}  | ${'hearts'}   | ${'6'}
+    ${'7H'}  | ${'hearts'}   | ${'7'}
+    ${'AH'}  | ${'hearts'}   | ${'ace'}
+    ${'7C'}  | ${'clubs'}    | ${'7'}
+    ${'10S'} | ${'spades'}   | ${'10'}
+    ${'QD'}  | ${'diamonds'} | ${'queen'}
+  `('$card is a $rank of $suit', ({ card, suit, rank }) => {
+  expect(getRank(card)).toEqual(rank);
+  expect(getSuit(card)).toEqual(suit);
+});
+});
+
 describe('canDefend', () => {
   test.each`
     attackSuit  | attackRank | defenseSuit | defenseRank | trumpSuit   | expected
@@ -117,4 +138,3 @@ describe('canPass', () => {
 });
   });
 });
-/* eslint-enable max-len */

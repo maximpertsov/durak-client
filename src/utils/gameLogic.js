@@ -4,28 +4,46 @@ import flatten from 'lodash/flatten';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import keys from 'lodash/keys';
 import size from 'lodash/size';
 import some from 'lodash/some';
 
 export const suits = Object.freeze(['clubs', 'diamonds', 'hearts', 'spades']);
 export const ranks = Object.freeze([
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
   'jack',
   'queen',
   'king',
   'ace',
 ]);
-export const cards = Object.freeze(
-  flatMap(suits, suit => ranks.map(rank => ({ rank, suit }))),
+
+export const cardsWithData = Object.freeze(
+  fromPairs(
+    flatMap(suits, suit =>
+      ranks.map((rank, index) => {
+        const shortRank = rank === '10' ? rank : rank.charAt(0);
+        const shortSuit = suit.charAt(0);
+        const key = `${shortRank}${shortSuit}`.toUpperCase();
+
+        return [key, { suit, rank, value: index }];
+      }),
+    ),
+  ),
 );
+
+export const cards = keys(cardsWithData);
+
+export const getRank = card => get(cardsWithData, [card, 'rank']);
+
+export const getSuit = card => get(cardsWithData, [card, 'suit']);
 
 const rankValues = Object.freeze(
   fromPairs(ranks.map((value, index) => [value, index])),
