@@ -8,8 +8,8 @@ import keys from 'lodash/keys';
 import size from 'lodash/size';
 import some from 'lodash/some';
 
-export const suits = Object.freeze(['clubs', 'diamonds', 'hearts', 'spades']);
-export const ranks = Object.freeze([
+const suits = Object.freeze(['clubs', 'diamonds', 'hearts', 'spades']);
+const ranks = Object.freeze([
   '2',
   '3',
   '4',
@@ -24,8 +24,7 @@ export const ranks = Object.freeze([
   'king',
   'ace',
 ]);
-
-export const cardsWithData = Object.freeze(
+const cardsWithData = Object.freeze(
   fromPairs(
     flatMap(suits, suit =>
       ranks.map((rank, index) => {
@@ -40,7 +39,6 @@ export const cardsWithData = Object.freeze(
 );
 
 export const cards = keys(cardsWithData);
-
 export const getRank = card => get(cardsWithData, [card, 'rank']);
 export const getSuit = card => get(cardsWithData, [card, 'suit']);
 
