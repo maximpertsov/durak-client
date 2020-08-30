@@ -1,5 +1,3 @@
-import sortBy from 'lodash/sortBy';
-
 import {
   getAttackers,
   getDefender,
@@ -9,12 +7,11 @@ import {
 
 const players = ['anna', 'vasyl', 'igor', 'grusha'];
 const hands = {
-  anna: ['ace'],
-  vasyl: ['jack'],
-  igor: ['king'],
-  grusha: ['queen'],
+  anna: ['AH'],
+  vasyl: ['JD'],
+  igor: ['KS'],
+  grusha: ['QH'],
 };
-const sortCards = cards => sortBy(cards, ['suit', 'rank']);
 
 describe('getDefender', () => {
   test('vasyl has cards', () => {
@@ -59,50 +56,40 @@ describe('getAttackers', () => {
     });
   });
   describe('table has cards', () => {
-    const table = ['card'];
+    const table = ['6S'];
 
     test('all except vasyl attack', () => {
       const state = { table, players, hands };
       const expected = ['anna', 'igor', 'grusha'];
-      expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
+      expect(getAttackers(state).sort()).toEqual(expected.sort());
     });
   });
   describe('vasyl has no cards', () => {
-    const table = ['card'];
+    const table = ['6S'];
 
     test('anna and grusha attack', () => {
       const state = { table, players, hands: { ...hands, vasyl: [] } };
       const expected = ['anna', 'grusha'];
-      expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
+      expect(getAttackers(state).sort()).toEqual(expected.sort());
     });
   });
   describe('anna has no cards but is attacking', () => {
-    const table = ['card'];
+    const table = ['6S'];
 
     test('all except vasyl attack', () => {
       const state = { table, players, hands: { ...hands, anna: [null] } };
       const expected = ['anna', 'igor', 'grusha'];
-      expect(sortBy(getAttackers(state))).toEqual(sortBy(expected));
+      expect(getAttackers(state).sort()).toEqual(expected.sort());
     });
   });
 });
 
 describe('getUnbeatenCards', () => {
   const state = {
-    table: [
-      [
-        { suit: 'hearts', rank: 'jack' },
-        { suit: 'hearts', rank: 'queen' },
-      ],
-      [{ suit: 'spades', rank: 'jack' }],
-      [{ suit: 'clubs', rank: 7 }],
-    ],
+    table: [['JH', 'QH'], ['JS'], ['7C']],
   };
   test('get all unbeaten cards', () => {
-    const expected = [
-      { suit: 'clubs', rank: 7 },
-      { suit: 'spades', rank: 'jack' },
-    ];
-    expect(sortCards(getUnbeatenCards(state))).toEqual(sortCards(expected));
+    const expected = ['7C', 'JS'];
+    expect(getUnbeatenCards(state).sort()).toEqual(expected.sort());
   });
 });
