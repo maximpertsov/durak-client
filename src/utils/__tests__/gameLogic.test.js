@@ -24,23 +24,14 @@ describe('getRank and getSuit', () => {
 
 describe('canDefend', () => {
   test.each`
-    attackSuit  | attackRank | defenseSuit | defenseRank | trumpSuit   | expected
-    ${'hearts'} | ${6}       | ${'hearts'} | ${7}        | ${'spades'} | ${true}
-    ${'hearts'} | ${7}       | ${'hearts'} | ${6}        | ${'spades'} | ${false}
-    ${'hearts'} | ${6}       | ${'clubs'}  | ${7}        | ${'spades'} | ${false}
-    ${'hearts'} | ${'ace'}   | ${'spades'} | ${7}        | ${'spades'} | ${true}
+    attackCard | defenseCard | trumpSuit   | expected
+    ${'6H'}    | ${'7H'}     | ${'spades'} | ${true}
+    ${'7H'}    | ${'6H'}     | ${'spades'} | ${false}
+    ${'6H'}    | ${'7C'}     | ${'spades'} | ${false}
+    ${'AH'}    | ${'7S'}     | ${'spades'} | ${true}
   `(
-  '$defenseRank of $defenseSuit beats $attackRank of $attackSuit when $trump is trump? $expected',
-  ({
-    attackSuit,
-    attackRank,
-    defenseSuit,
-    defenseRank,
-    trumpSuit,
-    expected,
-  }) => {
-    const defenseCard = { suit: defenseSuit, rank: defenseRank };
-    const attackCard = { suit: attackSuit, rank: attackRank };
+  '$defenseCard beats $attackCard when $trump is trump? $expected',
+  ({ attackCard, defenseCard, trumpSuit, expected }) => {
     expect(canDefend({ defenseCard, attackCard, trumpSuit })).toBe(expected);
   },
 );

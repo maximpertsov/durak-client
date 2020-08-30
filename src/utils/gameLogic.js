@@ -42,20 +42,16 @@ export const cardsWithData = Object.freeze(
 export const cards = keys(cardsWithData);
 
 export const getRank = card => get(cardsWithData, [card, 'rank']);
-
 export const getSuit = card => get(cardsWithData, [card, 'suit']);
 
-const rankValues = Object.freeze(
-  fromPairs(ranks.map((value, index) => [value, index])),
-);
-const getValue = ({ rank }) => get(rankValues, rank);
-const sameSuit = (card1, card2) => card1.suit === card2.suit;
+const getValue = card => get(cardsWithData, [card, 'value']);
+const sameSuit = (card1, card2) => getSuit(card1) === getSuit(card2);
 
 export const canDefend = ({ attackCard, defenseCard, trumpSuit }) => {
   if (sameSuit(attackCard, defenseCard)) {
     return getValue(defenseCard) > getValue(attackCard);
   }
-  return defenseCard.suit === trumpSuit;
+  return getSuit(defenseCard) === trumpSuit;
 };
 
 export const canAttack = ({ table, card }) => {
