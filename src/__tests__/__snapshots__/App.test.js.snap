@@ -4,7 +4,19 @@ exports[`snapshot 1`] = `
 <div
   className="App"
 >
-  <Home />
-  <Game />
+  <BrowserRouter>
+    <withRouter(Navigation) />
+    <LoginForm />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/:game"
+    />
+  </BrowserRouter>
 </div>
 `;
