@@ -76,12 +76,7 @@ describe('canPass', () => {
   });
 
   describe('table with beaten cards', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 10 },
-        { suit: 'spades', rank: 10 },
-      ],
-    ];
+    const table = [['10H', '10S']];
 
     test('always false', () => {
       cards.forEach(card => {
@@ -91,12 +86,7 @@ describe('canPass', () => {
   });
 
   describe('table with non-uniform ranks', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 9 },
-        { suit: 'spades', rank: 10 },
-      ],
-    ];
+    const table = [['9H'], ['10S']];
 
     test('always false', () => {
       cards.forEach(card => {
