@@ -58,7 +58,7 @@ export const canAttack = ({ table, card }) => {
   const flatTable = flatten(table);
   if (isEmpty(flatTable)) return true;
 
-  return some(flatTable, ['rank', card.rank]);
+  return some(flatTable, tableCard => getRank(tableCard) === getRank(card));
 };
 
 export const canPass = ({ table, card }) => {

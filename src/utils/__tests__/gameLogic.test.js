@@ -49,23 +49,17 @@ describe('canAttack', () => {
   });
 
   describe('table with cards', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 10 },
-        { suit: 'hearts', rank: 'ace' },
-      ],
-      [{ suit: 'clubs', rank: 7 }],
-    ];
+    const table = [['10H', 'AH'], ['7C']];
 
     test.each`
-      suit          | rank     | expected
-      ${'spades'}   | ${7}     | ${true}
-      ${'spades'}   | ${8}     | ${false}
-      ${'spades'}   | ${'ace'} | ${true}
-      ${'spades'}   | ${10}    | ${true}
-      ${'diamonds'} | ${10}    | ${true}
-    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
-  expect(canAttack({ table, card: { rank, suit } })).toBe(expected);
+      card     | expected
+      ${'7S'}  | ${true}
+      ${'8S'}  | ${false}
+      ${'AS'}  | ${true}
+      ${'10S'} | ${true}
+      ${'10D'} | ${true}
+    `('with $card? $expected', ({ card, expected }) => {
+  expect(canAttack({ table, card })).toBe(expected);
 });
   });
 });
