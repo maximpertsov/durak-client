@@ -1,5 +1,7 @@
 import { handleActions } from 'redux-actions';
 
+import isEqual from 'lodash/fp/isEqual';
+
 import concat from 'lodash/concat';
 import reject from 'lodash/reject';
 
@@ -7,7 +9,7 @@ import actions from 'actions';
 
 const add = (state, action) => concat(state, action.payload);
 const clear = () => [];
-const remove = (state, action) => reject(state, action.payload);
+const remove = (state, action) => reject(state, isEqual(action.payload));
 const set = (state, action) => action.payload;
 
 const selectedCards = handleActions(

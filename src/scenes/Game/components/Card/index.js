@@ -6,9 +6,10 @@ import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 
+import isEqual from 'lodash/fp/isEqual';
+
 import concat from 'lodash/concat';
 import find from 'lodash/find';
-import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
@@ -29,7 +30,7 @@ const mapStateToProps = createSelector(
 
   (state, selectedCards, card) => ({
     hand: state.hands[state.user],
-    selectedCard: find(selectedCards, card),
+    selectedCard: find(selectedCards, isEqual(card)),
     selectedCards,
     trumpSuit: state.trumpSuit,
   }),
@@ -79,7 +80,7 @@ const Card = ({ card, flipped }) => {
     isEqual,
   );
 
-  const canDrag = () => some(hand, card);
+  const canDrag = () => some(hand, isEqual(card));
   const begin = () => {
     const selectedAndDraggingCards = uniqueCards(concat(selectedCards, card));
     if (sameRank(selectedAndDraggingCards)) {
@@ -106,7 +107,7 @@ const Card = ({ card, flipped }) => {
   // TODO: move logic into action
   const onClick = () => {
     if (!selectedCard) {
-      if (!find(hand, card)) return;
+      if (!find(hand, isEqual(card))) return;
 
       dispatch(actions.game.selectedCards.add(card));
       return;
