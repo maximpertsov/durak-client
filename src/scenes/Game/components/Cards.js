@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import { MediaQuery } from 'styles';
+import { cards as allCards } from 'utils/gameLogic';
 
 import Card from './Card';
 import CardStack from './CardStack';
@@ -38,8 +39,15 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { flipped, suit, rank } = cardOrStack || {};
-  return <Card flipped={flipped} suit={suit} rank={rank} />;
+  const { card, flipped } = cardOrStack || {};
+  return <Card card={card} flipped={flipped} />;
+};
+
+CardOrStack.propTypes = {
+  cardOrStack: PropTypes.oneOfType([
+    PropTypes.oneOf(allCards),
+    PropTypes.arrayOf(allCards),
+  ]).isRequired,
 };
 
 const Cards = ({ cards, scale }) => {
@@ -59,8 +67,8 @@ export default Cards;
 
 Cards.propTypes = {
   cards: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.shape()),
-    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
+    PropTypes.arrayOf(PropTypes.oneOf(allCards)),
+    PropTypes.arrayOf(PropTypes.arrayOf(allCards)),
   ]),
   scale: PropTypes.number,
 };
