@@ -106,20 +106,17 @@ describe('canPass', () => {
   });
 
   describe('table with uniform ranks', () => {
-    const table = [
-      [{ suit: 'hearts', rank: 10 }],
-      [{ suit: 'clubs', rank: 10 }],
-    ];
+    const table = [['10H'], ['10C']];
 
     test.each`
-      suit          | rank     | expected
-      ${'spades'}   | ${7}     | ${false}
-      ${'spades'}   | ${8}     | ${false}
-      ${'spades'}   | ${'ace'} | ${false}
-      ${'spades'}   | ${10}    | ${true}
-      ${'diamonds'} | ${10}    | ${true}
-    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
-  expect(canPass({ table, card: { rank, suit } })).toBe(expected);
+      card     | expected
+      ${'7S'}  | ${false}
+      ${'8S'}  | ${false}
+      ${'AS'}  | ${false}
+      ${'10S'} | ${true}
+      ${'10D'} | ${true}
+    `('with $card? $expected', ({ card, expected }) => {
+  expect(canPass({ table, card })).toBe(expected);
 });
   });
 });

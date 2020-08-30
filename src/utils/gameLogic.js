@@ -65,7 +65,7 @@ export const canPass = ({ table, card }) => {
   if (isEmpty(table)) return false;
   if (some(table, stack => size(stack) !== 1)) return false;
 
-  return every(table, ([_card]) => _card.rank === card.rank);
+  return every(table, ([tableCard]) => getRank(tableCard) === getRank(card));
 };
 
 export default {};
