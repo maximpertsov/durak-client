@@ -59,20 +59,20 @@ const PassCards = () => {
     table,
   } = useSelector(mapStateToProps, isEqual);
 
-  const canDrop = card => {
+  const canPassWithCard = card => {
     if (!isDefender) return false;
     if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
 
     return canPass({ card, table });
   };
 
-  const canDropAny = () => some(compact(hand), canDrop);
+  const canPassWithAnyCard = () => some(compact(hand), canPassWithCard);
+
+  const canDrop = item => canPassWithCard(item.card);
 
   const drop = item => {
     if (isEmpty(selectedCards)) {
-      io.send('passed', {
-        card: { rank: item.rank, suit: item.suit },
-      });
+      io.send('passed', { card: item.card });
     } else {
       io.send('passed_with_many', { cards: selectedCards });
     }
@@ -90,7 +90,7 @@ const PassCards = () => {
 
   const passWithSelectedCard = () => {
     if (!isEmpty(selectedCards)) {
-      if (every(selectedCards, canDrop)) {
+      if (every(selectedCards, canPassWithCard)) {
         io.send('passed_with_many', { cards: selectedCards });
       }
     }
@@ -98,7 +98,7 @@ const PassCards = () => {
     dispatch(actions.game.selectedCards.clear());
   };
 
-  if (!canDropAny()) return null;
+  if (!canPassWithAnyCard()) return null;
 
   return (
     <Wrapper

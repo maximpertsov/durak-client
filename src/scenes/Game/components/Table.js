@@ -61,18 +61,16 @@ const Table = () => {
     return canAttack({ card, table });
   };
 
-  const canDrop = (card, monitor) => {
+  const canDrop = (item, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;
 
-    return canAttackWithCard(card);
+    return canAttackWithCard(item.card);
   };
 
   // TODO: move logic to action?
   const drop = item => {
     if (isEmpty(selectedCards)) {
-      io.send('attacked', {
-        card: { rank: item.rank, suit: item.suit },
-      });
+      io.send('attacked', { card: item.card });
     } else {
       io.send('attacked_with_many', { cards: selectedCards });
     }
