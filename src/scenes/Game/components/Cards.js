@@ -38,8 +38,15 @@ const CardOrStack = ({ cardOrStack }) => {
     );
   }
 
-  const { flipped, suit, rank } = cardOrStack || {};
-  return <Card flipped={flipped} suit={suit} rank={rank} />;
+  const { card, flipped } = cardOrStack || {};
+  return <Card card={card} flipped={flipped} />;
+};
+
+CardOrStack.propTypes = {
+  cardOrStack: PropTypes.oneOfType([
+    PropTypes.shape(Card.propTypes),
+    PropTypes.arrayOf(PropTypes.shape(Card.propTypes)),
+  ]).isRequired,
 };
 
 const Cards = ({ cards, scale }) => {
@@ -58,10 +65,12 @@ const Cards = ({ cards, scale }) => {
 export default Cards;
 
 Cards.propTypes = {
-  cards: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.shape()),
-    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape())),
-  ]),
+  cards: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.shape(Card.propTypes),
+      PropTypes.arrayOf(PropTypes.shape(Card.propTypes)),
+    ]),
+  ),
   scale: PropTypes.number,
 };
 

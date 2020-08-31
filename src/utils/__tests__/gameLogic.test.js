@@ -1,25 +1,37 @@
-import { canAttack, canDefend, canPass, cards } from '../gameLogic';
+import {
+  canAttack,
+  canDefend,
+  canPass,
+  cards,
+  getRank,
+  getSuit,
+} from '../gameLogic';
 
-/* eslint-disable max-len */
+describe('getRank and getSuit', () => {
+  test.each`
+    card     | suit          | rank
+    ${'6H'}  | ${'hearts'}   | ${'6'}
+    ${'7H'}  | ${'hearts'}   | ${'7'}
+    ${'AH'}  | ${'hearts'}   | ${'ace'}
+    ${'7C'}  | ${'clubs'}    | ${'7'}
+    ${'10S'} | ${'spades'}   | ${'10'}
+    ${'QD'}  | ${'diamonds'} | ${'queen'}
+  `('$card is a $rank of $suit', ({ card, suit, rank }) => {
+  expect(getRank(card)).toEqual(rank);
+  expect(getSuit(card)).toEqual(suit);
+});
+});
+
 describe('canDefend', () => {
   test.each`
-    attackSuit  | attackRank | defenseSuit | defenseRank | trumpSuit   | expected
-    ${'hearts'} | ${6}       | ${'hearts'} | ${7}        | ${'spades'} | ${true}
-    ${'hearts'} | ${7}       | ${'hearts'} | ${6}        | ${'spades'} | ${false}
-    ${'hearts'} | ${6}       | ${'clubs'}  | ${7}        | ${'spades'} | ${false}
-    ${'hearts'} | ${'ace'}   | ${'spades'} | ${7}        | ${'spades'} | ${true}
+    attackCard | defenseCard | trumpSuit   | expected
+    ${'6H'}    | ${'7H'}     | ${'spades'} | ${true}
+    ${'7H'}    | ${'6H'}     | ${'spades'} | ${false}
+    ${'6H'}    | ${'7C'}     | ${'spades'} | ${false}
+    ${'AH'}    | ${'7S'}     | ${'spades'} | ${true}
   `(
-  '$defenseRank of $defenseSuit beats $attackRank of $attackSuit when $trump is trump? $expected',
-  ({
-    attackSuit,
-    attackRank,
-    defenseSuit,
-    defenseRank,
-    trumpSuit,
-    expected,
-  }) => {
-    const defenseCard = { suit: defenseSuit, rank: defenseRank };
-    const attackCard = { suit: attackSuit, rank: attackRank };
+  '$defenseCard beats $attackCard when $trump is trump? $expected',
+  ({ attackCard, defenseCard, trumpSuit, expected }) => {
     expect(canDefend({ defenseCard, attackCard, trumpSuit })).toBe(expected);
   },
 );
@@ -37,23 +49,17 @@ describe('canAttack', () => {
   });
 
   describe('table with cards', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 10 },
-        { suit: 'hearts', rank: 'ace' },
-      ],
-      [{ suit: 'clubs', rank: 7 }],
-    ];
+    const table = [['10H', 'AH'], ['7C']];
 
     test.each`
-      suit          | rank     | expected
-      ${'spades'}   | ${7}     | ${true}
-      ${'spades'}   | ${8}     | ${false}
-      ${'spades'}   | ${'ace'} | ${true}
-      ${'spades'}   | ${10}    | ${true}
-      ${'diamonds'} | ${10}    | ${true}
-    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
-  expect(canAttack({ table, card: { rank, suit } })).toBe(expected);
+      card     | expected
+      ${'7S'}  | ${true}
+      ${'8S'}  | ${false}
+      ${'AS'}  | ${true}
+      ${'10S'} | ${true}
+      ${'10D'} | ${true}
+    `('with $card? $expected', ({ card, expected }) => {
+  expect(canAttack({ table, card })).toBe(expected);
 });
   });
 });
@@ -70,12 +76,7 @@ describe('canPass', () => {
   });
 
   describe('table with beaten cards', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 10 },
-        { suit: 'spades', rank: 10 },
-      ],
-    ];
+    const table = [['10H', '10S']];
 
     test('always false', () => {
       cards.forEach(card => {
@@ -85,12 +86,7 @@ describe('canPass', () => {
   });
 
   describe('table with non-uniform ranks', () => {
-    const table = [
-      [
-        { suit: 'hearts', rank: 9 },
-        { suit: 'spades', rank: 10 },
-      ],
-    ];
+    const table = [['9H'], ['10S']];
 
     test('always false', () => {
       cards.forEach(card => {
@@ -100,21 +96,17 @@ describe('canPass', () => {
   });
 
   describe('table with uniform ranks', () => {
-    const table = [
-      [{ suit: 'hearts', rank: 10 }],
-      [{ suit: 'clubs', rank: 10 }],
-    ];
+    const table = [['10H'], ['10C']];
 
     test.each`
-      suit          | rank     | expected
-      ${'spades'}   | ${7}     | ${false}
-      ${'spades'}   | ${8}     | ${false}
-      ${'spades'}   | ${'ace'} | ${false}
-      ${'spades'}   | ${10}    | ${true}
-      ${'diamonds'} | ${10}    | ${true}
-    `('with $suit of $rank? $expected', ({ rank, suit, expected }) => {
-  expect(canPass({ table, card: { rank, suit } })).toBe(expected);
+      card     | expected
+      ${'7S'}  | ${false}
+      ${'8S'}  | ${false}
+      ${'AS'}  | ${false}
+      ${'10S'} | ${true}
+      ${'10D'} | ${true}
+    `('with $card? $expected', ({ card, expected }) => {
+  expect(canPass({ table, card })).toBe(expected);
 });
   });
 });
-/* eslint-enable max-len */

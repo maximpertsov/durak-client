@@ -13,8 +13,6 @@ export default createActions({
     },
     HANDS: {
       ADD: undefined,
-      COMPACT: undefined,
-      REMOVE: undefined,
       SET: undefined,
     },
     PASS_COUNT: {

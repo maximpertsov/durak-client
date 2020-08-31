@@ -1,35 +1,36 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 
+import isEqual from 'lodash/fp/isEqual';
+
 import concat from 'lodash/concat';
 import find from 'lodash/find';
-import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
+import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
 
 const uniqueCards = cards => uniqWith(cards, isEqual);
-const sameRank = cards => size(uniqBy(uniqueCards(cards), 'rank')) === 1;
+const sameRank = cards => size(uniqBy(uniqueCards(cards), getRank)) === 1;
 
 const mapStateToProps = createSelector(
   state => state,
   state => state.selectedCards,
-  (_, props) => props.rank,
-  (_, props) => props.suit,
+  (_, props) => props.card,
 
-  (state, selectedCards, rank, suit) => ({
-    card: { rank, suit },
+  (state, selectedCards, card) => ({
     hand: state.hands[state.user],
-    selectedCard: find(selectedCards, { suit, rank }),
+    selectedCard: find(selectedCards, isEqual(card)),
     selectedCards,
     trumpSuit: state.trumpSuit,
   }),
@@ -46,9 +47,9 @@ const SelectionIndicator = styled.div({
   zIndex: '1',
 });
 
-const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
-  const cardImage = flipped ? getBackOfCard() : getCardImage({ rank, suit });
-  const isGlowing = !flipped && trumpSuit === suit;
+const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
+  const cardImage = flipped ? getBackOfCard() : getCardImage(card);
+  const isGlowing = !flipped && trumpSuit === getSuit(card);
 
   const glow = keyframes({
     '0%': {
@@ -72,19 +73,16 @@ const Wrapper = styled.div(({ isDragging, flipped, rank, suit, trumpSuit }) => {
   };
 });
 
-// TODO: make it so suit and rank can be omitted for hidden cards
-const Card = ({ suit, rank, flipped }) => {
+const Card = ({ card, flipped }) => {
   const dispatch = useDispatch();
-  const { card, hand, selectedCard, selectedCards, trumpSuit } = useSelector(
-    state => mapStateToProps(state, { rank, suit }),
+  const { hand, selectedCard, selectedCards, trumpSuit } = useSelector(
+    state => mapStateToProps(state, { card }),
     isEqual,
   );
 
-  const canDrag = () => some(hand, card);
+  const canDrag = () => some(hand, isEqual(card));
   const begin = () => {
-    const selectedAndDraggingCards = uniqueCards(
-      concat(selectedCards, card),
-    );
+    const selectedAndDraggingCards = uniqueCards(concat(selectedCards, card));
     if (sameRank(selectedAndDraggingCards)) {
       dispatch(actions.game.selectedCards.set(selectedAndDraggingCards));
       return;
@@ -94,10 +92,10 @@ const Card = ({ suit, rank, flipped }) => {
   };
   const end = () => {
     dispatch(actions.game.selectedCards.clear());
-  }
+  };
 
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD', suit, rank },
+    item: { type: 'CARD', card },
     begin,
     canDrag,
     collect: monitor => ({
@@ -109,7 +107,7 @@ const Card = ({ suit, rank, flipped }) => {
   // TODO: move logic into action
   const onClick = () => {
     if (!selectedCard) {
-      if (!find(hand, card)) return;
+      if (!find(hand, isEqual(card))) return;
 
       dispatch(actions.game.selectedCards.add(card));
       return;
@@ -121,16 +119,25 @@ const Card = ({ suit, rank, flipped }) => {
     <Wrapper
       className="Card"
       onClick={onClick}
-      isDragging={isDragging}
-      flipped={flipped}
-      suit={suit}
-      trumpSuit={trumpSuit}
-      rank={rank}
       ref={dragRef}
+      isDragging={isDragging}
+      card={card}
+      flipped={flipped}
+      trumpSuit={trumpSuit}
     >
       {!!selectedCard && <SelectionIndicator />}
     </Wrapper>
   );
+};
+
+Card.propTypes = {
+  card: PropTypes.oneOf(allCards),
+  flipped: PropTypes.bool,
+};
+
+Card.defaultProps = {
+  card: null,
+  flipped: false,
 };
 
 export default Card;

@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import first from 'lodash/first';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
 import size from 'lodash/size';
@@ -15,8 +16,14 @@ import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
+  (_, props) => props.children,
 
-  state => ({
+  (state, children) => ({
+    topCard: get(
+      last(React.Children.toArray(children)),
+      'props.cardOrStack.card',
+    ),
+    isDefended: React.Children.count(children) > 1,
     isDefender: state.user === getDefender(state),
     selectedCards: state.selectedCards,
     trumpSuit: state.trumpSuit,
@@ -31,28 +38,30 @@ const CardWrapper = styled.div(props => ({
 const CardStack = ({ children }) => {
   const io = useWebSocketContext();
 
-  const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
-  const isDefended = React.Children.count(children) > 1;
+  const {
+    isDefended,
+    isDefender,
+    selectedCards,
+    topCard,
+    trumpSuit,
+  } = useSelector(state => mapStateToProps(state, { children }), isEqual);
 
-  const { isDefender, selectedCards, trumpSuit } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
-
-  const drop = ({ suit, rank }) => {
-    io.send('defended', { baseCard, card: { suit, rank } });
+  const drop = ({ card }) => {
+    io.send('defended', { baseCard: topCard, card });
   };
 
-  const canDrop = card => {
+  const canDefendWithCard = card => {
     if (isDefended) return false;
     if (!isDefender) return false;
 
     return canDefend({
-      attackCard: baseCard,
+      attackCard: topCard,
       defenseCard: card,
       trumpSuit,
     });
   };
+
+  const canDrop = ({ card }) => canDefendWithCard(card);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
@@ -67,8 +76,8 @@ const CardStack = ({ children }) => {
     if (size(selectedCards) === 1) {
       const card = first(selectedCards);
 
-      if (canDrop(card)) {
-        io.send('defended', { baseCard, card });
+      if (canDefendWithCard(card)) {
+        io.send('defended', { baseCard: topCard, card });
       }
     }
     // HACK: No need clear cards since clicking the table also clears cards

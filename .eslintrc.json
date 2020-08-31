@@ -8,9 +8,7 @@
     "document": false,
     "localStorage": false,
     "mockStore": false,
-    "restoreSpys": false,
-    "setupReduxSpys": false,
-    "shallowWrappedComponent": false,
+    "shallowWithStore": false,
     "WebSocket": false,
     "window": false
   },

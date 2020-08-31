@@ -5,6 +5,8 @@ import { Comment } from 'semantic-ui-react';
 
 import get from 'lodash/get';
 
+import { getRank, getSuit } from 'utils/gameLogic';
+
 // TODO move to utils
 const maxAgeInSeconds = 10;
 const getAgeInSeconds = createdAt =>
@@ -19,10 +21,14 @@ const suitCodepoints = Object.freeze({
 
 const getSuitText = suit => get(suitCodepoints, suit, '');
 
-const getCardText = ({ rank, suit }) =>
-  `${Number.isNaN(+rank) ? rank.charAt(0).toUpperCase() : rank}${getSuitText(
-    suit,
-  )}`;
+const getCardText = card => {
+  const rank = getRank(card);
+  const suit = getSuit(card);
+
+  return `${
+    Number.isNaN(+rank) ? rank.charAt(0).toUpperCase() : rank
+  }${getSuitText(suit)}`;
+};
 
 // eslint-disable-next-line complexity
 const getText = ({ type, payload }) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import Cards from './Cards';
@@ -10,7 +11,7 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    cards: state.hands[state.user],
+    cards: get(state, ['hands', state.user], []).map(card => ({ card })),
   }),
 );
 
