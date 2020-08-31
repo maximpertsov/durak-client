@@ -107,7 +107,7 @@ const Table = () => {
         <DrawPile />
       </div>
       <div>
-        <Cards cards={table} />
+        <Cards cards={table.map(card => ({ card }))} />
       </div>
     </Wrapper>
   );
