@@ -20,6 +20,7 @@ const getGameState = store => {
       'passCount',
       'players',
       'table',
+      'trumpSuit', // outbound-only
       'yielded',
     ]),
   };
