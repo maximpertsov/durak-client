@@ -1,11 +1,4 @@
-import {
-  canAttack,
-  canDefend,
-  canPass,
-  cards,
-  getRank,
-  getSuit,
-} from '../gameLogic';
+import { canAttack, canPass, cards, getRank, getSuit } from '../gameLogic';
 
 describe('getRank and getSuit', () => {
   test.each`
@@ -20,21 +13,6 @@ describe('getRank and getSuit', () => {
   expect(getRank(card)).toEqual(rank);
   expect(getSuit(card)).toEqual(suit);
 });
-});
-
-describe('canDefend', () => {
-  test.each`
-    attackCard | defenseCard | trumpSuit   | expected
-    ${'6H'}    | ${'7H'}     | ${'spades'} | ${true}
-    ${'7H'}    | ${'6H'}     | ${'spades'} | ${false}
-    ${'6H'}    | ${'7C'}     | ${'spades'} | ${false}
-    ${'AH'}    | ${'7S'}     | ${'spades'} | ${true}
-  `(
-  '$defenseCard beats $attackCard when $trump is trump? $expected',
-  ({ attackCard, defenseCard, trumpSuit, expected }) => {
-    expect(canDefend({ defenseCard, attackCard, trumpSuit })).toBe(expected);
-  },
-);
 });
 
 describe('canAttack', () => {

@@ -42,16 +42,6 @@ export const cards = keys(cardsWithData);
 export const getRank = card => get(cardsWithData, [card, 'rank']);
 export const getSuit = card => get(cardsWithData, [card, 'suit']);
 
-const getValue = card => get(cardsWithData, [card, 'value']);
-const sameSuit = (card1, card2) => getSuit(card1) === getSuit(card2);
-
-export const canDefend = ({ attackCard, defenseCard, trumpSuit }) => {
-  if (sameSuit(attackCard, defenseCard)) {
-    return getValue(defenseCard) > getValue(attackCard);
-  }
-  return getSuit(defenseCard) === trumpSuit;
-};
-
 export const canAttack = ({ table, card }) => {
   const flatTable = flatten(table);
   if (isEmpty(flatTable)) return true;
