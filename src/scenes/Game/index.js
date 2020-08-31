@@ -27,6 +27,7 @@ import Messages from './components/Messages';
 import PassCards from './components/PassCards';
 import Player from './components/Player';
 import RestartButton from './components/RestartButton';
+import StartButton from './components/StartButton';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
 import YieldButton from './components/YieldButton';
@@ -60,6 +61,7 @@ const mapStateToProps = createSelector(
     defender,
     game: getGame(),
     hands: state.hands,
+    hasMessages: !isEmpty(state.messages),
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
@@ -109,6 +111,7 @@ const PlayersWrapper = styled.div({
 const Game = () => {
   const {
     defender,
+    hasMessages,
     isAttacker,
     isDefender,
     isDurak,
@@ -147,6 +150,7 @@ const Game = () => {
     );
 
   const renderButton = () => {
+    if (!hasMessages) return <StartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
     if (isDefender) return <CollectButton />;

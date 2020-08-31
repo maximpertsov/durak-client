@@ -30,7 +30,7 @@ const CollectButton = () => {
     isEqual,
   );
 
-  const collectAttack = () => {
+  const collectCards = () => {
     io.send('collected', {});
   };
 
@@ -39,7 +39,7 @@ const CollectButton = () => {
   if (isEmpty(unbeatenCards)) return null;
 
   return (
-    <Button circular size="big" onClick={collectAttack}>
+    <Button circular size="big" onClick={collectCards}>
       collect cards
     </Button>
   );

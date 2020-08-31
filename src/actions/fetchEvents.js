@@ -6,6 +6,7 @@ const fetchEvents = ({ game }) => async dispatch => {
 
   await client.get(`game/${game}/events`).then(response => {
     dispatch(actions.game.remoteDataState.set('FETCHED_EVENTS'));
+
     response.data.events.forEach(event => {
       dispatch(actions.messages.append(event));
     });
