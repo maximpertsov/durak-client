@@ -31,8 +31,9 @@ const CardWrapper = styled.div(props => ({
 const CardStack = ({ children }) => {
   const io = useWebSocketContext();
 
-  const baseCard = last(React.Children.toArray(children)).props.cardOrStack;
-  const isDefended = React.Children.count(children) > 1;
+  const getBaseCard = () =>
+    last(React.Children.toArray(children)).props.cardOrStack.card;
+  const getIsDefended = () => React.Children.count(children) > 1;
 
   const { isDefender, selectedCards, trumpSuit } = useSelector(
     mapStateToProps,
@@ -40,19 +41,21 @@ const CardStack = ({ children }) => {
   );
 
   const drop = ({ card }) => {
-    io.send('defended', { baseCard, card });
+    io.send('defended', { baseCard: getBaseCard(), card });
   };
 
-  const canDrop = card => {
-    if (isDefended) return false;
+  const canDefendWithCard = card => {
+    if (getIsDefended()) return false;
     if (!isDefender) return false;
 
     return canDefend({
-      attackCard: baseCard,
+      attackCard: getBaseCard(),
       defenseCard: card,
       trumpSuit,
     });
   };
+
+  const canDrop = ({ card }) => canDefendWithCard(card);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
@@ -67,8 +70,8 @@ const CardStack = ({ children }) => {
     if (size(selectedCards) === 1) {
       const card = first(selectedCards);
 
-      if (canDrop(card)) {
-        io.send('defended', { baseCard, card });
+      if (canDefendWithCard(card)) {
+        io.send('defended', { baseCard: getBaseCard(), card });
       }
     }
     // HACK: No need clear cards since clicking the table also clears cards
