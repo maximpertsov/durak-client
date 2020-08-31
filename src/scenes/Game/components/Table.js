@@ -107,7 +107,7 @@ const Table = () => {
         <DrawPile />
       </div>
       <div>
-        <Cards cards={table.map(card => ({ card }))} />
+        <Cards cards={table.map(stack => stack.map(card => ({ card })))} />
       </div>
     </Wrapper>
   );
