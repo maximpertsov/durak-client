@@ -1,6 +1,5 @@
 import every from 'lodash/every';
 import flatMap from 'lodash/flatMap';
-import flatten from 'lodash/flatten';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -41,13 +40,6 @@ const cardsWithData = Object.freeze(
 export const cards = keys(cardsWithData);
 export const getRank = card => get(cardsWithData, [card, 'rank']);
 export const getSuit = card => get(cardsWithData, [card, 'suit']);
-
-export const canAttack = ({ table, card }) => {
-  const flatTable = flatten(table);
-  if (isEmpty(flatTable)) return true;
-
-  return some(flatTable, tableCard => getRank(tableCard) === getRank(card));
-};
 
 export const canPass = ({ table, card }) => {
   if (isEmpty(table)) return false;

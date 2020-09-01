@@ -15,33 +15,6 @@ describe('getRank and getSuit', () => {
 });
 });
 
-describe('canAttack', () => {
-  describe('empty table', () => {
-    const table = [];
-
-    test('always true', () => {
-      cards.forEach(card => {
-        expect(canAttack({ table, card })).toBe(true);
-      });
-    });
-  });
-
-  describe('table with cards', () => {
-    const table = [['10H', 'AH'], ['7C']];
-
-    test.each`
-      card     | expected
-      ${'7S'}  | ${true}
-      ${'8S'}  | ${false}
-      ${'AS'}  | ${true}
-      ${'10S'} | ${true}
-      ${'10D'} | ${true}
-    `('with $card? $expected', ({ card, expected }) => {
-  expect(canAttack({ table, card })).toBe(expected);
-});
-  });
-});
-
 describe('canPass', () => {
   describe('empty table', () => {
     const table = [];
