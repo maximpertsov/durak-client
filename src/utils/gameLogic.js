@@ -1,11 +1,7 @@
-import every from 'lodash/every';
 import flatMap from 'lodash/flatMap';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
-import size from 'lodash/size';
-import some from 'lodash/some';
 
 const suits = Object.freeze(['clubs', 'diamonds', 'hearts', 'spades']);
 const ranks = Object.freeze([
@@ -40,12 +36,5 @@ const cardsWithData = Object.freeze(
 export const cards = keys(cardsWithData);
 export const getRank = card => get(cardsWithData, [card, 'rank']);
 export const getSuit = card => get(cardsWithData, [card, 'suit']);
-
-export const canPass = ({ table, card }) => {
-  if (isEmpty(table)) return false;
-  if (some(table, stack => size(stack) !== 1)) return false;
-
-  return every(table, ([tableCard]) => getRank(tableCard) === getRank(card));
-};
 
 export default {};
