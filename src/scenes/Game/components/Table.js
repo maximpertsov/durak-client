@@ -4,15 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
-import compact from 'lodash/compact';
 import every from 'lodash/every';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import size from 'lodash/size';
+import last from 'lodash/last';
 
 import actions from 'actions';
-import { getAttackers, getDefender, getUnbeatenCards } from 'reducers';
-import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
@@ -31,35 +29,23 @@ const Wrapper = styled.div(props => ({
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getAttackers(state),
-  state => getDefender(state),
-  state => getUnbeatenCards(state),
 
-  (state, attackers, defender, unbeatenCards) => ({
-    freeDefenseCardCount:
-      size(compact(state.hands[defender])) - size(unbeatenCards),
+  state => ({
+    legalAttacks: get(last(state.messages), 'toState.legalAttacks', []),
     selectedCards: state.selectedCards,
     table: state.table,
-    userCanAttack: attackers.includes(state.user),
   }),
 );
 
 const Table = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
-  const {
-    freeDefenseCardCount,
-    selectedCards,
-    table,
-    userCanAttack,
-  } = useSelector(mapStateToProps, isEqual);
+  const { legalAttacks, selectedCards, table } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
-  const canAttackWithCard = card => {
-    if (!userCanAttack) return false;
-    if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
-
-    return canAttack({ card, table });
-  };
+  const canAttackWithCard = card => legalAttacks.includes(card);
 
   const canDrop = (item, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;

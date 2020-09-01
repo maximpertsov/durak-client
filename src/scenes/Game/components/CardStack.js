@@ -21,7 +21,7 @@ const mapStateToProps = createSelector(
       last(React.Children.toArray(children)),
       'props.cardOrStack.card',
     ),
-    legalDefenses: get(last(state.messages), 'toState.legalDefenses'),
+    legalDefenses: get(last(state.messages), 'toState.legalDefenses', {}),
     selectedCards: state.selectedCards,
   }),
 );
