@@ -9,6 +9,7 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
+import size from 'lodash/size';
 
 import actions from 'actions';
 import { useWebSocketContext } from 'utils/websockets';
@@ -29,9 +30,11 @@ const Wrapper = styled.div(props => ({
 
 const mapStateToProps = createSelector(
   state => state,
+  state => last(state.messages),
 
-  state => ({
-    legalAttacks: get(last(state.messages), 'toState.legalAttacks', []),
+  (state, lastMessage) => ({
+    legalAttackCards: get(lastMessage, 'toState.legalAttacks.cards', []),
+    legalAttackLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
     selectedCards: state.selectedCards,
     table: state.table,
   }),
@@ -40,12 +43,18 @@ const mapStateToProps = createSelector(
 const Table = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
-  const { legalAttacks, selectedCards, table } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    legalAttackCards,
+    legalAttackLimit,
+    selectedCards,
+    table,
+  } = useSelector(mapStateToProps, isEqual);
 
-  const canAttackWithCard = card => legalAttacks.includes(card);
+  const canAttackWithCard = card => {
+    if (legalAttackLimit < 1) return false;
+
+    return legalAttackCards.includes(card);
+  };
 
   const canDrop = (item, monitor) => {
     if (!monitor.isOver({ shallow: true })) return false;
@@ -73,13 +82,15 @@ const Table = () => {
   });
 
   const attackWithSelectedCards = () => {
-    if (!isEmpty(selectedCards)) {
-      if (every(selectedCards, canAttackWithCard)) {
-        io.send('attacked_with_many', { cards: selectedCards });
-      }
-    }
+    try {
+      if (isEmpty(selectedCards)) return;
+      if (size(selectedCards) > legalAttackLimit) return;
+      if (!every(selectedCards, canAttackWithCard)) return;
 
-    dispatch(actions.game.selectedCards.clear());
+      io.send('attacked_with_many', { cards: selectedCards });
+    } finally {
+      dispatch(actions.game.selectedCards.clear());
+    }
   };
 
   return (
