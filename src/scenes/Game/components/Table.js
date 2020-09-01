@@ -33,8 +33,8 @@ const mapStateToProps = createSelector(
   state => last(state.messages),
 
   (state, lastMessage) => ({
-    legalAttackCards: get(lastMessage, 'toState.legalAttacks.cards', []),
-    legalAttackLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
+    legalAttacksCards: get(lastMessage, 'toState.legalAttacks.cards', []),
+    legalAttacksLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
     selectedCards: state.selectedCards,
     table: state.table,
   }),
@@ -44,16 +44,16 @@ const Table = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
   const {
-    legalAttackCards,
-    legalAttackLimit,
+    legalAttacksCards,
+    legalAttacksLimit,
     selectedCards,
     table,
   } = useSelector(mapStateToProps, isEqual);
 
   const canAttackWithCard = card => {
-    if (legalAttackLimit < 1) return false;
+    if (legalAttacksLimit < 1) return false;
 
-    return legalAttackCards.includes(card);
+    return legalAttacksCards.includes(card);
   };
 
   const canDrop = (item, monitor) => {
@@ -84,7 +84,7 @@ const Table = () => {
   const attackWithSelectedCards = () => {
     try {
       if (isEmpty(selectedCards)) return;
-      if (size(selectedCards) > legalAttackLimit) return;
+      if (size(selectedCards) > legalAttacksLimit) return;
       if (!every(selectedCards, canAttackWithCard)) return;
 
       io.send('attacked_with_many', { cards: selectedCards });

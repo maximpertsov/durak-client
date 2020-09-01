@@ -6,36 +6,25 @@ import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
 import every from 'lodash/every';
-import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import last from 'lodash/last';
 import size from 'lodash/size';
 import some from 'lodash/some';
 
 import actions from 'actions';
-import { getDefender, getUnbeatenCards } from 'reducers';
-import { canPass } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
-
-const getNextPlayer = ({ players, user }) => {
-  const index = findIndex(players, player => player === user);
-
-  return players[(index + 1) % size(players)];
-};
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getNextPlayer(state),
-  state => getUnbeatenCards(state),
+  state => last(state.messages),
 
-  (state, nextPlayer, unbeatenCards) => ({
-    freeDefenseCardCount:
-      size(compact(state.hands[nextPlayer])) - size(unbeatenCards),
+  (state, lastMessage) => ({
+    legalPassesCards: get(lastMessage, 'toState.legalPasses.cards', []),
+    legalPassesLimit: get(lastMessage, 'toState.legalPasses.limit', 0),
     hand: get(state.hands, state.user),
-    isDefender: state.user === getDefender(state),
     selectedCards: state.selectedCards,
-    table: state.table,
   }),
 );
 
@@ -52,18 +41,16 @@ const PassCards = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
   const {
-    freeDefenseCardCount,
     hand,
-    isDefender,
+    legalPassesCards,
+    legalPassesLimit,
     selectedCards,
-    table,
   } = useSelector(mapStateToProps, isEqual);
 
   const canPassWithCard = card => {
-    if (!isDefender) return false;
-    if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
+    if (legalPassesLimit < 1) return false;
 
-    return canPass({ card, table });
+    return legalPassesCards.includes(card);
   };
 
   const canPassWithAnyCard = () => some(compact(hand), canPassWithCard);
@@ -89,13 +76,15 @@ const PassCards = () => {
   });
 
   const passWithSelectedCard = () => {
-    if (!isEmpty(selectedCards)) {
-      if (every(selectedCards, canPassWithCard)) {
-        io.send('passed_with_many', { cards: selectedCards });
-      }
-    }
+    try {
+      if (isEmpty(selectedCards)) return;
+      if (size(selectedCards) > legalPassesLimit) return;
+      if (!every(selectedCards, canPassWithCard)) return;
 
-    dispatch(actions.game.selectedCards.clear());
+      io.send('passed_with_many', { cards: selectedCards });
+    } finally {
+      dispatch(actions.game.selectedCards.clear());
+    }
   };
 
   if (!canPassWithAnyCard()) return null;
