@@ -10,8 +10,6 @@ import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
 import size from 'lodash/size';
 
-import { getDefender } from 'reducers';
-import { canDefend } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
@@ -23,10 +21,8 @@ const mapStateToProps = createSelector(
       last(React.Children.toArray(children)),
       'props.cardOrStack.card',
     ),
-    isDefended: React.Children.count(children) > 1,
-    isDefender: state.user === getDefender(state),
+    legalDefenses: get(last(state.messages), 'toState.legalDefenses', {}),
     selectedCards: state.selectedCards,
-    trumpSuit: state.trumpSuit,
   }),
 );
 
@@ -38,30 +34,19 @@ const CardWrapper = styled.div(props => ({
 const CardStack = ({ children }) => {
   const io = useWebSocketContext();
 
-  const {
-    isDefended,
-    isDefender,
-    selectedCards,
-    topCard,
-    trumpSuit,
-  } = useSelector(state => mapStateToProps(state, { children }), isEqual);
+  const { legalDefenses, selectedCards, topCard } = useSelector(
+    state => mapStateToProps(state, { children }),
+    isEqual,
+  );
+
+  const canDefendWithCard = card =>
+    get(legalDefenses, topCard, []).includes(card);
+
+  const canDrop = ({ card }) => canDefendWithCard(card);
 
   const drop = ({ card }) => {
     io.send('defended', { baseCard: topCard, card });
   };
-
-  const canDefendWithCard = card => {
-    if (isDefended) return false;
-    if (!isDefender) return false;
-
-    return canDefend({
-      attackCard: topCard,
-      defenseCard: card,
-      trumpSuit,
-    });
-  };
-
-  const canDrop = ({ card }) => canDefendWithCard(card);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',

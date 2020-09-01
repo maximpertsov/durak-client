@@ -4,15 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
-import compact from 'lodash/compact';
 import every from 'lodash/every';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import last from 'lodash/last';
 import size from 'lodash/size';
 
 import actions from 'actions';
-import { getAttackers, getDefender, getUnbeatenCards } from 'reducers';
-import { canAttack } from 'utils/gameLogic';
 import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
@@ -31,16 +30,13 @@ const Wrapper = styled.div(props => ({
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getAttackers(state),
-  state => getDefender(state),
-  state => getUnbeatenCards(state),
+  state => last(state.messages),
 
-  (state, attackers, defender, unbeatenCards) => ({
-    freeDefenseCardCount:
-      size(compact(state.hands[defender])) - size(unbeatenCards),
+  (state, lastMessage) => ({
+    legalAttacksCards: get(lastMessage, 'toState.legalAttacks.cards', []),
+    legalAttacksLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
     selectedCards: state.selectedCards,
     table: state.table,
-    userCanAttack: attackers.includes(state.user),
   }),
 );
 
@@ -48,17 +44,16 @@ const Table = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
   const {
-    freeDefenseCardCount,
+    legalAttacksCards,
+    legalAttacksLimit,
     selectedCards,
     table,
-    userCanAttack,
   } = useSelector(mapStateToProps, isEqual);
 
   const canAttackWithCard = card => {
-    if (!userCanAttack) return false;
-    if (freeDefenseCardCount < Math.max(1, size(selectedCards))) return false;
+    if (legalAttacksLimit < 1) return false;
 
-    return canAttack({ card, table });
+    return legalAttacksCards.includes(card);
   };
 
   const canDrop = (item, monitor) => {
@@ -87,13 +82,15 @@ const Table = () => {
   });
 
   const attackWithSelectedCards = () => {
-    if (!isEmpty(selectedCards)) {
-      if (every(selectedCards, canAttackWithCard)) {
-        io.send('attacked_with_many', { cards: selectedCards });
-      }
-    }
+    try {
+      if (isEmpty(selectedCards)) return;
+      if (size(selectedCards) > legalAttacksLimit) return;
+      if (!every(selectedCards, canAttackWithCard)) return;
 
-    dispatch(actions.game.selectedCards.clear());
+      io.send('attacked_with_many', { cards: selectedCards });
+    } finally {
+      dispatch(actions.game.selectedCards.clear());
+    }
   };
 
   return (
