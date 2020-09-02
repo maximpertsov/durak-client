@@ -4,19 +4,17 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 
-import compact from 'lodash/compact';
-import first from 'lodash/first';
-import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import size from 'lodash/size';
 import zipObject from 'lodash/zipObject';
 
 import {
   getAttackers,
   getDefender,
+  getDurak,
   getGame,
   getPlayersFromUser,
+  getWinners,
 } from 'reducers';
 import { MediaQuery } from 'styles';
 
@@ -37,20 +35,6 @@ const shield = String.fromCodePoint(0x1f6e1);
 const popcorn = String.fromCodePoint(0x1f37f);
 const rofl = String.fromCodePoint(0x1f923);
 
-const getDurak = ({ drawPile, hands }) => {
-  if (!isEmpty(drawPile)) return null;
-
-  const playersWithCards = flatMap(hands, (hand, player) => {
-    if (isEmpty(compact(hand))) return [];
-
-    return [player];
-  });
-
-  if (size(playersWithCards) !== 1) return null;
-
-  return first(playersWithCards);
-};
-
 const mapStateToProps = createSelector(
   state => state,
   state => getPlayersFromUser(state),
@@ -65,8 +49,8 @@ const mapStateToProps = createSelector(
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
-    isOutOfGame: durak !== null || !state.players.includes(state.user),
-    isDurak: durak === state.user,
+    isOutOfGame: getWinners(state).includes(state.user),
+    isDurak: durak && durak === state.user,
     user: state.user,
     ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
   }),
