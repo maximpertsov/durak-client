@@ -21,12 +21,6 @@ import yielded from './yielded';
 const rootReducer = combineReducers({
   loginForm,
   messages,
-  // TODO: move this to the server?
-  passCount: handleAction(
-    actions.game.passCount.set,
-    (state, action) => action.payload,
-    0,
-  ),
   gameList: handleAction(
     actions.home.gameList.set,
     (state, action) => action.payload,

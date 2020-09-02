@@ -8,9 +8,6 @@ export default createActions({
     REMOTE_DATA_STATE: {
       SET: undefined,
     },
-    PASS_COUNT: {
-      SET: undefined,
-    },
     SELECTED_CARDS: {
       ADD: undefined,
       CLEAR: undefined,

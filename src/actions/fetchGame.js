@@ -30,8 +30,6 @@ const fetchGame = ({ game }) => dispatch => {
       }),
     );
 
-    // clear draws
-    dispatch(actions.game.passCount.set(0));
     // clear table
     dispatch(actions.game.table.clear());
 
