@@ -15,7 +15,6 @@ import messages from './messages';
 import remoteDataState from './remoteDataState';
 import selectedCards from './selectedCards';
 import table from './table';
-import trumpSuit from './trumpSuit';
 import user from './user';
 import yielded from './yielded';
 
@@ -36,7 +35,6 @@ const rootReducer = combineReducers({
   remoteDataState,
   selectedCards,
   table,
-  trumpSuit,
   user,
   yielded,
 });
@@ -58,6 +56,7 @@ export const getDurak = state => fromCurrentState(state, 'durak', null);
 export const getPlayers = state => fromCurrentState(state, 'players', []);
 export const getDrawPile = state => fromCurrentState(state, 'drawPile', []);
 export const getHands = state => fromCurrentState(state, 'hands', {});
+export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];

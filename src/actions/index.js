@@ -23,9 +23,6 @@ export default createActions({
       SET: undefined,
       STACK: undefined,
     },
-    TRUMP_SUIT: {
-      SET: undefined,
-    },
     USER: {
       SET: undefined,
     },

@@ -17,7 +17,7 @@ import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
-import { getHands } from 'reducers';
+import { getHands, getTrumpSuit } from 'reducers';
 import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
@@ -34,7 +34,7 @@ const mapStateToProps = createSelector(
     hand: get(getHands(state), state.user),
     selectedCard: find(selectedCards, isEqual(card)),
     selectedCards,
-    trumpSuit: state.trumpSuit,
+    trumpSuit: getTrumpSuit(state),
   }),
 );
 

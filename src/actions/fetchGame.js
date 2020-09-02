@@ -30,9 +30,6 @@ const fetchGame = ({ game }) => dispatch => {
       }),
     );
 
-    // setup data provided by server
-    dispatch(actions.game.trumpSuit.set(trumpSuit));
-
     // clear draws
     dispatch(actions.game.passCount.set(0));
     // clear table
