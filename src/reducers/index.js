@@ -60,6 +60,7 @@ export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
 export const getDurak = state => fromCurrentState(state, 'durak', null);
 export const getPlayers = state => fromCurrentState(state, 'players', []);
+export const getDrawPile = state => fromCurrentState(state, 'drawPile', []);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
