@@ -8,10 +8,6 @@ export default createActions({
     REMOTE_DATA_STATE: {
       SET: undefined,
     },
-    HANDS: {
-      ADD: undefined,
-      SET: undefined,
-    },
     PASS_COUNT: {
       SET: undefined,
     },

@@ -14,6 +14,7 @@ import {
   getDefender,
   getDurak,
   getGame,
+  getHands,
   getPlayersFromUser,
   getWinners,
 } from 'reducers';
@@ -45,7 +46,7 @@ const mapStateToProps = createSelector(
   (state, playersFromUser, defender, durak) => ({
     defender,
     game: getGame(),
-    hands: state.hands,
+    hands: getHands(state),
     hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isAttacker: getAttackers(state).includes(state.user),

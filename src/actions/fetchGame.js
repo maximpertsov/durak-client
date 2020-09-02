@@ -32,7 +32,6 @@ const fetchGame = ({ game }) => dispatch => {
 
     // setup data provided by server
     dispatch(actions.game.trumpSuit.set(trumpSuit));
-    dispatch(actions.game.hands.set(hands));
 
     // clear draws
     dispatch(actions.game.passCount.set(0));

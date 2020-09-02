@@ -10,12 +10,14 @@ import isEqual from 'lodash/fp/isEqual';
 
 import concat from 'lodash/concat';
 import find from 'lodash/find';
+import get from 'lodash/get';
 import size from 'lodash/size';
 import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
+import { getHands } from 'reducers';
 import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
@@ -29,7 +31,7 @@ const mapStateToProps = createSelector(
   (_, props) => props.card,
 
   (state, selectedCards, card) => ({
-    hand: state.hands[state.user],
+    hand: get(getHands(state), state.user),
     selectedCard: find(selectedCards, isEqual(card)),
     selectedCards,
     trumpSuit: state.trumpSuit,

@@ -10,7 +10,6 @@ import last from 'lodash/last';
 
 import actions from 'actions';
 
-import hands from './hands';
 import loginForm from './loginForm';
 import messages from './messages';
 import remoteDataState from './remoteDataState';
@@ -21,7 +20,6 @@ import user from './user';
 import yielded from './yielded';
 
 const rootReducer = combineReducers({
-  hands,
   loginForm,
   messages,
   // TODO: move this to the server?
@@ -59,6 +57,7 @@ export const getWinners = state => fromCurrentState(state, 'winners', []);
 export const getDurak = state => fromCurrentState(state, 'durak', null);
 export const getPlayers = state => fromCurrentState(state, 'players', []);
 export const getDrawPile = state => fromCurrentState(state, 'drawPile', []);
+export const getHands = state => fromCurrentState(state, 'hands', {});
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
