@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { handleAction } from 'redux-actions';
 
+import isEqual from 'lodash/fp/isEqual';
+
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import get from 'lodash/get';
@@ -56,13 +58,15 @@ export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
 export const getDurak = state => fromCurrentState(state, 'durak', null);
+export const getPlayers = state => fromCurrentState(state, 'players', []);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
 
-  const offset = findIndex(state.players, player => player === state.user);
-  return state.players.map(
-    (_, index) => state.players[(index + offset) % state.players.length],
+  const _players = getPlayers(state);
+  const offset = findIndex(_players, isEqual(state.user));
+  return _players.map(
+    (_, index) => _players[(index + offset) % _players.length],
   );
 };
 

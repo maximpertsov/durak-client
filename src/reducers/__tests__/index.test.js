@@ -12,7 +12,7 @@ describe('getPlayersFromUser', () => {
     ${'grusha'} | ${['grusha', 'anna', 'vasyl', 'igor']}
     ${null}     | ${[]}
   `('$user attacks', ({ user, expected }) => {
-    const state = { players, user };
+    const state = { messages: [{ toState: { players } }], user };
     expect(getPlayersFromUser(state)).toStrictEqual(expected);
   });
 });
