@@ -14,12 +14,6 @@ export default createActions({
       REMOVE: undefined,
       SET: undefined,
     },
-    TABLE: {
-      APPEND: undefined,
-      CLEAR: undefined,
-      SET: undefined,
-      STACK: undefined,
-    },
     USER: {
       SET: undefined,
     },

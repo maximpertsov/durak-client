@@ -30,9 +30,6 @@ const fetchGame = ({ game }) => dispatch => {
       }),
     );
 
-    // clear table
-    dispatch(actions.game.table.clear());
-
     dispatch(actions.game.remoteDataState.set('FETCHED_GAME'));
   });
 };

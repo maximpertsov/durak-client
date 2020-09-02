@@ -9,10 +9,9 @@ const getLastMessage = ({ messages }) => last(messages);
 
 const updateGameState = (dispatch, message) => {
   const {
-    toState: { table, yielded },
+    toState: { yielded },
   } = message;
 
-  dispatch(actions.game.table.set(table));
   dispatch(actions.game.yielded.set(yielded));
 };
 
