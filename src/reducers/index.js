@@ -49,17 +49,13 @@ export default rootReducer;
 
 export const getGame = () => window.location.pathname.split('/')[1] || null;
 
-const getCurrentState = state => get(last(state.messages), 'toState');
+const fromCurrentState = (state, field, defaultValue) =>
+  get(last(state.messages), ['toState', field], defaultValue);
 
-export const getDefender = state =>
-  get(getCurrentState(state), 'defender', null);
-
-export const getAttackers = state =>
-  get(getCurrentState(state), 'attackers', []);
-
-export const getWinners = state => get(getCurrentState(state), 'winners', []);
-
-export const getDurak = state => get(getCurrentState(state), 'durak', null);
+export const getDefender = state => fromCurrentState(state, 'defender', null);
+export const getAttackers = state => fromCurrentState(state, 'attackers', []);
+export const getWinners = state => fromCurrentState(state, 'winners', []);
+export const getDurak = state => fromCurrentState(state, 'durak', null);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
