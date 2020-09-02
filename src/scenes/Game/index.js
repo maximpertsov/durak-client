@@ -6,6 +6,7 @@ import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import reject from 'lodash/reject';
 import zipObject from 'lodash/zipObject';
 
 import {
@@ -45,7 +46,7 @@ const mapStateToProps = createSelector(
     defender,
     game: getGame(),
     hands: state.hands,
-    hasMessages: !isEmpty(state.messages),
+    hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,

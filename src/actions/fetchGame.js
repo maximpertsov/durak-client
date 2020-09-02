@@ -14,6 +14,22 @@ const fetchGame = ({ game }) => dispatch => {
       data: { drawPile, hands, players, trumpSuit },
     } = response;
 
+    // TODO: make messages the source of truth for states
+    dispatch(
+      actions.messages.append({
+        type: 'initialized',
+        toState: {
+          drawPile: map(drawPile, 'card'),
+          hands,
+          players,
+          passCount: 0,
+          table: [],
+          trumpSuit,
+          yielded: [],
+        },
+      }),
+    );
+
     // setup data provided by server
     dispatch(actions.game.players.set(players));
     dispatch(actions.game.drawPile.set(map(drawPile, 'card')));
