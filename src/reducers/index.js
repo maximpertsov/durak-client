@@ -3,8 +3,8 @@ import { handleAction } from 'redux-actions';
 
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
-import isEmpty from 'lodash/isEmpty';
-import reject from 'lodash/reject';
+import get from 'lodash/get';
+import last from 'lodash/last';
 
 import actions from 'actions';
 
@@ -49,10 +49,17 @@ export default rootReducer;
 
 export const getGame = () => window.location.pathname.split('/')[1] || null;
 
-const getPlayersWithCardsOrAttacked = state =>
-  reject(state.players, player => isEmpty(state.hands[player]));
+const getCurrentState = state => get(last(state.messages), 'toState');
 
-export const getDefender = state => getPlayersWithCardsOrAttacked(state)[1];
+export const getDefender = state =>
+  get(getCurrentState(state), 'defender', null);
+
+export const getAttackers = state =>
+  get(getCurrentState(state), 'attackers', []);
+
+export const getWinners = state => get(getCurrentState(state), 'winners', []);
+
+export const getDurak = state => get(getCurrentState(state), 'durak', null);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
@@ -61,14 +68,6 @@ export const getPlayersFromUser = state => {
   return state.players.map(
     (_, index) => state.players[(index + offset) % state.players.length],
   );
-};
-
-export const getAttackers = state => {
-  const playersWithCards = getPlayersWithCardsOrAttacked(state);
-  if (isEmpty(state.table)) return [playersWithCards[0]];
-
-  const defender = getDefender(state);
-  return reject(playersWithCards, player => player === defender);
 };
 
 export const getUnbeatenCards = state =>
