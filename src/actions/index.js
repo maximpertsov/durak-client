@@ -8,9 +8,6 @@ export default createActions({
     REMOTE_DATA_STATE: {
       SET: undefined,
     },
-    DRAW_PILE: {
-      SET: undefined,
-    },
     HANDS: {
       ADD: undefined,
       SET: undefined,

@@ -31,7 +31,6 @@ const fetchGame = ({ game }) => dispatch => {
     );
 
     // setup data provided by server
-    dispatch(actions.game.drawPile.set(map(drawPile, 'card')));
     dispatch(actions.game.trumpSuit.set(trumpSuit));
     dispatch(actions.game.hands.set(hands));
 

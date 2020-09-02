@@ -10,7 +10,6 @@ import last from 'lodash/last';
 
 import actions from 'actions';
 
-import drawPile from './drawPile';
 import hands from './hands';
 import loginForm from './loginForm';
 import messages from './messages';
@@ -22,7 +21,6 @@ import user from './user';
 import yielded from './yielded';
 
 const rootReducer = combineReducers({
-  drawPile,
   hands,
   loginForm,
   messages,
