@@ -1,4 +1,3 @@
-import fromPairs from 'lodash/fromPairs';
 import map from 'lodash/map';
 
 import actions from 'actions';
@@ -12,24 +11,19 @@ const fetchGame = ({ game }) => dispatch => {
   client.get(`game/${game}`).then(response => {
     // TODO: simplify payload coming from server
     const {
-      data: { drawPile: drawPileData, players, trumpSuit },
+      data: { drawPile, hands, players, trumpSuit },
     } = response;
-    const drawPile = map(drawPileData, 'card');
+
+    // setup data provided by server
+    dispatch(actions.game.players.set(players));
+    dispatch(actions.game.drawPile.set(map(drawPile, 'card')));
+    dispatch(actions.game.trumpSuit.set(trumpSuit));
+    dispatch(actions.game.hands.set(hands));
 
     // clear draws
     dispatch(actions.game.passCount.set(0));
     // clear table
     dispatch(actions.game.table.clear());
-    // setup players
-    dispatch(actions.game.players.set(players));
-
-    // setup draw pile & trump suit
-    dispatch(actions.game.drawPile.set(drawPile));
-    dispatch(actions.game.trumpSuit.set(trumpSuit));
-
-    // clear player hands (applies if this is a restart)
-    const clearHands = fromPairs(players.map(player => [player, []]));
-    dispatch(actions.game.hands.set(clearHands));
 
     dispatch(actions.game.remoteDataState.set('FETCHED_GAME'));
   });
