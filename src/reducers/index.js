@@ -14,7 +14,6 @@ import drawPile from './drawPile';
 import hands from './hands';
 import loginForm from './loginForm';
 import messages from './messages';
-import players from './players';
 import remoteDataState from './remoteDataState';
 import selectedCards from './selectedCards';
 import table from './table';
@@ -38,7 +37,6 @@ const rootReducer = combineReducers({
     (state, action) => action.payload,
     null,
   ),
-  players,
   remoteDataState,
   selectedCards,
   table,

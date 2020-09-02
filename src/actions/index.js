@@ -18,11 +18,6 @@ export default createActions({
     PASS_COUNT: {
       SET: undefined,
     },
-    PLAYERS: {
-      ADD: undefined,
-      SET: undefined,
-      ROTATE: undefined,
-    },
     SELECTED_CARDS: {
       ADD: undefined,
       CLEAR: undefined,

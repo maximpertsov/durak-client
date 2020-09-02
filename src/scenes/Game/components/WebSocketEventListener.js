@@ -9,13 +9,12 @@ const getLastMessage = ({ messages }) => last(messages);
 
 const updateGameState = (dispatch, message) => {
   const {
-    toState: { drawPile, hands, passCount, players, table, trumpSuit, yielded },
+    toState: { drawPile, hands, passCount, table, trumpSuit, yielded },
   } = message;
 
   dispatch(actions.game.drawPile.set(drawPile));
   dispatch(actions.game.hands.set(hands));
   dispatch(actions.game.passCount.set(passCount));
-  dispatch(actions.game.players.set(players));
   dispatch(actions.game.table.set(table));
   dispatch(actions.game.trumpSuit.set(trumpSuit));
   dispatch(actions.game.yielded.set(yielded));
