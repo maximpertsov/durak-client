@@ -6,17 +6,15 @@ import { Button } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import { getDefender, getTable, getUnbeatenCards } from 'reducers';
+import { getDefender, getTable, getUnbeatenCards, getYielded } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => state.user,
-  state => state.yielded,
 
-  (state, user, yielded) => ({
-    hasYielded: yielded.includes(user),
-    isDefender: user === getDefender(state),
+  state => ({
+    hasYielded: getYielded(state).includes(state.user),
+    isDefender: state.user === getDefender(state),
     table: getTable(state),
     unbeatenCards: getUnbeatenCards(state),
   }),

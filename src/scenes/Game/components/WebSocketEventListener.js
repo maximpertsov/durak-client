@@ -7,14 +7,6 @@ import actions from 'actions';
 
 const getLastMessage = ({ messages }) => last(messages);
 
-const updateGameState = (dispatch, message) => {
-  const {
-    toState: { yielded },
-  } = message;
-
-  dispatch(actions.game.yielded.set(yielded));
-};
-
 const WebSocketEventListener = () => {
   const dispatch = useDispatch();
   const lastMessage = useSelector(getLastMessage);
@@ -29,7 +21,6 @@ const WebSocketEventListener = () => {
         }, 1000);
         break;
       default:
-        updateGameState(dispatch, lastMessage);
     }
   }, [dispatch, lastMessage]);
 

@@ -15,7 +15,6 @@ import messages from './messages';
 import remoteDataState from './remoteDataState';
 import selectedCards from './selectedCards';
 import user from './user';
-import yielded from './yielded';
 
 const rootReducer = combineReducers({
   loginForm,
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
   remoteDataState,
   selectedCards,
   user,
-  yielded,
 });
 
 export default rootReducer;
@@ -51,6 +49,7 @@ export const getHands = state => fromCurrentState(state, 'hands', {});
 export const getPlayers = state => fromCurrentState(state, 'players', []);
 export const getTable = state => fromCurrentState(state, 'table', []);
 export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
+export const getYielded = state => fromCurrentState(state, 'yielded', []);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];

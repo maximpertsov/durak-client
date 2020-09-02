@@ -17,11 +17,6 @@ export default createActions({
     USER: {
       SET: undefined,
     },
-    YIELDED: {
-      ADD: undefined,
-      CLEAR: undefined,
-      SET: undefined,
-    },
   },
   HOME: {
     GAME_LIST: {
