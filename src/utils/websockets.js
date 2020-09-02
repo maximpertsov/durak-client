@@ -4,25 +4,30 @@ import { useDispatch, useStore } from 'react-redux';
 import pick from 'lodash/pick';
 
 import actions from 'actions';
-import { getGame } from 'reducers';
+import { getCurrentState, getGame } from 'reducers';
 import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 export const WebSocketContext = createContext(null);
+
+const requiredStateFields = [
+  'drawPile',
+  'hands',
+  'passCount',
+  'players',
+  'table',
+  'trumpSuit', // outbound-only
+  'yielded',
+];
 
 const getGameState = store => {
   const state = store.getState();
 
   return {
     user: state.user,
-    fromState: pick(state, [
-      'drawPile',
-      'hands',
-      'passCount',
-      'players',
-      'table',
-      'trumpSuit', // outbound-only
-      'yielded',
-    ]),
+    fromState: {
+      ...pick(getCurrentState(state), requiredStateFields),
+      ...pick(state, requiredStateFields),
+    },
   };
 };
 
