@@ -6,18 +6,16 @@ import { Button } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import { getDefender, getUnbeatenCards } from 'reducers';
+import { getDefender, getTable, getUnbeatenCards, getYielded } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => state.user,
-  state => state.yielded,
 
-  (state, user, yielded) => ({
-    hasYielded: yielded.includes(user),
-    isDefender: user === getDefender(state),
-    table: state.table,
+  state => ({
+    hasYielded: getYielded(state).includes(state.user),
+    isDefender: state.user === getDefender(state),
+    table: getTable(state),
     unbeatenCards: getUnbeatenCards(state),
   }),
 );
@@ -41,7 +39,11 @@ const YieldButton = () => {
   if (isEmpty(table)) return null;
   if (!isEmpty(unbeatenCards)) return null;
 
-  return <Button circular size="big" onClick={yieldAttack}>stop attacking</Button>;
+  return (
+    <Button circular size="big" onClick={yieldAttack}>
+      stop attacking
+    </Button>
+  );
 };
 
 export default YieldButton;

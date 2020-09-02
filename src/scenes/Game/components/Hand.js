@@ -5,13 +5,15 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
+import { getHands } from 'reducers';
+
 import Cards from './Cards';
 
 const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    cards: get(state, ['hands', state.user], []).map(card => ({ card })),
+    cards: get(getHands(state), state.user, []).map(card => ({ card })),
   }),
 );
 

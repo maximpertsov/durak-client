@@ -1,10 +1,7 @@
-import fromPairs from 'lodash/fromPairs';
-import last from 'lodash/last';
 import map from 'lodash/map';
 
 import actions from 'actions';
 import client from 'utils/client';
-import { getSuit } from 'utils/gameLogic';
 
 const fetchGame = ({ game }) => dispatch => {
   if (!game) return;
@@ -14,25 +11,24 @@ const fetchGame = ({ game }) => dispatch => {
   client.get(`game/${game}`).then(response => {
     // TODO: simplify payload coming from server
     const {
-      data: { drawPile: drawPileData, players },
+      data: { drawPile, hands, players, trumpSuit },
     } = response;
-    const drawPile = map(drawPileData, 'card');
 
-    // clear draws
-    dispatch(actions.game.passCount.set(0));
-    // clear table
-    dispatch(actions.game.table.clear());
-    // setup players
-    dispatch(actions.game.players.set(players));
-
-    // setup draw pile & trump suit
-    dispatch(actions.game.drawPile.set(drawPile));
-    const trumpSuit = getSuit(last(drawPile));
-    dispatch(actions.game.trumpSuit.set(trumpSuit));
-
-    // clear player hands (applies if this is a restart)
-    const clearHands = fromPairs(players.map(player => [player, []]));
-    dispatch(actions.game.hands.set(clearHands));
+    // TODO: make messages the source of truth for states
+    dispatch(
+      actions.messages.append({
+        type: 'initialized',
+        toState: {
+          drawPile: map(drawPile, 'card'),
+          hands,
+          players,
+          passCount: 0,
+          table: [],
+          trumpSuit,
+          yielded: [],
+        },
+      }),
+    );
 
     dispatch(actions.game.remoteDataState.set('FETCHED_GAME'));
   });

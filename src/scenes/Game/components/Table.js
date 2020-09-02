@@ -12,6 +12,7 @@ import last from 'lodash/last';
 import size from 'lodash/size';
 
 import actions from 'actions';
+import { getTable } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
@@ -36,7 +37,7 @@ const mapStateToProps = createSelector(
     legalAttacksCards: get(lastMessage, 'toState.legalAttacks.cards', []),
     legalAttacksLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
     selectedCards: state.selectedCards,
-    table: state.table,
+    table: getTable(state),
   }),
 );
 

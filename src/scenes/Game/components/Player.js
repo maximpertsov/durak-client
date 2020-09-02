@@ -14,7 +14,9 @@ import map from 'lodash/fp/map';
 import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
-import { getAttackers, getDefender } from 'reducers';
+import get from 'lodash/get';
+
+import { getAttackers, getDefender, getHands } from 'reducers';
 import { MediaQuery } from 'styles';
 
 import Cards from './Cards';
@@ -31,7 +33,7 @@ const getDisplayCards = flow(
 const mapStateToProps = createSelector(
   state => state,
   (_, props) => props.player,
-  (state, props) => state.hands[props.player],
+  (state, props) => get(getHands(state), props.player),
 
   (state, player, cards) => ({
     isAttacker: getAttackers(state).includes(player),

@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import { getDefender, getUnbeatenCards } from 'reducers';
+import { getDefender, getHands, getTable, getUnbeatenCards } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
@@ -14,9 +14,9 @@ const mapStateToProps = createSelector(
   state => state.user,
 
   (state, user) => ({
-    hands: state.hands,
+    hands: getHands(state),
     isDefender: user === getDefender(state),
-    table: state.table,
+    table: getTable(state),
     user,
     unbeatenCards: getUnbeatenCards(state),
   }),

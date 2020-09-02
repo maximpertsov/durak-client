@@ -14,6 +14,7 @@ import size from 'lodash/size';
 import some from 'lodash/some';
 
 import actions from 'actions';
+import { getHands } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
@@ -23,7 +24,7 @@ const mapStateToProps = createSelector(
   (state, lastMessage) => ({
     legalPassesCards: get(lastMessage, 'toState.legalPasses.cards', []),
     legalPassesLimit: get(lastMessage, 'toState.legalPasses.limit', 0),
-    hand: get(state.hands, state.user),
+    hand: get(getHands(state), state.user),
     selectedCards: state.selectedCards,
   }),
 );

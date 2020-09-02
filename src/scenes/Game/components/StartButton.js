@@ -5,16 +5,18 @@ import { Button } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import reject from 'lodash/reject';
 
+import { getPlayers } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
+  state => getPlayers(state),
 
-  state => ({
-    hasMessages: !isEmpty(state.messages),
-    isInitialAttacker:
-      !isEmpty(state.players) && state.user === state.players[0],
+  (state, players) => ({
+    hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
+    isInitialAttacker: !isEmpty(players) && state.user === players[0],
   }),
 );
 
