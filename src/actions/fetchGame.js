@@ -1,10 +1,8 @@
 import fromPairs from 'lodash/fromPairs';
-import last from 'lodash/last';
 import map from 'lodash/map';
 
 import actions from 'actions';
 import client from 'utils/client';
-import { getSuit } from 'utils/gameLogic';
 
 const fetchGame = ({ game }) => dispatch => {
   if (!game) return;
@@ -14,7 +12,7 @@ const fetchGame = ({ game }) => dispatch => {
   client.get(`game/${game}`).then(response => {
     // TODO: simplify payload coming from server
     const {
-      data: { drawPile: drawPileData, players },
+      data: { drawPile: drawPileData, players, trumpSuit },
     } = response;
     const drawPile = map(drawPileData, 'card');
 
@@ -27,7 +25,6 @@ const fetchGame = ({ game }) => dispatch => {
 
     // setup draw pile & trump suit
     dispatch(actions.game.drawPile.set(drawPile));
-    const trumpSuit = getSuit(last(drawPile));
     dispatch(actions.game.trumpSuit.set(trumpSuit));
 
     // clear player hands (applies if this is a restart)
