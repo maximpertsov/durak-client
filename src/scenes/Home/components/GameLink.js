@@ -2,29 +2,50 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { createSelector } from 'reselect';
 import { Card as UICard } from 'semantic-ui-react';
 
+import isEqual from 'lodash/isEqual';
 import reject from 'lodash/reject';
 
-const GameLink = ({ history, players, slug }) => {
-  const user = useSelector(state => state.user);
+const mapStateToProps = createSelector(
+  (state, props) => reject(props.players, player => player === state.user),
+  (_, props) => props.variant,
+
+  (opponents, variant) => ({
+    opponentsText: `vs ${opponents.join(', ')}`,
+    lowestRankText: `Lowest rank: ${variant.lowestRank}`,
+    attackLimitText: `Attack limit: ${variant.attackLimit}`,
+    withPassingText: variant.withPassing ? 'Passing allowed' : 'No passing',
+  }),
+);
+
+const GameLink = ({ history, players, slug, variant }) => {
+  const {
+    opponentsText,
+    lowestRankText,
+    attackLimitText,
+    withPassingText,
+  } = useSelector(
+    state => mapStateToProps(state, { players, variant }),
+    isEqual,
+  );
 
   const enterGame = () => {
     history.push(`/${slug}`);
   };
 
-  const description = () => {
-    const opponents = reject(players, player => player === user).join(', ');
-
-    return `vs ${opponents}`;
-  };
-
   return (
-    <UICard
-      className="GameLink"
-      description={description}
-      onClick={enterGame}
-    />
+    <UICard className="GameLink" onClick={enterGame}>
+      <UICard.Content>
+        <UICard.Description>{opponentsText}</UICard.Description>
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>{withPassingText}</div>
+        <div>{lowestRankText}</div>
+        <div>{attackLimitText}</div>
+      </UICard.Content>
+    </UICard>
   );
 };
 
@@ -33,6 +54,7 @@ export default withRouter(GameLink);
 GameLink.propTypes = {
   players: PropTypes.arrayOf(PropTypes.string),
   slug: PropTypes.string.isRequired,
+  variant: PropTypes.shape().isRequired,
 };
 
 GameLink.defaultProps = {

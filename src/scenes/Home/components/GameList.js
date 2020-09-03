@@ -39,8 +39,8 @@ const GameList = () => {
   }, [dispatch, gameList, user]);
 
   const renderGameList = () =>
-    gameList.map(({ players, slug }) => (
-      <GameLink key={slug} players={players} slug={slug} />
+    gameList.map(({ players, slug, variant }) => (
+      <GameLink key={slug} players={players} slug={slug} variant={variant} />
     ));
 
   if (!user) return null;
