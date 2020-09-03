@@ -11,7 +11,13 @@ const fetchGame = ({ game }) => dispatch => {
   client.get(`game/${game}`).then(response => {
     // TODO: simplify payload coming from server
     const {
-      data: { drawPile, hands, players, trumpSuit },
+      data: {
+        drawPile,
+        hands,
+        players,
+        trumpSuit,
+        variant: { lowestRank, attackLimit, withPassing },
+      },
     } = response;
 
     // TODO: make messages the source of truth for states
@@ -26,6 +32,9 @@ const fetchGame = ({ game }) => dispatch => {
           table: [],
           trumpSuit,
           yielded: [],
+          lowestRank,
+          attackLimit,
+          withPassing,
         },
       }),
     );
