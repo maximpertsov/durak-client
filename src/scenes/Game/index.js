@@ -17,6 +17,7 @@ import {
   getHands,
   getPlayersFromUser,
   getWinners,
+  getWithPassing,
 } from 'reducers';
 import { MediaQuery } from 'styles';
 
@@ -53,6 +54,7 @@ const mapStateToProps = createSelector(
     isDefender: defender === state.user,
     isOutOfGame: getWinners(state).includes(state.user),
     isDurak: durak && durak === state.user,
+    withPassing: getWithPassing(state),
     user: state.user,
     ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
   }),
@@ -108,12 +110,13 @@ const Game = () => {
     player3,
     player4,
     user,
+    withPassing,
   } = useSelector(mapStateToProps, isEqual);
 
   const renderTable = () => (
     <TableWrapper>
       <Table />
-      <PassCards />
+      {withPassing && <PassCards />}
     </TableWrapper>
   );
 

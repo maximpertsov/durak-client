@@ -51,6 +51,9 @@ export const getTable = state => fromCurrentState(state, 'table', []);
 export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 export const getYielded = state => fromCurrentState(state, 'yielded', []);
 
+export const getWithPassing = state =>
+  fromCurrentState(state, 'withPassing', null);
+
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
 
