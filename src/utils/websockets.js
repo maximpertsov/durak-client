@@ -17,6 +17,9 @@ const requiredStateFields = [
   'table',
   'trumpSuit', // outbound-only
   'yielded',
+  'lowestRank',
+  'attackLimit',
+  'withPassing',
 ];
 
 const getGameState = store => {
@@ -24,10 +27,7 @@ const getGameState = store => {
 
   return {
     user: state.user,
-    fromState: {
-      ...pick(getCurrentState(state), requiredStateFields),
-      ...pick(state, requiredStateFields),
-    },
+    fromState: pick(getCurrentState(state), requiredStateFields),
   };
 };
 
