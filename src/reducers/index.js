@@ -53,6 +53,10 @@ export const getYielded = state => fromCurrentState(state, 'yielded', []);
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);
+export const getLowestRank = state =>
+  fromCurrentState(state, 'lowestRank', null);
+export const getAttackLimit = state =>
+  fromCurrentState(state, 'attackLimit', null);
 
 export const getPlayersFromUser = state => {
   if (!state.user) return [];
