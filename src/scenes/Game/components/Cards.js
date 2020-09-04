@@ -14,7 +14,7 @@ const Wrapper = styled.div(props => {
 
   return {
     [MediaQuery.NARROW]: {
-      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 40 }),
+      gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 50 }),
     },
     [MediaQuery.WIDE]: {
       gridTemplateColumns: getGridTemplateColumns({ basePixelWidth: 60 }),
