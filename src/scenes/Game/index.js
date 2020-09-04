@@ -152,7 +152,7 @@ const Game = () => {
 
   // eslint-disable-next-line complexity
   const renderButton = () => {
-    if (!hasMessages) return <StartButton />;
+    if (!hasMessages) return <RestartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
     if (collector) return <CollectButton />; // rename to collect handler
