@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Button } from 'semantic-ui-react';
+import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 
@@ -21,7 +21,7 @@ const mapStateToProps = createSelector(
     game: getGame(),
     lowestRank: getLowestRank(state),
     attackLimit: getAttackLimit(state),
-    withPasses: getWithPassing(state),
+    withPassing: getWithPassing(state),
   }),
 );
 
@@ -43,9 +43,34 @@ const RestartButton = () => {
   };
 
   return (
-    <Button circular size="big" onClick={restartGame}>
-      play again
-    </Button>
+    <UICard fluid>
+      <UICard.Content>
+        <Button circular size="big" onClick={restartGame}>
+          play again
+        </Button>
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>Select lowest rank</div>
+        <Button.Group>
+          <Button active={lowestRank === '2'}>Two</Button>
+          <Button active={lowestRank === '6'}>Six</Button>
+        </Button.Group>
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>Passing?</div>
+        <Button.Group>
+          <Button active={!withPassing}>No</Button>
+          <Button active={withPassing}>Yes</Button>
+        </Button.Group>
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>Attack limit</div>
+        <Button.Group>
+          <Button active={attackLimit === 6}>Six cards</Button>
+          <Button active={attackLimit === 100}>Unlimited</Button>
+        </Button.Group>
+      </UICard.Content>
+    </UICard>
   );
 };
 
