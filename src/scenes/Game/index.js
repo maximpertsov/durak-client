@@ -83,6 +83,9 @@ const ButtonWrapper = styled.div({
 const FlexSectionWrapper = styled.div({
   flexGrow: 1,
   padding: '0px 1vw',
+  [MediaQuery.WIDE]: {
+    width: '50vw',
+  },
 });
 
 const PlayersWrapper = styled.div({
