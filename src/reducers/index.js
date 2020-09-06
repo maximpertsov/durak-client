@@ -39,6 +39,7 @@ export const getCurrentState = state =>
 const fromCurrentState = (state, field, defaultValue) =>
   get(getCurrentState(state), field, defaultValue);
 
+export const getCollector = state => fromCurrentState(state, 'collector', null);
 export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);

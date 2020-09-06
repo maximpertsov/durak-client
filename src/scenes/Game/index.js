@@ -11,6 +11,7 @@ import zipObject from 'lodash/zipObject';
 
 import {
   getAttackers,
+  getCollector,
   getDefender,
   getDurak,
   getGame,
@@ -41,19 +42,22 @@ const rofl = String.fromCodePoint(0x1f923);
 const mapStateToProps = createSelector(
   state => state,
   state => getPlayersFromUser(state),
+  state => getCollector(state),
   state => getDefender(state),
   state => getDurak(state),
 
-  (state, playersFromUser, defender, durak) => ({
+  (state, playersFromUser, collector, defender, durak) => ({
+    collector,
     defender,
     game: getGame(),
     hands: getHands(state),
     hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
-    isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
-    isOutOfGame: getWinners(state).includes(state.user),
     isDurak: durak && durak === state.user,
+    isCollecting: collector && collector === state.user,
+    isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
+    isOutOfGame: getWinners(state).includes(state.user),
     withPassing: getWithPassing(state),
     user: state.user,
     ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
@@ -101,9 +105,11 @@ const PlayersWrapper = styled.div({
 
 const Game = () => {
   const {
+    collector,
     defender,
     hasMessages,
     isAttacker,
+    isCollecting,
     isDefender,
     isDurak,
     isOutOfGame,
@@ -123,12 +129,15 @@ const Game = () => {
     </TableWrapper>
   );
 
+  // eslint-disable-next-line complexity
   const getMessage = () => {
     if (isDurak) return `${rofl} You're the durak! ${rofl}`;
     if (isOutOfGame) {
       return `${popcorn} Relax, you're not the durak! ${popcorn}`;
     }
     if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
+    if (isCollecting) return 'You are collecting';
+    if (collector) return `You are giving additional cards to ${collector}`;
     if (isDefender) return `${shield} You are defending ${shield}`;
 
     return null;
@@ -141,10 +150,12 @@ const Game = () => {
       </Segment>
     );
 
+  // eslint-disable-next-line complexity
   const renderButton = () => {
     if (!hasMessages) return <StartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
+    if (collector) return <CollectButton />; // rename to collect handler
     if (isDefender) return <CollectButton />;
 
     return <YieldButton />;
