@@ -14,7 +14,7 @@ import {
 } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
-const COLLECT_DELAY = 3000;
+const COLLECT_DELAY = 10000;
 const STEP = 10;
 
 const mapStateToProps = createSelector(
