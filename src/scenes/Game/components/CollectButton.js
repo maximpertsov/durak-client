@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Button } from 'semantic-ui-react';
+import { Button, Progress } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -15,13 +15,16 @@ import {
 import { useWebSocketContext } from 'utils/websockets';
 
 const COLLECT_DELAY = 3000;
+const STEP = 10;
 
 const mapStateToProps = createSelector(
   state => state,
   state => state.user,
+  state => getCollector(state),
 
-  (state, user) => ({
-    isCollecting: user === getCollector(state),
+  (state, user, collector) => ({
+    collector,
+    isCollecting: collector && collector === user,
     isDefender: user === getDefender(state),
     table: getTable(state),
     user,
@@ -32,25 +35,51 @@ const mapStateToProps = createSelector(
 // TODO: rename to CollectHandler to capture extra collect logic
 const CollectButton = () => {
   const io = useWebSocketContext();
+  const [tick, setTick] = React.useState(0);
 
-  const { isCollecting, isDefender, table, unbeatenCards } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    collector,
+    isCollecting,
+    isDefender,
+    table,
+    unbeatenCards,
+  } = useSelector(mapStateToProps, isEqual);
 
   const giveUp = () => {
     io.send('gave_up', {});
   };
 
   React.useEffect(() => {
-    if (isCollecting) {
+    if (collector && tick % STEP === 0) {
       setTimeout(() => {
-        io.send('collect_cards', {});
-      }, COLLECT_DELAY);
-    }
-  }, [isCollecting, io]);
+        if (tick < COLLECT_DELAY) {
+          setTick(tick + STEP);
+          return;
+        }
 
-  if (isCollecting) return null;
+        if (isCollecting) {
+          io.send('collected', {});
+        }
+        setTimeout(() => {
+          // Reset timer
+          setTick(0);
+        }, 100);
+      }, STEP);
+    }
+  }, [collector, isCollecting, io, tick, setTick]);
+
+  const renderCollectingTimer = () => (
+    <Progress
+      precision={0.01}
+      value={tick}
+      total={COLLECT_DELAY}
+      progress="percent"
+    >
+      {`${collector} is collecting`}
+    </Progress>
+  );
+
+  if (collector) return renderCollectingTimer();
   if (!isDefender) return null;
   if (isEmpty(table)) return null;
   if (isEmpty(unbeatenCards)) return null;
