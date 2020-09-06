@@ -25,6 +25,8 @@ const fetchGame = ({ game }) => dispatch => {
       actions.messages.append({
         type: 'initialized',
         toState: {
+          collector: null,
+          durak: null,
           drawPile: map(drawPile, 'card'),
           hands,
           players,
