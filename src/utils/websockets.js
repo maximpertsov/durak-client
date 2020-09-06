@@ -10,12 +10,13 @@ import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 export const WebSocketContext = createContext(null);
 
 const requiredStateFields = [
+  'durak',
   'drawPile',
   'hands',
   'passCount',
   'players',
   'table',
-  'trumpSuit', // outbound-only
+  'trumpSuit',
   'yielded',
   'lowestRank',
   'attackLimit',
