@@ -1,7 +1,7 @@
 import inRange from 'lodash/inRange';
 
 import axios from 'axios';
-import { deepCamelCase } from 'utils/lodash';
+import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_API_URL;
 axios.defaults.timeout = 1000;
@@ -13,6 +13,7 @@ axios.interceptors.request.use(
     if (access) {
       config.headers.Authorization = `Bearer ${access}`;
     }
+    config.data = deepSnakeCase(config.data);
     return config;
   },
   error => {
