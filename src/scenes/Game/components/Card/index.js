@@ -17,7 +17,7 @@ import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
-import { getHands, getTrumpSuit } from 'reducers';
+import { getDurak, getHands, getTrumpSuit } from 'reducers';
 import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
@@ -31,6 +31,7 @@ const mapStateToProps = createSelector(
   (_, props) => props.card,
 
   (state, selectedCards, card) => ({
+    durak: getDurak(state),
     hand: get(getHands(state), state.user),
     selectedCard: find(selectedCards, isEqual(card)),
     selectedCards,
@@ -77,12 +78,12 @@ const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
 
 const Card = ({ card, flipped }) => {
   const dispatch = useDispatch();
-  const { hand, selectedCard, selectedCards, trumpSuit } = useSelector(
+  const { durak, hand, selectedCard, selectedCards, trumpSuit } = useSelector(
     state => mapStateToProps(state, { card }),
     isEqual,
   );
 
-  const canDrag = () => some(hand, isEqual(card));
+  const canDrag = () => !durak && some(hand, isEqual(card));
   const begin = () => {
     const selectedAndDraggingCards = uniqueCards(concat(selectedCards, card));
     if (sameRank(selectedAndDraggingCards)) {
@@ -108,7 +109,7 @@ const Card = ({ card, flipped }) => {
 
   // TODO: move logic into action
   const onClick = () => {
-    if (!selectedCard) {
+    if (!durak && !selectedCard) {
       if (!find(hand, isEqual(card))) return;
 
       dispatch(actions.game.selectedCards.add(card));
