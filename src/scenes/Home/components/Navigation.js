@@ -20,7 +20,10 @@ const Navigation = ({ history }) => {
   const user = useSelector(state => state.user);
 
   const enterLobby = () => {
+    // TODO: define a compound action?
     dispatch(actions.home.gameList.set(null));
+    dispatch(actions.messages.clear());
+    dispatch(actions.game.remoteDataState.set('NOT_FETCHED'));
     history.push('/');
   };
 

@@ -3,6 +3,7 @@ import { createActions } from 'redux-actions';
 export default createActions({
   MESSAGES: {
     APPEND: undefined,
+    CLEAR: undefined,
   },
   GAME: {
     REMOTE_DATA_STATE: {
