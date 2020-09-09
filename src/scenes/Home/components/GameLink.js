@@ -15,7 +15,8 @@ const mapStateToProps = createSelector(
   (opponents, variant) => ({
     opponentsText: `vs ${opponents.join(', ')}`,
     lowestRankText: `Lowest rank: ${variant.lowestRank}`,
-    attackLimitText: `Attack limit: ${variant.attackLimit}`,
+    attackLimitText:
+      variant.attackLimit === 6 ? 'Attack limit: 6 cards' : 'No attack limit',
     withPassingText: variant.withPassing ? 'Passing allowed' : 'No passing',
   }),
 );
