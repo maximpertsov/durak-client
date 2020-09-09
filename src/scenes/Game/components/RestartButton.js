@@ -52,16 +52,16 @@ const RestartButton = () => {
       });
   };
 
+  const setNewWithPassing = value => () => {
+    setWithPassing(value);
+  };
+
   const setNewLowestRank = rank => () => {
     setLowestRank(rank);
   };
 
   const setNewAttackLimit = limit => () => {
     setAttackLimit(limit);
-  };
-
-  const setNewWithPassing = value => () => {
-    setWithPassing(value);
   };
 
   return (
@@ -72,17 +72,6 @@ const RestartButton = () => {
         </Button>
       </UICard.Content>
       <UICard.Content extra>
-        <div>Select lowest rank</div>
-        <Button.Group>
-          <Button active={lowestRank === '2'} onClick={setNewLowestRank('2')}>
-            Two
-          </Button>
-          <Button active={lowestRank === '6'} onClick={setNewLowestRank('6')}>
-            Six
-          </Button>
-        </Button.Group>
-      </UICard.Content>
-      <UICard.Content extra>
         <div>Passing?</div>
         <Button.Group>
           <Button active={!withPassing} onClick={setNewWithPassing(false)}>
@@ -90,6 +79,17 @@ const RestartButton = () => {
           </Button>
           <Button active={withPassing} onClick={setNewWithPassing(true)}>
             Yes
+          </Button>
+        </Button.Group>
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>Select lowest rank</div>
+        <Button.Group>
+          <Button active={lowestRank === '2'} onClick={setNewLowestRank('2')}>
+            Two
+          </Button>
+          <Button active={lowestRank === '6'} onClick={setNewLowestRank('6')}>
+            Six
           </Button>
         </Button.Group>
       </UICard.Content>
