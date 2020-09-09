@@ -10,6 +10,7 @@ import actions from 'actions';
 import client from 'utils/client';
 
 import GameLink from './GameLink';
+import NewGameLink from './NewGameLink';
 
 const Wrapper = styled.div`
   margin: 10px;
@@ -48,7 +49,10 @@ const GameList = () => {
 
   return (
     <Wrapper className="GameList">
-      <UICard.Group>{renderGameList()}</UICard.Group>
+      <UICard.Group>
+        {renderGameList()}
+        <NewGameLink />
+      </UICard.Group>
     </Wrapper>
   );
 };
