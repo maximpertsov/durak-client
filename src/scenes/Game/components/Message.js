@@ -42,7 +42,9 @@ const getText = ({ type, payload }) => {
         payload.card,
       )}`;
     case 'collected':
-      return `collected cards ${String.fromCodePoint(0x1f3f3)}`;
+      return 'collected cards';
+    case 'gave_up':
+      return `gave up ${String.fromCodePoint(0x1f3f3)}`;
     case 'yielded_attack':
       return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
     case 'passed':
@@ -50,7 +52,7 @@ const getText = ({ type, payload }) => {
     case 'passed_with_many':
       return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     case 'started_game':
-      return 'started a new game';
+      return 'started the game';
     case 'restarted':
       return 'started a new game';
     default:
