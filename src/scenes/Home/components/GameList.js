@@ -51,8 +51,8 @@ const GameList = () => {
     <Wrapper className="GameList">
       <UICard.Group>
         {renderGameList()}
-        <NewGameLink />
       </UICard.Group>
+      <NewGameLink />
     </Wrapper>
   );
 };
