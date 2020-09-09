@@ -103,7 +103,7 @@ const PlayersWrapper = styled.div({
   display: 'flex',
 });
 
-const Game = ({ history }) => {
+const Game = () => {
   const {
     collector,
     defender,
@@ -192,7 +192,7 @@ const Game = ({ history }) => {
   return (
     <div className="Game">
       <GameInitializer />
-      <WebSocketEventListener history={history} />
+      <WebSocketEventListener />
       <Dimmer active={isLoading}>
         <Loader />
       </Dimmer>
