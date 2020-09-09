@@ -7,8 +7,8 @@ import isEqual from 'lodash/isEqual';
 
 import {
   getAttackLimit,
-  getGame,
   getLowestRank,
+  getPlayers,
   getWithPassing,
 } from 'reducers';
 import client from 'utils/client';
@@ -18,7 +18,7 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    game: getGame(),
+    players: getPlayers(state),
     lowestRank: getLowestRank(state),
     attackLimit: getAttackLimit(state),
     withPassing: getWithPassing(state),
@@ -27,7 +27,7 @@ const mapStateToProps = createSelector(
 
 const RestartButton = () => {
   const {
-    game,
+    players,
     lowestRank: lastLowestRank,
     attackLimit: lastAttackLimit,
     withPassing: lastWithPassing,
@@ -40,11 +40,15 @@ const RestartButton = () => {
 
   const restartGame = () => {
     client
-      .patch(`game/${game}`, {
+      .post('game', {
+        players: players.map(player => ({ user: player })),
         variant: { lowestRank, attackLimit, withPassing },
       })
-      .then(() => {
-        io.send('restarted', {});
+      .then(response => {
+        const {
+          data: { slug },
+        } = response;
+        io.send('restarted', { game: slug });
       });
   };
 

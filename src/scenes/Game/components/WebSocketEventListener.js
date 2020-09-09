@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import last from 'lodash/last';
 
+import actions from 'actions';
+
 const getLastMessage = ({ messages }) => last(messages);
 
-const WebSocketEventListener = () => {
+const WebSocketEventListener = ({ history }) => {
   const dispatch = useDispatch();
   const lastMessage = useSelector(getLastMessage);
 
@@ -14,11 +16,14 @@ const WebSocketEventListener = () => {
 
     switch (lastMessage.type) {
       case 'restarted':
-        window.location.reload();
+        // TODO: define a compound action?
+        dispatch(actions.messages.clear());
+        dispatch(actions.game.remoteDataState.set('NOT_FETCHED'));
+        history.push(`/${lastMessage.payload.game}`);
         break;
       default:
     }
-  }, [dispatch, lastMessage]);
+  }, [dispatch, history, lastMessage]);
 
   return null;
 };
