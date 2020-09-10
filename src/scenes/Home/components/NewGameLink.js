@@ -3,33 +3,12 @@ import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Button, Card as UICard } from 'semantic-ui-react';
+import { Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/fp/isEqual';
 
+import VariantOptionButton from 'components/VariantOptionButton';
 import { getNewGameFeatureFlag } from 'reducers';
-
-const VariantOptionButton = ({
-  children,
-  activeValue,
-  currentValue,
-  setValue,
-}) => {
-  const onClick = () => {
-    setValue(activeValue);
-  };
-
-  return (
-    <Button
-      size="tiny"
-      basic
-      active={activeValue === currentValue}
-      onClick={onClick}
-    >
-      {children}
-    </Button>
-  );
-};
 
 const FormWrapper = styled.div`
   align-items: center;
@@ -60,6 +39,7 @@ const NewGameLink = ({ history }) => {
         <FormWrapper>
           <div>Passing?</div>
           <VariantOptionButton
+            size="tiny"
             activeValue
             currentValue={withPassing}
             setValue={setWithPassing}
@@ -67,6 +47,7 @@ const NewGameLink = ({ history }) => {
             Yes
           </VariantOptionButton>
           <VariantOptionButton
+            size="tiny"
             activeValue={false}
             currentValue={withPassing}
             setValue={setWithPassing}
@@ -75,6 +56,7 @@ const NewGameLink = ({ history }) => {
           </VariantOptionButton>
           <div>Lowest rank</div>
           <VariantOptionButton
+            size="tiny"
             activeValue="6"
             currentValue={lowestRank}
             setValue={setLowestRank}
@@ -82,6 +64,7 @@ const NewGameLink = ({ history }) => {
             Six
           </VariantOptionButton>
           <VariantOptionButton
+            size="tiny"
             activeValue="2"
             currentValue={lowestRank}
             setValue={setLowestRank}
@@ -90,6 +73,7 @@ const NewGameLink = ({ history }) => {
           </VariantOptionButton>
           <div>Attack limit</div>
           <VariantOptionButton
+            size="tiny"
             activeValue={6}
             currentValue={attackLimit}
             setValue={setAttackLimit}
@@ -97,6 +81,7 @@ const NewGameLink = ({ history }) => {
             Six cards
           </VariantOptionButton>
           <VariantOptionButton
+            size="tiny"
             activeValue={100}
             currentValue={attackLimit}
             setValue={setAttackLimit}

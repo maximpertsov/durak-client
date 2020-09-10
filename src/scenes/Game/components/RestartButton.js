@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
 import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 
+import VariantOptionButton from 'components/VariantOptionButton';
 import {
   getAttackLimit,
   getLowestRank,
@@ -24,6 +26,12 @@ const mapStateToProps = createSelector(
     withPassing: getWithPassing(state),
   }),
 );
+const FormWrapper = styled.div`
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 10px;
+`;
 
 const RestartButton = () => {
   const {
@@ -52,18 +60,6 @@ const RestartButton = () => {
       });
   };
 
-  const setNewWithPassing = value => () => {
-    setWithPassing(value);
-  };
-
-  const setNewLowestRank = rank => () => {
-    setLowestRank(rank);
-  };
-
-  const setNewAttackLimit = limit => () => {
-    setAttackLimit(limit);
-  };
-
   return (
     <UICard fluid>
       <UICard.Content>
@@ -72,37 +68,53 @@ const RestartButton = () => {
         </Button>
       </UICard.Content>
       <UICard.Content extra>
-        <div>Passing?</div>
-        <Button.Group>
-          <Button active={!withPassing} onClick={setNewWithPassing(false)}>
-            No
-          </Button>
-          <Button active={withPassing} onClick={setNewWithPassing(true)}>
+        <FormWrapper>
+          <div>Passing?</div>
+          <VariantOptionButton
+            activeValue
+            currentValue={withPassing}
+            setValue={setWithPassing}
+          >
             Yes
-          </Button>
-        </Button.Group>
-      </UICard.Content>
-      <UICard.Content extra>
-        <div>Select lowest rank</div>
-        <Button.Group>
-          <Button active={lowestRank === '2'} onClick={setNewLowestRank('2')}>
-            Two
-          </Button>
-          <Button active={lowestRank === '6'} onClick={setNewLowestRank('6')}>
+          </VariantOptionButton>
+          <VariantOptionButton
+            activeValue={false}
+            currentValue={withPassing}
+            setValue={setWithPassing}
+          >
+            No
+          </VariantOptionButton>
+          <div>Lowest rank</div>
+          <VariantOptionButton
+            activeValue="6"
+            currentValue={lowestRank}
+            setValue={setLowestRank}
+          >
             Six
-          </Button>
-        </Button.Group>
-      </UICard.Content>
-      <UICard.Content extra>
-        <div>Attack limit</div>
-        <Button.Group>
-          <Button active={attackLimit === 6} onClick={setNewAttackLimit(6)}>
+          </VariantOptionButton>
+          <VariantOptionButton
+            activeValue="2"
+            currentValue={lowestRank}
+            setValue={setLowestRank}
+          >
+            Two
+          </VariantOptionButton>
+          <div>Attack limit</div>
+          <VariantOptionButton
+            activeValue={6}
+            currentValue={attackLimit}
+            setValue={setAttackLimit}
+          >
             Six cards
-          </Button>
-          <Button active={attackLimit === 100} onClick={setNewAttackLimit(100)}>
+          </VariantOptionButton>
+          <VariantOptionButton
+            activeValue={100}
+            currentValue={attackLimit}
+            setValue={setAttackLimit}
+          >
             Unlimited
-          </Button>
-        </Button.Group>
+          </VariantOptionButton>
+        </FormWrapper>
       </UICard.Content>
     </UICard>
   );
