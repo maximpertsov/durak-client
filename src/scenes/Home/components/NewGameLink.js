@@ -24,8 +24,30 @@ const mapStateToProps = createSelector(
 
 const FormWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
 `;
+
+const VariantOptionButton = ({
+  children,
+  activeValue,
+  currentValue,
+  setValue,
+}) => {
+  const onClick = () => {
+    setValue(activeValue);
+  };
+
+  return (
+    <Button
+      size="tiny"
+      basic
+      active={activeValue === currentValue}
+      onClick={onClick}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const NewGameLink = ({ history }) => {
   const {
@@ -67,47 +89,46 @@ const NewGameLink = ({ history }) => {
       <UICard.Content extra>
         <FormWrapper>
           <div>Passing?</div>
-          <div>
-            <Button.Group fluid size="mini">
-              <Button active={!withPassing} onClick={setNewWithPassing(false)}>
-                No
-              </Button>
-              <Button active={withPassing} onClick={setNewWithPassing(true)}>
-                Yes
-              </Button>
-            </Button.Group>
-          </div>
+          <VariantOptionButton
+            activeValue={false}
+            currentValue={withPassing}
+            setValue={setWithPassing}
+          >
+            No
+          </VariantOptionButton>
+          <VariantOptionButton
+            activeValue
+            currentValue={withPassing}
+            setValue={setWithPassing}
+          >
+            Yes
+          </VariantOptionButton>
           <div>Lowest rank</div>
-          <div>
-            <Button.Group fluid size="mini">
-              <Button
-                active={lowestRank === '2'}
-                onClick={setNewLowestRank('2')}
-              >
-                Two
-              </Button>
-              <Button
-                active={lowestRank === '6'}
-                onClick={setNewLowestRank('6')}
-              >
-                Six
-              </Button>
-            </Button.Group>
-          </div>
+          <VariantOptionButton
+            active={lowestRank === '2'}
+            onClick={setNewLowestRank('2')}
+          >
+            Two
+          </VariantOptionButton>
+          <VariantOptionButton
+            active={lowestRank === '6'}
+            onClick={setNewLowestRank('6')}
+          >
+            Six
+          </VariantOptionButton>
           <div>Attack limit</div>
-          <div>
-            <Button.Group fluid size="mini">
-              <Button active={attackLimit === 6} onClick={setNewAttackLimit(6)}>
-                Six cards
-              </Button>
-              <Button
-                active={attackLimit === 100}
-                onClick={setNewAttackLimit(100)}
-              >
-                Unlimited
-              </Button>
-            </Button.Group>
-          </div>
+          <VariantOptionButton
+            active={attackLimit === 6}
+            onClick={setNewAttackLimit(6)}
+          >
+            Six cards
+          </VariantOptionButton>
+          <VariantOptionButton
+            active={attackLimit === 100}
+            onClick={setNewAttackLimit(100)}
+          >
+            Unlimited
+          </VariantOptionButton>
         </FormWrapper>
       </UICard.Content>
     </UICard>
