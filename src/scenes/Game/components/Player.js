@@ -54,9 +54,6 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
-    [MediaQuery.NARROW]: {
-      width: '30vw',
-    },
     animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
     margin: '10px',
   };
