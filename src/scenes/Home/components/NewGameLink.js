@@ -1,26 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Button, Card as UICard, Label, Segment } from 'semantic-ui-react';
-
-import isEqual from 'lodash/isEqual';
-import reject from 'lodash/reject';
-
-const mapStateToProps = createSelector(
-  // (state, props) => reject(props.players, player => player === state.user),
-  // (_, props) => props.variant,
-
-  // (opponents, variant) => ({
-  () => ({
-    // opponentsText: `vs ${opponents.join(', ')}`,
-    lowestRankText: 'Lowest rank:',
-    attackLimitText: 'Attack limit',
-    withPassingText: 'Passing allowed',
-  }),
-);
+import { Button, Card as UICard } from 'semantic-ui-react';
 
 const FormWrapper = styled.div`
   align-items: center;
@@ -52,36 +33,9 @@ const VariantOptionButton = ({
 };
 
 const NewGameLink = ({ history }) => {
-  const {
-    // opponentsText,
-    lowestRankText,
-    attackLimitText,
-    withPassingText,
-  } = useSelector(
-    mapStateToProps,
-    // state => mapStateToProps(state, { players, variant }),
-    isEqual,
-  );
-
   const [lowestRank, setLowestRank] = React.useState('6');
   const [attackLimit, setAttackLimit] = React.useState(6);
   const [withPassing, setWithPassing] = React.useState(true);
-
-  const enterGame = () => {
-    // history.push(`/${slug}`);
-  };
-
-  const setNewWithPassing = value => () => {
-    setWithPassing(value);
-  };
-
-  const setNewLowestRank = rank => () => {
-    setLowestRank(rank);
-  };
-
-  const setNewAttackLimit = limit => () => {
-    setAttackLimit(limit);
-  };
 
   return (
     <UICard className="GameLink">
@@ -107,27 +61,31 @@ const NewGameLink = ({ history }) => {
           </VariantOptionButton>
           <div>Lowest rank</div>
           <VariantOptionButton
-            active={lowestRank === '2'}
-            onClick={setNewLowestRank('2')}
+            activeValue="2"
+            currentValue={lowestRank}
+            setValue={setLowestRank}
           >
             Two
           </VariantOptionButton>
           <VariantOptionButton
-            active={lowestRank === '6'}
-            onClick={setNewLowestRank('6')}
+            activeValue="6"
+            currentValue={lowestRank}
+            setValue={setLowestRank}
           >
             Six
           </VariantOptionButton>
           <div>Attack limit</div>
           <VariantOptionButton
-            active={attackLimit === 6}
-            onClick={setNewAttackLimit(6)}
+            activeValue={6}
+            currentValue={attackLimit}
+            setValue={setAttackLimit}
           >
             Six cards
           </VariantOptionButton>
           <VariantOptionButton
-            active={attackLimit === 100}
-            onClick={setNewAttackLimit(100)}
+            activeValue={100}
+            currentValue={attackLimit}
+            setValue={setAttackLimit}
           >
             Unlimited
           </VariantOptionButton>
@@ -137,14 +95,3 @@ const NewGameLink = ({ history }) => {
   );
 };
 export default withRouter(NewGameLink);
-
-//
-// NewGameLink.propTypes = {
-//   players: PropTypes.arrayOf(PropTypes.string),
-//   slug: PropTypes.string.isRequired,
-//   variant: PropTypes.shape().isRequired,
-// };
-//
-// NewGameLink.defaultProps = {
-//   players: [],
-// };
