@@ -38,12 +38,13 @@ const mapStateToProps = createSelector(
   (state, player, cards) => ({
     isAttacker: getAttackers(state).includes(player),
     isDefender: getDefender(state) === player,
+    isUser: state.user && state.user === player,
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
   }),
 );
 
-const Wrapper = styled.div(({ isDefender }) => {
+const Wrapper = styled.div(({ isGlowing }) => {
   const glow = keyframes({
     '0%': {
       boxShadow: '0 0 20px teal',
@@ -54,7 +55,7 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
-    animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
+    animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
     margin: '10px',
   };
 });
@@ -74,10 +75,13 @@ const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
 
 const Player = ({ player }) => {
-  const { cardCount, displayCards, isAttacker, isDefender } = useSelector(
-    state => mapStateToProps(state, { player }),
-    isEqual,
-  );
+  const {
+    cardCount,
+    displayCards,
+    isAttacker,
+    isDefender,
+    isUser,
+  } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   const getContext = () => {
     if (isAttacker) return { text: 'The attacker', symbol: dagger };
@@ -102,7 +106,7 @@ const Player = ({ player }) => {
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper isDefender={isDefender}>
+    <Wrapper isGlowing={isUser}>
       <UICard fluid>
         <UICard.Content>
           <UICard.Header>{`${player}`}</UICard.Header>
