@@ -60,33 +60,33 @@ const NewGameLink = ({ history }) => {
         <FormWrapper>
           <div>Passing?</div>
           <VariantOptionButton
-            activeValue={false}
-            currentValue={withPassing}
-            setValue={setWithPassing}
-          >
-            No
-          </VariantOptionButton>
-          <VariantOptionButton
             activeValue
             currentValue={withPassing}
             setValue={setWithPassing}
           >
             Yes
           </VariantOptionButton>
-          <div>Lowest rank</div>
           <VariantOptionButton
-            activeValue="2"
-            currentValue={lowestRank}
-            setValue={setLowestRank}
+            activeValue={false}
+            currentValue={withPassing}
+            setValue={setWithPassing}
           >
-            Two
+            No
           </VariantOptionButton>
+          <div>Lowest rank</div>
           <VariantOptionButton
             activeValue="6"
             currentValue={lowestRank}
             setValue={setLowestRank}
           >
             Six
+          </VariantOptionButton>
+          <VariantOptionButton
+            activeValue="2"
+            currentValue={lowestRank}
+            setValue={setLowestRank}
+          >
+            Two
           </VariantOptionButton>
           <div>Attack limit</div>
           <VariantOptionButton
