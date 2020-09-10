@@ -1,14 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import { Button, Card as UICard } from 'semantic-ui-react';
 
-const FormWrapper = styled.div`
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  row-gap: 10px;
-`;
+import isEqual from 'lodash/fp/isEqual';
+
+import { getNewGameFeatureFlag } from 'reducers';
 
 const VariantOptionButton = ({
   children,
@@ -32,10 +31,25 @@ const VariantOptionButton = ({
   );
 };
 
+const FormWrapper = styled.div`
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 10px;
+`;
+
+const mapStateToProps = createSelector(() => ({
+  newGameFeatureFlag: getNewGameFeatureFlag(),
+}));
+
 const NewGameLink = ({ history }) => {
+  const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
+
   const [lowestRank, setLowestRank] = React.useState('6');
   const [attackLimit, setAttackLimit] = React.useState(6);
   const [withPassing, setWithPassing] = React.useState(true);
+
+  if (!newGameFeatureFlag) return null;
 
   return (
     <UICard className="GameLink">

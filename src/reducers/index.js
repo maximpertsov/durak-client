@@ -33,6 +33,11 @@ export default rootReducer;
 
 export const getGame = () => window.location.pathname.split('/')[1] || null;
 
+export const getNewGameFeatureFlag = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ng') === 'true';
+};
+
 export const getCurrentState = state =>
   get(last(state.messages), 'toState', {});
 
