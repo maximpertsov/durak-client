@@ -23,8 +23,10 @@ const mapStateToProps = createSelector(
 );
 
 const FormWrapper = styled.div`
+  align-items: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  row-gap: 10px;
 `;
 
 const VariantOptionButton = ({
