@@ -16,7 +16,7 @@ import unzip from 'lodash/fp/unzip';
 
 import get from 'lodash/get';
 
-import { getAttackers, getDefender, getHands } from 'reducers';
+import { getAttackers, getDefender, getHands, getPlayers } from 'reducers';
 import { MediaQuery } from 'styles';
 
 import Cards from './Cards';
@@ -33,23 +33,34 @@ const getDisplayCards = flow(
 const mapStateToProps = createSelector(
   state => state,
   state => getAttackers(state),
+  state => getPlayers(state),
   (_, props) => props.player,
   (state, props) => get(getHands(state), props.player),
 
-  (state, attackers, player, cards) => ({
+  (state, attackers, players, player, cards) => ({
+    isDefender: getDefender(state) === player,
+    isNextDefender: players.slice(2, 3).includes(player),
+    isFollowingNextDefender: players.slice(3, 4).includes(player),
     isMainAttacker: attackers[0] === player,
     isSideAttacker: attackers.slice(1).includes(player),
-    isDefender: getDefender(state) === player,
     isUser: state.user && state.user === player,
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
   }),
 );
 
-const Wrapper = styled.div`
-  margin: 10px;
-  padding: 10px;
-`;
+// eslint-disable-next-line complexity
+const Wrapper = styled.div(({ isNextDefender, isFollowingNextDefender }) => ({
+  margin: '10px',
+  padding: '10px',
+  [MediaQuery.WIDE]: {
+    ...(isNextDefender || isFollowingNextDefender ? { gridRow: '2/2' } : {}),
+    ...(isNextDefender && !isFollowingNextDefender
+      ? { gridColumn: '2 / 2' }
+      : {}),
+    ...(isFollowingNextDefender ? { gridColumn: '1 / 1' } : {}),
+  },
+}));
 
 const WideScreenOnly = styled.span({
   [MediaQuery.NARROW]: {
@@ -96,9 +107,11 @@ const Player = ({ player }) => {
   const {
     cardCount,
     displayCards,
+    isDefender,
+    isNextDefender,
+    isFollowingNextDefender,
     isMainAttacker,
     isSideAttacker,
-    isDefender,
     isUser,
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
@@ -151,7 +164,10 @@ const Player = ({ player }) => {
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper>
+    <Wrapper
+      isNextDefender={isNextDefender}
+      isFollowingNextDefender={isFollowingNextDefender}
+    >
       {renderStatusIcon()}
       {renderUICard()}
     </Wrapper>
