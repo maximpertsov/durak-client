@@ -14,14 +14,16 @@ import size from 'lodash/size';
 import some from 'lodash/some';
 
 import actions from 'actions';
-import { getHands } from 'reducers';
+import { getCollector, getHands } from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
+  state => getCollector(state),
   state => last(state.messages),
 
-  (state, lastMessage) => ({
+  (state, collector, lastMessage) => ({
+    isCollecting: collector && collector === state.user,
     legalPassesCards: get(lastMessage, 'toState.legalPasses.cards', []),
     legalPassesLimit: get(lastMessage, 'toState.legalPasses.limit', 0),
     hand: get(getHands(state), state.user),
@@ -42,6 +44,7 @@ const PassCards = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
   const {
+    isCollecting,
     hand,
     legalPassesCards,
     legalPassesLimit,
@@ -49,6 +52,7 @@ const PassCards = () => {
   } = useSelector(mapStateToProps, isEqual);
 
   const canPassWithCard = card => {
+    if (isCollecting) return false;
     if (legalPassesLimit < 1) return false;
 
     return legalPassesCards.includes(card);
