@@ -7,7 +7,6 @@ import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import reject from 'lodash/reject';
-import zipObject from 'lodash/zipObject';
 
 import {
   getAttackers,
@@ -62,7 +61,6 @@ const mapStateToProps = createSelector(
     players: getPlayers(state),
     withPassing: getWithPassing(state),
     user: state.user,
-    ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
@@ -116,9 +114,6 @@ const Game = () => {
     isOutOfGame,
     isLoading,
     game,
-    player2,
-    player3,
-    player4,
     players,
     user,
     withPassing,
