@@ -25,10 +25,10 @@ import Cards from './Cards';
 const getCardCount = flow(compact, size);
 const getDisplayCards = flow(
   compact,
-  chunk(6),
+  chunk(3),
   unzip,
   map(compact),
-  map(() => ({ flipped: true })),
+  map(stack => stack.map(() => ({ flipped: true }))),
 );
 
 const mapStateToProps = createSelector(
