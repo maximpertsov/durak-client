@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card as UICard } from 'semantic-ui-react';
+import { Card as UICard, Label } from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -75,7 +75,7 @@ const CardsWrapper = styled.div({
 
 const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
-const bowAndArrow = String.fromCodePoint(0x1F3F9);
+const bowAndArrow = String.fromCodePoint(0x1f3f9);
 
 const Player = ({ player }) => {
   const {
@@ -113,6 +113,9 @@ const Player = ({ player }) => {
   return (
     <Wrapper isGlowing={isUser}>
       <UICard fluid>
+        <Label basic circular floating size="big">
+          {bowAndArrow}
+        </Label>
         <UICard.Content>
           <UICard.Header>{`${player}`}</UICard.Header>
           {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
