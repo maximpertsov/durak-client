@@ -82,7 +82,6 @@ const UICardWrapper = styled(UICard)(({ isGlowing }) => {
     '&&&': {
       animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
       marginTop: '-25px',
-      paddingTop: '15px',
       zIndex: -1,
     },
   };
