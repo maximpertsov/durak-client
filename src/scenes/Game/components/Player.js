@@ -92,7 +92,7 @@ const CardsWrapper = styled.div({
   height: '10vh',
 });
 
-const LabelWrapper = styled(Label)({
+const StatusIconLabelWrapper = styled(Label)({
   '&&&': {
     margin: '0 auto',
   },
@@ -126,9 +126,9 @@ const Player = ({ player }) => {
     const statusIcon = get(getContext(), 'symbol', null);
 
     return (
-      <LabelWrapper basic circular size="massive">
+      <StatusIconLabelWrapper basic circular size="massive">
         {statusIcon}
-      </LabelWrapper>
+      </StatusIconLabelWrapper>
     );
   };
   const renderContext = () => {
