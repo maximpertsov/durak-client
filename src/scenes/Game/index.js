@@ -184,7 +184,9 @@ const Game = () => {
       </FlexSectionWrapper>
       <FlexSectionWrapper>
         <PlayersWrapper>
-          {renderPlayers()}
+          <Image src={customCard} />
+          <Image src={customCard} />
+          <Image src={customCard} />
           <Image src={customCard} />
         </PlayersWrapper>
       </FlexSectionWrapper>
