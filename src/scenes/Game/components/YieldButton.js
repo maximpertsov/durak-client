@@ -6,13 +6,20 @@ import { Button } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import { getDefender, getTable, getUnbeatenCards, getYielded } from 'reducers';
+import {
+  getCollector,
+  getDefender,
+  getTable,
+  getUnbeatenCards,
+  getYielded,
+} from 'reducers';
 import { useWebSocketContext } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
 
   state => ({
+    collector: getCollector(state),
     hasYielded: getYielded(state).includes(state.user),
     isDefender: state.user === getDefender(state),
     table: getTable(state),
@@ -20,30 +27,36 @@ const mapStateToProps = createSelector(
   }),
 );
 
+// eslint-disable-next-line complexity
 const YieldButton = () => {
   const io = useWebSocketContext();
 
-  const { hasYielded, isDefender, table, unbeatenCards } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const {
+    collector,
+    hasYielded,
+    isDefender,
+    table,
+    unbeatenCards,
+  } = useSelector(mapStateToProps, isEqual);
 
   const yieldAttack = () => {
     io.send('yielded_attack', {});
   };
 
-  // TODO: add auto-yield if no cards can be thrown
-
-  if (hasYielded) return null;
-  if (isDefender) return null;
-  if (isEmpty(table)) return null;
-  if (!isEmpty(unbeatenCards)) return null;
-
-  return (
+  const renderYieldButton = () => (
     <Button circular size="big" onClick={yieldAttack}>
       stop attacking
     </Button>
   );
+
+  // TODO: add auto-yield if no cards can be thrown
+  if (hasYielded) return null;
+  if (isDefender) return null;
+  if (isEmpty(table)) return null;
+  if (collector) return renderYieldButton();
+  if (isEmpty(unbeatenCards)) return renderYieldButton();
+
+  return null;
 };
 
 export default YieldButton;

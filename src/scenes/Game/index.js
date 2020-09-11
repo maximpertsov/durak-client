@@ -132,9 +132,9 @@ const Game = () => {
     if (isOutOfGame) {
       return `${popcorn} Relax, you're not the durak! ${popcorn}`;
     }
-    if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
     if (isCollecting) return 'You are collecting';
     if (collector) return `You are giving additional cards to ${collector}`;
+    if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
     if (isDefender) return `${shield} You are defending ${shield}`;
 
     return null;
@@ -152,7 +152,6 @@ const Game = () => {
     if (!hasMessages) return <StartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
-    if (collector) return <CollectButton />; // rename to collect handler
     if (isDefender) return <CollectButton />;
 
     return <YieldButton />;
