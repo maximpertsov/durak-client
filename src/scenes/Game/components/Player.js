@@ -14,6 +14,7 @@ import map from 'lodash/fp/map';
 import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
+import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
 import { getAttackers, getDefender, getHands, getPlayers } from 'reducers';
@@ -46,6 +47,7 @@ const mapStateToProps = createSelector(
     isUser: state.user && state.user === player,
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
+    order: findIndex(players, isEqual(player)) + 1,
   }),
 );
 
@@ -92,6 +94,14 @@ const CardsWrapper = styled.div({
   height: '10vh',
 });
 
+const OrderLabelWrapper = styled(Label)({
+  [MediaQuery.NARROW]: {
+    '&&&': {
+      display: 'none',
+    },
+  },
+});
+
 const StatusIconLabelWrapper = styled(Label)({
   '&&&': {
     margin: '0 auto',
@@ -112,6 +122,7 @@ const Player = ({ player }) => {
     isMainAttacker,
     isSideAttacker,
     isUser,
+    order,
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   const getContext = () => {
@@ -146,6 +157,9 @@ const Player = ({ player }) => {
   const renderUICard = () => (
     <UICardWrapper fluid isGlowing={isUser}>
       <UICard.Content>
+        <OrderLabelWrapper attached="top left" size="small">
+          {order}
+        </OrderLabelWrapper>
         <UICard.Header>{`${player}`}</UICard.Header>
         {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
       </UICard.Content>
