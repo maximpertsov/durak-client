@@ -1,7 +1,7 @@
 import React from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Feed } from 'semantic-ui-react';
+import { Feed, Label } from 'semantic-ui-react';
 
 import get from 'lodash/get';
 
@@ -83,7 +83,7 @@ const fadeOut = keyframes({
   },
 });
 
-const Wrapper = styled.div(({ createdAt }) => {
+const EventWrapper = styled(Feed.Event)(({ createdAt }) => {
   if (getAgeInSeconds(createdAt) < maxAgeInSeconds) {
     return {
       animation: `${fadeOut} ${maxAgeInSeconds}s ease 1 forwards`,
@@ -122,17 +122,19 @@ const Message = ({ message }) => {
   }, [message, notify]);
 
   return (
-    <Wrapper createdAt={message.createdAt}>
-      <Feed.Event>
-        <Feed.Label>{getIcon(message)}</Feed.Label>
-        <Feed.Content>
-          <Feed.Summary>
-            <Feed.User>{message.user}</Feed.User>
-            {` ${getText(message)}`}
-          </Feed.Summary>
-        </Feed.Content>
-      </Feed.Event>
-    </Wrapper>
+    <EventWrapper createdAt={message.createdAt}>
+      <Feed.Label>
+        <Label basic circular>
+          {getIcon(message)}
+        </Label>
+      </Feed.Label>
+      <Feed.Content>
+        <Feed.Summary>
+          <Feed.User>{message.user}</Feed.User>
+          {` ${getText(message)}`}
+        </Feed.Summary>
+      </Feed.Content>
+    </EventWrapper>
   );
 };
 
