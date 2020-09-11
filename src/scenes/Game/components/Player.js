@@ -132,7 +132,7 @@ const Player = ({ player }) => {
   };
 
   const renderUICard = () => (
-    <UICardWrapper isGlowing={isUser}>
+    <UICardWrapper fluid isGlowing={isUser}>
       <UICard.Content>
         <UICard.Header>{`${player}`}</UICard.Header>
         {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
