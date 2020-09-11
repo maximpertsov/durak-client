@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="205px" height="226px" viewBox="0 0 205 226" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Page 1</title>
+    <defs>
+        <rect id="path-1" x="126" y="112" width="189" height="170" rx="10"></rect>
+        <filter x="-6.1%" y="-6.8%" width="113.2%" height="114.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="1" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.17845826 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="84.900357%" id="radialGradient-3">
+            <stop stop-color="#FD0202" offset="0%"></stop>
+            <stop stop-color="#B10D0D" offset="100%"></stop>
+        </radialGradient>
+        <circle id="path-4" cx="221" cy="112" r="43"></circle>
+        <filter x="-11.6%" y="-9.3%" width="123.3%" height="123.3%" filterUnits="objectBoundingBox" id="filter-5">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.18941215 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-119.000000, -65.000000)">
+            <g id="Rectangle">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <rect stroke="#A30C0C" stroke-width="1" stroke-linejoin="square" fill="#FFFFFF" fill-rule="evenodd" x="126.5" y="112.5" width="188" height="169" rx="10"></rect>
+            </g>
+            <g id="Oval">
+                <use fill="black" fill-opacity="1" filter="url(#filter-5)" xlink:href="#path-4"></use>
+                <circle stroke="#A80808" stroke-width="2" stroke-linejoin="square" fill="url(#radialGradient-3)" fill-rule="evenodd" cx="221" cy="112" r="42"></circle>
+            </g>
+            <text id="🗡️" font-family="AppleColorEmoji, Apple Color Emoji" font-size="50" font-weight="normal" letter-spacing="1" fill="#FFFFFF">
+                <tspan x="196" y="129">🗡️</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

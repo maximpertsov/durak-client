@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { Dimmer, Image, Loader, Segment } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -16,12 +16,14 @@ import {
   getDurak,
   getGame,
   getHands,
+  getPlayers,
   getPlayersFromUser,
   getWinners,
   getWithPassing,
 } from 'reducers';
 import { MediaQuery } from 'styles';
 
+import customCard from './assets/customCard.svg';
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
@@ -58,6 +60,7 @@ const mapStateToProps = createSelector(
     isCollecting: collector && collector === state.user,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isOutOfGame: getWinners(state).includes(state.user),
+    players: getPlayers(state),
     withPassing: getWithPassing(state),
     user: state.user,
     ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
@@ -94,13 +97,12 @@ const FlexSectionWrapper = styled.div({
 
 const PlayersWrapper = styled.div({
   [MediaQuery.NARROW]: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    gridTemplateColumns: 'repeat(4, minmax(20vw, 1fr))',
   },
   [MediaQuery.WIDE]: {
-    flexDirection: 'column',
+    gridTemplateColumns: 'repeat(2, minmax(20vw, 1fr))',
   },
-  display: 'flex',
+  display: 'grid',
 });
 
 const Game = () => {
@@ -118,6 +120,7 @@ const Game = () => {
     player2,
     player3,
     player4,
+    players,
     user,
     withPassing,
   } = useSelector(mapStateToProps, isEqual);
@@ -167,6 +170,9 @@ const Game = () => {
     </ButtonWrapper>
   );
 
+  const renderPlayers = () =>
+    players.map(player => <Player key={player} player={player} />);
+
   const renderGame = () => (
     <Wrapper>
       <FlexSectionWrapper>
@@ -178,9 +184,10 @@ const Game = () => {
       </FlexSectionWrapper>
       <FlexSectionWrapper>
         <PlayersWrapper>
-          <Player player={player2} />
-          <Player player={player3} />
-          <Player player={player4} />
+          <Image src={customCard} />
+          <Image src={customCard} />
+          <Image src={customCard} />
+          <Image src={customCard} />
         </PlayersWrapper>
       </FlexSectionWrapper>
     </Wrapper>
