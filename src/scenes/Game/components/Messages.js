@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
-import { Comment } from 'semantic-ui-react';
+import { Feed } from 'semantic-ui-react';
 
 import filter from 'lodash/fp/filter';
 import flow from 'lodash/fp/flow';
@@ -21,6 +21,7 @@ const Wrapper = styled.div({
   justifyContent: 'center',
   height: '100px',
   margin: '10px 0 0 0',
+  textAlign: 'left',
 });
 
 const Messages = () => {
@@ -36,7 +37,7 @@ const Messages = () => {
 
   return (
     <Wrapper>
-      <Comment.Group size="large">{renderMessages()}</Comment.Group>
+      <Feed size="large">{renderMessages()}</Feed>
     </Wrapper>
   );
 };

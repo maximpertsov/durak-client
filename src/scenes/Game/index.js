@@ -169,11 +169,11 @@ const Game = () => {
   const renderGame = () => (
     <Wrapper>
       <FlexSectionWrapper>
-        {renderTopMessage()}
+        <Messages />
         {renderTable()}
         {renderButtons()}
+        {renderTopMessage()}
         <Hand />
-        <Messages />
       </FlexSectionWrapper>
       <FlexSectionWrapper>
         <PlayersWrapper>{renderPlayers()}</PlayersWrapper>

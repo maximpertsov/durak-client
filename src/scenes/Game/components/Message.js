@@ -1,7 +1,7 @@
 import React from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Comment } from 'semantic-ui-react';
+import { Feed } from 'semantic-ui-react';
 
 import get from 'lodash/get';
 
@@ -112,13 +112,14 @@ const Message = ({ message }) => {
 
   return (
     <Wrapper createdAt={message.createdAt}>
-      <Comment>
-        <Comment.Content>
-          <Comment.Text>
-            <div>{getFullText(message)}</div>
-          </Comment.Text>
-        </Comment.Content>
-      </Comment>
+      <Feed.Event>
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.User>{message.user}</Feed.User>
+            {` ${getText(message)}`}
+          </Feed.Summary>
+        </Feed.Content>
+      </Feed.Event>
     </Wrapper>
   );
 };
