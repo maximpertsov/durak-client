@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card as UICard } from 'semantic-ui-react';
+import { Card as UICard, Label } from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -14,9 +14,10 @@ import map from 'lodash/fp/map';
 import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
+import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
-import { getAttackers, getDefender, getHands } from 'reducers';
+import { getAttackers, getDefender, getHands, getPlayers } from 'reducers';
 import { MediaQuery } from 'styles';
 
 import Cards from './Cards';
@@ -24,26 +25,52 @@ import Cards from './Cards';
 const getCardCount = flow(compact, size);
 const getDisplayCards = flow(
   compact,
-  chunk(6),
+  chunk(3),
   unzip,
   map(compact),
-  map(() => ({ flipped: true })),
+  map(stack => stack.map(() => ({ flipped: true }))),
 );
 
 const mapStateToProps = createSelector(
   state => state,
+  state => getAttackers(state),
+  state => getPlayers(state),
   (_, props) => props.player,
   (state, props) => get(getHands(state), props.player),
 
-  (state, player, cards) => ({
-    isAttacker: getAttackers(state).includes(player),
+  (state, attackers, players, player, cards) => ({
     isDefender: getDefender(state) === player,
+    isNextDefender: players.slice(2, 3).includes(player),
+    isFollowingNextDefender: players.slice(3, 4).includes(player),
+    isMainAttacker: attackers[0] === player,
+    isSideAttacker: attackers.slice(1).includes(player),
+    isUser: state.user && state.user === player,
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
+    order: findIndex(players, isEqual(player)) + 1,
   }),
 );
 
-const Wrapper = styled.div(({ isDefender }) => {
+// eslint-disable-next-line complexity
+const Wrapper = styled.div(({ isNextDefender, isFollowingNextDefender }) => ({
+  margin: '10px',
+  padding: '10px',
+  [MediaQuery.WIDE]: {
+    ...(isNextDefender || isFollowingNextDefender ? { gridRow: '2/2' } : {}),
+    ...(isNextDefender && !isFollowingNextDefender
+      ? { gridColumn: '2 / 2' }
+      : {}),
+    ...(isFollowingNextDefender ? { gridColumn: '1 / 1' } : {}),
+  },
+}));
+
+const WideScreenOnly = styled.span({
+  [MediaQuery.NARROW]: {
+    display: 'none',
+  },
+});
+
+const UICardWrapper = styled(UICard)(({ isGlowing }) => {
   const glow = keyframes({
     '0%': {
       boxShadow: '0 0 20px teal',
@@ -54,18 +81,12 @@ const Wrapper = styled.div(({ isDefender }) => {
   });
 
   return {
-    [MediaQuery.NARROW]: {
-      width: '30vw',
+    '&&&': {
+      animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
+      marginTop: '-25px',
+      zIndex: -1,
     },
-    animation: isDefender ? `${glow} 1s ease alternate infinite` : null,
-    margin: '10px',
   };
-});
-
-const WideScreenOnly = styled.span({
-  [MediaQuery.NARROW]: {
-    display: 'none',
-  },
 });
 
 const CardsWrapper = styled.div({
@@ -73,53 +94,95 @@ const CardsWrapper = styled.div({
   height: '10vh',
 });
 
+const OrderLabelWrapper = styled(Label)({
+  [MediaQuery.NARROW]: {
+    '&&&': {
+      display: 'none',
+    },
+  },
+});
+
+const StatusIconLabelWrapper = styled(Label)({
+  '&&&': {
+    margin: '0 auto',
+  },
+});
+
 const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
+const bowAndArrow = String.fromCodePoint(0x1f3f9);
 
 const Player = ({ player }) => {
-  const { cardCount, displayCards, isAttacker, isDefender } = useSelector(
-    state => mapStateToProps(state, { player }),
-    isEqual,
-  );
+  const {
+    cardCount,
+    displayCards,
+    isDefender,
+    isNextDefender,
+    isFollowingNextDefender,
+    isMainAttacker,
+    isSideAttacker,
+    isUser,
+    order,
+  } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   const getContext = () => {
-    if (isAttacker) return { text: 'The attacker', symbol: dagger };
+    if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
     if (isDefender) return { text: 'The defender', symbol: shield };
+    if (isSideAttacker) return { text: 'Attacking', symbol: bowAndArrow };
 
     return null;
   };
 
+  const renderStatusIcon = () => {
+    const statusIcon = get(getContext(), 'symbol', null);
+
+    return (
+      <StatusIconLabelWrapper basic circular size="massive">
+        {statusIcon}
+      </StatusIconLabelWrapper>
+    );
+  };
   const renderContext = () => {
     const context = getContext();
     if (!context) return null;
 
-    const { text, symbol } = context;
+    const { text } = context;
     return (
       <div>
         <WideScreenOnly>{text}</WideScreenOnly>
-        <span>{symbol}</span>
       </div>
     );
   };
 
+  const renderUICard = () => (
+    <UICardWrapper fluid isGlowing={isUser}>
+      <UICard.Content>
+        <OrderLabelWrapper attached="top left" size="small">
+          {order}
+        </OrderLabelWrapper>
+        <UICard.Header>{`${player}`}</UICard.Header>
+        {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>{`${cardCount} cards`}</div>
+        <WideScreenOnly>
+          <CardsWrapper>
+            <Cards cards={displayCards} scale={0.4} />
+          </CardsWrapper>
+        </WideScreenOnly>
+      </UICard.Content>
+    </UICardWrapper>
+  );
+
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper isDefender={isDefender}>
-      <UICard fluid>
-        <UICard.Content>
-          <UICard.Header>{`${player}`}</UICard.Header>
-          {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
-        </UICard.Content>
-        <UICard.Content extra>
-          <div>{`${cardCount} cards`}</div>
-          <WideScreenOnly>
-            <CardsWrapper>
-              <Cards cards={displayCards} scale={0.4} />
-            </CardsWrapper>
-          </WideScreenOnly>
-        </UICard.Content>
-      </UICard>
+    <Wrapper
+      isNextDefender={isNextDefender}
+      isFollowingNextDefender={isFollowingNextDefender}
+    >
+      {renderStatusIcon()}
+      {renderUICard()}
     </Wrapper>
   );
 };

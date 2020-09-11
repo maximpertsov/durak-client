@@ -7,7 +7,6 @@ import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import reject from 'lodash/reject';
-import zipObject from 'lodash/zipObject';
 
 import {
   getAttackers,
@@ -16,6 +15,7 @@ import {
   getDurak,
   getGame,
   getHands,
+  getPlayers,
   getPlayersFromUser,
   getWinners,
   getWithPassing,
@@ -58,9 +58,9 @@ const mapStateToProps = createSelector(
     isCollecting: collector && collector === state.user,
     isLoading: state.remoteDataState !== 'REPLAYED_EVENTS',
     isOutOfGame: getWinners(state).includes(state.user),
+    players: getPlayers(state),
     withPassing: getWithPassing(state),
     user: state.user,
-    ...zipObject(['player1', 'player2', 'player3', 'player4'], playersFromUser),
   }),
 );
 
@@ -94,13 +94,12 @@ const FlexSectionWrapper = styled.div({
 
 const PlayersWrapper = styled.div({
   [MediaQuery.NARROW]: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    gridTemplateColumns: 'repeat(4, minmax(20vw, 1fr))',
   },
   [MediaQuery.WIDE]: {
-    flexDirection: 'column',
+    gridTemplateColumns: 'repeat(2, minmax(20vw, 1fr))',
   },
-  display: 'flex',
+  display: 'grid',
 });
 
 const Game = () => {
@@ -115,9 +114,7 @@ const Game = () => {
     isOutOfGame,
     isLoading,
     game,
-    player2,
-    player3,
-    player4,
+    players,
     user,
     withPassing,
   } = useSelector(mapStateToProps, isEqual);
@@ -167,6 +164,9 @@ const Game = () => {
     </ButtonWrapper>
   );
 
+  const renderPlayers = () =>
+    players.map(player => <Player key={player} player={player} />);
+
   const renderGame = () => (
     <Wrapper>
       <FlexSectionWrapper>
@@ -177,11 +177,7 @@ const Game = () => {
         <Messages />
       </FlexSectionWrapper>
       <FlexSectionWrapper>
-        <PlayersWrapper>
-          <Player player={player2} />
-          <Player player={player3} />
-          <Player player={player4} />
-        </PlayersWrapper>
+        <PlayersWrapper>{renderPlayers()}</PlayersWrapper>
       </FlexSectionWrapper>
     </Wrapper>
   );
