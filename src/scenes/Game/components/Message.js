@@ -5,6 +5,7 @@ import { Feed } from 'semantic-ui-react';
 
 import get from 'lodash/get';
 
+import { Emoji } from 'styles';
 import { getRank, getSuit } from 'utils/gameLogic';
 
 // TODO move to utils
@@ -28,6 +29,16 @@ const getCardText = card => {
   return `${
     Number.isNaN(+rank) ? rank.charAt(0).toUpperCase() : rank
   }${getSuitText(suit)}`;
+};
+
+const getIcon = ({ type }) => {
+  switch (type) {
+    case 'attacked':
+    case 'attacked_with_many':
+      return Emoji.dagger;
+    default:
+      return null;
+  }
 };
 
 // eslint-disable-next-line complexity
@@ -113,6 +124,7 @@ const Message = ({ message }) => {
   return (
     <Wrapper createdAt={message.createdAt}>
       <Feed.Event>
+        <Feed.Label>{getIcon(message)}</Feed.Label>
         <Feed.Content>
           <Feed.Summary>
             <Feed.User>{message.user}</Feed.User>
