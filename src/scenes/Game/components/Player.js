@@ -32,11 +32,13 @@ const getDisplayCards = flow(
 
 const mapStateToProps = createSelector(
   state => state,
+  state => getAttackers(state),
   (_, props) => props.player,
   (state, props) => get(getHands(state), props.player),
 
-  (state, player, cards) => ({
-    isAttacker: getAttackers(state).includes(player),
+  (state, attackers, player, cards) => ({
+    isMainAttacker: attackers[0] === player,
+    isSideAttacker: attackers.slice(1).includes(player),
     isDefender: getDefender(state) === player,
     isUser: state.user && state.user === player,
     cardCount: getCardCount(cards),
@@ -73,19 +75,22 @@ const CardsWrapper = styled.div({
 
 const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
+const bowAndArrow = String.fromCodePoint(0x1F3F9);
 
 const Player = ({ player }) => {
   const {
     cardCount,
     displayCards,
-    isAttacker,
+    isMainAttacker,
+    isSideAttacker,
     isDefender,
     isUser,
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   const getContext = () => {
-    if (isAttacker) return { text: 'The attacker', symbol: dagger };
+    if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
     if (isDefender) return { text: 'The defender', symbol: shield };
+    if (isSideAttacker) return { text: 'Attacking', symbol: bowAndArrow };
 
     return null;
   };
