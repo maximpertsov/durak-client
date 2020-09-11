@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { Dimmer, Image, Loader, Segment } from 'semantic-ui-react';
 
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -23,6 +23,7 @@ import {
 } from 'reducers';
 import { MediaQuery } from 'styles';
 
+import customCard from './assets/customCard.svg';
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
@@ -182,7 +183,10 @@ const Game = () => {
         <Messages />
       </FlexSectionWrapper>
       <FlexSectionWrapper>
-        <PlayersWrapper>{renderPlayers()}</PlayersWrapper>
+        <PlayersWrapper>
+          {renderPlayers()}
+          <Image src={customCard} />
+        </PlayersWrapper>
       </FlexSectionWrapper>
     </Wrapper>
   );
