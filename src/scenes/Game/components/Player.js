@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card as UICard, Label} from 'semantic-ui-react';
+import { Card as UICard, Label } from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -110,11 +110,20 @@ const Player = ({ player }) => {
     return null;
   };
 
+  const renderStatusIcon = () => {
+    const statusIcon = get(getContext(), 'symbol', null);
+
+    return (
+      <LabelWrapper basic circular size="massive">
+        {statusIcon}
+      </LabelWrapper>
+    );
+  };
   const renderContext = () => {
     const context = getContext();
     if (!context) return null;
 
-    const { text, symbol } = context;
+    const { text } = context;
     return (
       <div>
         <WideScreenOnly>{text}</WideScreenOnly>
@@ -122,27 +131,29 @@ const Player = ({ player }) => {
     );
   };
 
+  const renderUICard = () => (
+    <UICardWrapper isGlowing={isUser}>
+      <UICard.Content>
+        <UICard.Header>{`${player}`}</UICard.Header>
+        {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
+      </UICard.Content>
+      <UICard.Content extra>
+        <div>{`${cardCount} cards`}</div>
+        <WideScreenOnly>
+          <CardsWrapper>
+            <Cards cards={displayCards} scale={0.4} />
+          </CardsWrapper>
+        </WideScreenOnly>
+      </UICard.Content>
+    </UICardWrapper>
+  );
+
   if (!player) return <Wrapper />;
 
   return (
     <Wrapper>
-      <LabelWrapper basic circular size="massive">
-        {bowAndArrow}
-      </LabelWrapper>
-      <UICardWrapper isGlowing={isUser}>
-        <UICard.Content>
-          <UICard.Header>{`${player}`}</UICard.Header>
-          {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
-        </UICard.Content>
-        <UICard.Content extra>
-          <div>{`${cardCount} cards`}</div>
-          <WideScreenOnly>
-            <CardsWrapper>
-              <Cards cards={displayCards} scale={0.4} />
-            </CardsWrapper>
-          </WideScreenOnly>
-        </UICard.Content>
-      </UICardWrapper>
+      {renderStatusIcon()}
+      {renderUICard()}
     </Wrapper>
   );
 };
