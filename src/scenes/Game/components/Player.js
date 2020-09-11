@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card as UICard, Label } from 'semantic-ui-react';
+import { Card as UICard, Label} from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -46,7 +46,18 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const Wrapper = styled.div(({ isGlowing }) => {
+const Wrapper = styled.div`
+  margin: 10px;
+  padding: 10px;
+`;
+
+const WideScreenOnly = styled.span({
+  [MediaQuery.NARROW]: {
+    display: 'none',
+  },
+});
+
+const UICardWrapper = styled(UICard)(({ isGlowing }) => {
   const glow = keyframes({
     '0%': {
       boxShadow: '0 0 20px teal',
@@ -57,20 +68,24 @@ const Wrapper = styled.div(({ isGlowing }) => {
   });
 
   return {
-    animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
-    margin: '10px',
+    '&&&': {
+      animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
+      marginTop: '-25px',
+      paddingTop: '15px',
+      zIndex: -1,
+    },
   };
-});
-
-const WideScreenOnly = styled.span({
-  [MediaQuery.NARROW]: {
-    display: 'none',
-  },
 });
 
 const CardsWrapper = styled.div({
   transformOrigin: 'top center',
   height: '10vh',
+});
+
+const LabelWrapper = styled(Label)({
+  '&&&': {
+    margin: '0 auto',
+  },
 });
 
 const dagger = String.fromCodePoint(0x1f5e1);
@@ -103,7 +118,6 @@ const Player = ({ player }) => {
     return (
       <div>
         <WideScreenOnly>{text}</WideScreenOnly>
-        <span>{symbol}</span>
       </div>
     );
   };
@@ -111,11 +125,11 @@ const Player = ({ player }) => {
   if (!player) return <Wrapper />;
 
   return (
-    <Wrapper isGlowing={isUser}>
-      <UICard fluid>
-        <Label basic circular floating size="big">
-          {bowAndArrow}
-        </Label>
+    <Wrapper>
+      <LabelWrapper basic circular size="massive">
+        {bowAndArrow}
+      </LabelWrapper>
+      <UICardWrapper isGlowing={isUser}>
         <UICard.Content>
           <UICard.Header>{`${player}`}</UICard.Header>
           {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
@@ -128,7 +142,7 @@ const Player = ({ player }) => {
             </CardsWrapper>
           </WideScreenOnly>
         </UICard.Content>
-      </UICard>
+      </UICardWrapper>
     </Wrapper>
   );
 };
