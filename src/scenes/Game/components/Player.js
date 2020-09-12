@@ -18,7 +18,7 @@ import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
 import { getAttackers, getDefender, getHands, getPlayers } from 'reducers';
-import { MediaQuery } from 'styles';
+import { Emoji, MediaQuery } from 'styles';
 
 import Cards from './Cards';
 
@@ -108,10 +108,6 @@ const StatusIconLabelWrapper = styled(Label)({
   },
 });
 
-const dagger = String.fromCodePoint(0x1f5e1);
-const shield = String.fromCodePoint(0x1f6e1);
-const bowAndArrow = String.fromCodePoint(0x1f3f9);
-
 const Player = ({ player }) => {
   const {
     cardCount,
@@ -126,9 +122,9 @@ const Player = ({ player }) => {
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   const getContext = () => {
-    if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
-    if (isDefender) return { text: 'The defender', symbol: shield };
-    if (isSideAttacker) return { text: 'Attacking', symbol: bowAndArrow };
+    if (isMainAttacker) return { text: 'The attacker', symbol: Emoji.DAGGER };
+    if (isDefender) return { text: 'The defender', symbol: Emoji.SHIELD };
+    if (isSideAttacker) return { text: 'Attacking', symbol: Emoji.BOW_AND_ARROW };
 
     return null;
   };

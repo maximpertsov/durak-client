@@ -6,6 +6,7 @@ export const MediaQuery = Object.freeze({
 export const Emoji = Object.freeze({
   DAGGER: String.fromCodePoint(0x1f5e1),
   SHIELD: String.fromCodePoint(0x1f6e1),
+  BOW_AND_ARROW: String.fromCodePoint(0x1f3f9),
   POPCORN: String.fromCodePoint(0x1f37f),
   ROFL: String.fromCodePoint(0x1f923),
   SPADES: String.fromCodePoint(0x2660),
