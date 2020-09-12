@@ -51,4 +51,13 @@ export const getMessageText = ({ type, payload }) => {
   }
 };
 
+export const isRecentMessage = ageLimitInSeconds => ({ createdAt }) => {
+  const ageInSeconds = (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
+
+  return ageInSeconds < ageLimitInSeconds;
+};
+
+export const getMessagesFromPlayer = player => messages =>
+  messages.filter(({ user }) => user === player);
+
 export default {};
