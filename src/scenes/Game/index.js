@@ -20,7 +20,7 @@ import {
   getWinners,
   getWithPassing,
 } from 'reducers';
-import { MediaQuery } from 'styles';
+import { Emoji, MediaQuery } from 'styles';
 
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
@@ -33,11 +33,6 @@ import StartButton from './components/StartButton';
 import Table from './components/Table';
 import WebSocketEventListener from './components/WebSocketEventListener';
 import YieldButton from './components/YieldButton';
-
-const dagger = String.fromCodePoint(0x1f5e1);
-const shield = String.fromCodePoint(0x1f6e1);
-const popcorn = String.fromCodePoint(0x1f37f);
-const rofl = String.fromCodePoint(0x1f923);
 
 const mapStateToProps = createSelector(
   state => state,
@@ -128,16 +123,16 @@ const Game = () => {
 
   // eslint-disable-next-line complexity
   const getMessage = () => {
-    if (isDurak) return `${rofl} You're the durak! ${rofl}`;
+    if (isDurak) return `${Emoji.ROFL} You're the durak! ${Emoji.ROFL}`;
     if (isOutOfGame) {
-      return `${popcorn} Relax, you're not the durak! ${popcorn}`;
+      return `${Emoji.POPCORN} Relax, you're not the durak! ${Emoji.POPCORN}`;
     }
     if (isCollecting) return 'You are collecting';
     if (collector) return `You are giving additional cards to ${collector}`;
-    if (isAttacker) return `${dagger} You are attacking ${defender} ${dagger}`;
-    if (isDefender) return `${shield} You are defending ${shield}`;
+    if (isAttacker) return `${Emoji.DAGGER} You are attacking ${defender} ${Emoji.DAGGER}`;
+    if (isDefender) return `${Emoji.SHIELD} You are defending ${Emoji.SHIELD}`;
 
-    return null;
+    return 'Waiting for other players';
   };
 
   const renderTopMessage = () =>
