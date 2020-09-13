@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card as UICard, Label } from 'semantic-ui-react';
+import { Card as UICard, Header, Label } from 'semantic-ui-react';
 
 import chunk from 'lodash/fp/chunk';
 import compact from 'lodash/fp/compact';
@@ -53,9 +53,13 @@ const mapStateToProps = createSelector(
 
 // eslint-disable-next-line complexity
 const Wrapper = styled.div(({ isNextDefender, isFollowingNextDefender }) => ({
-  margin: '10px',
-  padding: '10px',
   [MediaQuery.WIDE]: {
+    margin: '0px',
+    padding: '0px',
+  },
+  [MediaQuery.WIDE]: {
+    margin: '10px',
+    padding: '10px',
     ...(isNextDefender || isFollowingNextDefender ? { gridRow: '2/2' } : {}),
     ...(isNextDefender && !isFollowingNextDefender
       ? { gridColumn: '2 / 2' }
@@ -160,7 +164,7 @@ const Player = ({ player }) => {
         <OrderLabelWrapper attached="top left" size="small">
           {order}
         </OrderLabelWrapper>
-        <UICard.Header>{`${player}`}</UICard.Header>
+        <Header size="small">{`${player}`}</Header>
         {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
       </UICard.Content>
       <UICard.Content extra>

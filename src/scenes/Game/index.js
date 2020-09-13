@@ -89,10 +89,10 @@ const FlexSectionWrapper = styled.div({
 
 const PlayersWrapper = styled.div({
   [MediaQuery.NARROW]: {
-    gridTemplateColumns: 'repeat(4, minmax(20vw, 1fr))',
+    gridTemplateColumns: 'repeat(4, 1fr)',
   },
   [MediaQuery.WIDE]: {
-    gridTemplateColumns: 'repeat(2, minmax(20vw, 1fr))',
+    gridTemplateColumns: 'repeat(2, minmax(10vw, 1fr))',
   },
   display: 'grid',
 });
