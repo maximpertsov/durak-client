@@ -7,6 +7,7 @@ import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import reject from 'lodash/reject';
+import size from 'lodash/size';
 
 import {
   getAttackers,
@@ -87,15 +88,15 @@ const FlexSectionWrapper = styled.div({
   },
 });
 
-const PlayersWrapper = styled.div({
+const PlayersWrapper = styled.div(props => ({
   [MediaQuery.NARROW]: {
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: `repeat(${props.playerCount}, 1fr)`,
   },
   [MediaQuery.WIDE]: {
     gridTemplateColumns: 'repeat(2, minmax(10vw, 1fr))',
   },
   display: 'grid',
-});
+}));
 
 const Game = () => {
   const {
@@ -129,7 +130,9 @@ const Game = () => {
     }
     if (isCollecting) return 'You are collecting';
     if (collector) return `You are giving additional cards to ${collector}`;
-    if (isAttacker) return `${Emoji.DAGGER} You are attacking ${defender} ${Emoji.DAGGER}`;
+    if (isAttacker) {
+      return `${Emoji.DAGGER} You are attacking ${defender} ${Emoji.DAGGER}`;
+    }
     if (isDefender) return `${Emoji.SHIELD} You are defending ${Emoji.SHIELD}`;
 
     return 'Waiting for other players';
@@ -171,7 +174,9 @@ const Game = () => {
         <Messages />
       </FlexSectionWrapper>
       <FlexSectionWrapper>
-        <PlayersWrapper>{renderPlayers()}</PlayersWrapper>
+        <PlayersWrapper playerCount={size(players)}>
+          {renderPlayers()}
+        </PlayersWrapper>
       </FlexSectionWrapper>
     </Wrapper>
   );
