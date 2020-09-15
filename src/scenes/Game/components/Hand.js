@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
+import { Button, Label, Segment } from 'semantic-ui-react';
 
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import { getHands } from 'reducers';
+import { useWebSocketContext } from 'utils/websockets';
 
 import Cards from './Cards';
 
@@ -17,12 +20,41 @@ const mapStateToProps = createSelector(
   }),
 );
 
+const groupByRank = io => () => {
+  io.send('organized', { strategy: 'group_by_rank' });
+};
+
+const groupBySuit = io => () => {
+  io.send('organized', { strategy: 'group_by_suit' });
+};
+const groupByRankAndTrump = io => () => {
+  io.send('organized', { strategy: 'group_by_rank_and_trump' });
+};
+
+const CenteredSegment = styled(Segment)`
+  &&& {
+    margin: 10px auto;
+  }
+`;
+
 const Hand = () => {
+  const io = useWebSocketContext();
   const { cards } = useSelector(mapStateToProps, isEqual);
 
   return (
     <div className="Hand">
       <Cards cards={cards} />
+      <CenteredSegment compact>
+        <Label attached="top">Organize cards</Label>
+        <Button.Group basic widths="3">
+          <Button content="By rank" onClick={groupByRank(io)} />
+          <Button content="By suit" onClick={groupBySuit(io)} />
+          <Button
+            content="By rank and trump"
+            onClick={groupByRankAndTrump(io)}
+          />
+        </Button.Group>
+      </CenteredSegment>
     </div>
   );
 };
