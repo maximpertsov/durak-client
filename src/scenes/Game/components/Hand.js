@@ -4,7 +4,9 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import { Button, Label, Segment } from 'semantic-ui-react';
 
+import compact from 'lodash/compact';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 import { getHands } from 'reducers';
@@ -41,9 +43,10 @@ const Hand = () => {
   const io = useWebSocketContext();
   const { cards } = useSelector(mapStateToProps, isEqual);
 
-  return (
-    <div className="Hand">
-      <Cards cards={cards} />
+  const renderOrganizeButtons = () => {
+    if (isEmpty(compact(cards))) return null;
+
+    return (
       <CenteredSegment compact>
         <Label attached="top">Organize cards</Label>
         <Button.Group basic widths="3">
@@ -55,6 +58,13 @@ const Hand = () => {
           />
         </Button.Group>
       </CenteredSegment>
+    );
+  };
+
+  return (
+    <div className="Hand">
+      <Cards cards={cards} />
+      {renderOrganizeButtons()}
     </div>
   );
 };
