@@ -7,6 +7,7 @@ import flatten from 'lodash/flatten';
 import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
+import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
 
 import NewGameLink from './NewGameLink';
@@ -15,6 +16,7 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
+    newGameFeatureFlag: getNewGameFeatureFlag(),
     gameRequests: state.gameRequests,
     user: state.user,
   }),
@@ -23,7 +25,10 @@ const mapStateToProps = createSelector(
 const GameRequests = () => {
   const dispatch = useDispatch();
 
-  const { gameRequests, user } = useSelector(mapStateToProps, isEqual);
+  const { newGameFeatureFlag, gameRequests, user } = useSelector(
+    mapStateToProps,
+    isEqual,
+  );
 
   React.useEffect(() => {
     if (!user) return;
@@ -46,6 +51,7 @@ const GameRequests = () => {
       )),
     ]);
 
+  if (!newGameFeatureFlag) return null;
   if (!user) return null;
   if (gameRequests === null) return null;
 
