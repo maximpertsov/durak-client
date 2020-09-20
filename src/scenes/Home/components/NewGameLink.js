@@ -1,14 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Card as UICard } from 'semantic-ui-react';
+import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/fp/isEqual';
 
+import actions from 'actions';
 import VariantOptionButton from 'components/VariantOptionButton';
 import { getNewGameFeatureFlag } from 'reducers';
+import client from 'utils/client';
 
 const FormWrapper = styled.div`
   align-items: center;
@@ -22,11 +24,29 @@ const mapStateToProps = createSelector(() => ({
 }));
 
 const NewGameLink = ({ history }) => {
+  const dispatch = useDispatch();
   const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
 
   const [lowestRank, setLowestRank] = React.useState('6');
   const [attackLimit, setAttackLimit] = React.useState(6);
   const [withPassing, setWithPassing] = React.useState(true);
+  // const [playerCount, setPlayerCount] = React.useState(4);
+
+  const createGameRequest = () => {
+    // TODO: add player count option
+    client
+      .post('game/request', {
+        parameters: { player_count: 3 },
+        variant: {
+          withPassing,
+          lowestRank,
+          attackLimit,
+        },
+      })
+      .then(() => {
+        dispatch(actions.home.gameRequests.set(null));
+      });
+  };
 
   if (!newGameFeatureFlag) return null;
 
@@ -89,6 +109,11 @@ const NewGameLink = ({ history }) => {
             Unlimited
           </VariantOptionButton>
         </FormWrapper>
+      </UICard.Content>
+      <UICard.Content extra>
+        <Button size="tiny" fluid onClick={createGameRequest}>
+          Create
+        </Button>
       </UICard.Content>
     </UICard>
   );

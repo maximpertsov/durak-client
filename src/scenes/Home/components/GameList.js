@@ -1,8 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import styled from '@emotion/styled';
-import { Card as UICard } from 'semantic-ui-react';
+import { Card as UICard, Header, Segment } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 
@@ -10,11 +9,6 @@ import actions from 'actions';
 import client from 'utils/client';
 
 import GameLink from './GameLink';
-import NewGameLink from './NewGameLink';
-
-const Wrapper = styled.div`
-  margin: 10px;
-`;
 
 const mapStateToProps = createSelector(
   state => state,
@@ -48,12 +42,10 @@ const GameList = () => {
   if (gameList === null) return null;
 
   return (
-    <Wrapper className="GameList">
-      <UICard.Group>
-        {renderGameList()}
-      </UICard.Group>
-      <NewGameLink />
-    </Wrapper>
+    <Segment className="GameList">
+      <Header>Games In Play</Header>
+      <UICard.Group centered>{renderGameList()}</UICard.Group>
+    </Segment>
   );
 };
 

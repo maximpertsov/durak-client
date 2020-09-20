@@ -1,11 +1,18 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
 import GameList from './components/GameList';
+import GameRequests from './components/GameRequests';
+
+const Wrapper = styled.div`
+  margin: 10px;
+`;
 
 const Home = () => (
-  <div className="Home">
+  <Wrapper className="Home">
     <GameList />
-  </div>
+    <GameRequests />
+  </Wrapper>
 );
 
 export default Home;

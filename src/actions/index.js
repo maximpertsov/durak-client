@@ -23,6 +23,9 @@ export default createActions({
     GAME_LIST: {
       SET: undefined,
     },
+    GAME_REQUESTS: {
+      SET: undefined,
+    },
     LOGIN_FORM: {
       USERNAME: {
         SET: undefined,
