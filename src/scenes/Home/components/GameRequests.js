@@ -6,6 +6,7 @@ import { Card as UICard, Header, Segment } from 'semantic-ui-react';
 
 import flatten from 'lodash/flatten';
 import isEqual from 'lodash/isEqual';
+import sortBy from 'lodash/sortBy';
 
 import actions from 'actions';
 import { getNewGameFeatureFlag } from 'reducers';
@@ -46,7 +47,7 @@ const GameRequests = () => {
     if (gameRequests !== null) return;
 
     client.get('game/request').then(response => {
-      dispatch(actions.home.gameRequests.set(response.data));
+      dispatch(actions.home.gameRequests.set(sortBy(response.data, ['id'])));
     });
   }, [dispatch, gameRequests, user]);
 

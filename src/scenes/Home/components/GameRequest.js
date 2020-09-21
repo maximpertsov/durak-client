@@ -11,15 +11,17 @@ import actions from 'actions';
 import client from 'utils/client';
 
 const mapStateToProps = createSelector(
+  state => state.user,
   (_, props) => props.players,
   (_, props) => props.variant,
 
-  (players, variant) => ({
+  (user, players, variant) => ({
     playerCount: size(players),
     lowestRankText: `Lowest rank: ${variant.lowestRank}`,
     attackLimitText:
       variant.attackLimit === 6 ? 'Attack limit: 6 cards' : 'No attack limit',
     withPassingText: variant.withPassing ? 'Passing allowed' : 'No passing',
+    hasJoinedGame: players.includes(user),
   }),
 );
 
@@ -30,6 +32,7 @@ const GameRequest = ({ id, players, variant }) => {
     lowestRankText,
     attackLimitText,
     withPassingText,
+    hasJoinedGame,
   } = useSelector(
     state => mapStateToProps(state, { players, variant }),
     isEqual,
@@ -42,6 +45,12 @@ const GameRequest = ({ id, players, variant }) => {
     });
   };
 
+  const renderJoinButton = () => {
+    if (hasJoinedGame) return <Button content="Loading" fluid loading />;
+
+    return <Button content="Join game" fluid onClick={joinGame} />;
+  };
+
   return (
     <UICard className="GameRequest">
       <UICard.Content description={`${playerCount} players have joined`} />
@@ -50,9 +59,7 @@ const GameRequest = ({ id, players, variant }) => {
         <div>{lowestRankText}</div>
         <div>{attackLimitText}</div>
       </UICard.Content>
-      <UICard.Content extra>
-        <Button content="Join game" onClick={joinGame} />
-      </UICard.Content>
+      <UICard.Content extra>{renderJoinButton()}</UICard.Content>
     </UICard>
   );
 };
