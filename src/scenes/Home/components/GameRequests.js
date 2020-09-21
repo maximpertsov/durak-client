@@ -26,6 +26,7 @@ const mapStateToProps = createSelector(
 
 const Wrapper = styled.div`
   align-items: start;
+  column-gap: 10px;
   display: grid;
   justify-items: start;
   grid-template-columns: 1fr 3fr;
