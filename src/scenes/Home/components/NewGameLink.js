@@ -43,6 +43,7 @@ const NewGameLink = ({ history }) => {
         },
       })
       .then(() => {
+        dispatch(actions.home.gameList.set(null));
         dispatch(actions.home.gameRequests.set(null));
       });
   };
