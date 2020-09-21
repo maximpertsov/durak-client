@@ -8,6 +8,7 @@ import { Button, Card as UICard } from 'semantic-ui-react';
 import isEqual from 'lodash/fp/isEqual';
 
 import actions from 'actions';
+import SelectedOptionButtons from 'components/SelectedOptionButtons';
 import VariantOptionButton from 'components/VariantOptionButton';
 import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
@@ -57,80 +58,54 @@ const NewGameLink = ({ history }) => {
       <UICard.Content extra>
         <FormWrapper>
           <div>Passing?</div>
-          <Button.Group basic size="tiny" widths="2">
-            <VariantOptionButton
-              activeValue={false}
-              currentValue={withPassing}
-              setValue={setWithPassing}
-            >
-              No
-            </VariantOptionButton>
-            <VariantOptionButton
-              activeValue
-              currentValue={withPassing}
-              setValue={setWithPassing}
-            >
-              Yes
-            </VariantOptionButton>
-          </Button.Group>
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [false, 'No'],
+              [true, 'Yes'],
+            ]}
+            currentValue={withPassing}
+            setValue={setWithPassing}
+            basic
+            size="tiny"
+            widths="2"
+          />
           <div>Lowest rank</div>
-          <Button.Group basic size="tiny" widths="2">
-            <VariantOptionButton
-              activeValue="2"
-              currentValue={lowestRank}
-              setValue={setLowestRank}
-            >
-              Two
-            </VariantOptionButton>
-            <VariantOptionButton
-              activeValue="6"
-              currentValue={lowestRank}
-              setValue={setLowestRank}
-            >
-              Six
-            </VariantOptionButton>
-          </Button.Group>
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              ['2', 'Two'],
+              ['6', 'Six'],
+            ]}
+            currentValue={lowestRank}
+            setValue={setLowestRank}
+            basic
+            size="tiny"
+            widths="2"
+          />
           <div>Attack limit</div>
-          <Button.Group basic size="tiny" widths="2">
-            <VariantOptionButton
-              activeValue={100}
-              currentValue={attackLimit}
-              setValue={setAttackLimit}
-            >
-              Unlimited
-            </VariantOptionButton>
-            <VariantOptionButton
-              activeValue={6}
-              currentValue={attackLimit}
-              setValue={setAttackLimit}
-            >
-              Six cards
-            </VariantOptionButton>
-          </Button.Group>
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [100, 'Unlimited'],
+              [6, 'Six cards'],
+            ]}
+            currentValue={attackLimit}
+            setValue={setAttackLimit}
+            basic
+            size="tiny"
+            widths="2"
+          />
           <div>Players</div>
-          <Button.Group basic size="tiny" widths="3">
-            <VariantOptionButton
-              activeValue={2}
-              currentValue={playerCount}
-              setValue={setPlayerCount}
-            >
-              2
-            </VariantOptionButton>
-            <VariantOptionButton
-              activeValue={3}
-              currentValue={playerCount}
-              setValue={setPlayerCount}
-            >
-              3
-            </VariantOptionButton>
-            <VariantOptionButton
-              activeValue={4}
-              currentValue={playerCount}
-              setValue={setPlayerCount}
-            >
-              4
-            </VariantOptionButton>
-          </Button.Group>
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [2, '2'],
+              [3, '3'],
+              [4, '4'],
+            ]}
+            currentValue={playerCount}
+            setValue={setPlayerCount}
+            basic
+            size="tiny"
+            widths="3"
+          />
         </FormWrapper>
       </UICard.Content>
       <UICard.Content extra>
