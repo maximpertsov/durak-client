@@ -15,7 +15,7 @@ import client from 'utils/client';
 const FormWrapper = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 7fr;
   row-gap: 10px;
 `;
 
@@ -30,13 +30,12 @@ const NewGameLink = ({ history }) => {
   const [lowestRank, setLowestRank] = React.useState('6');
   const [attackLimit, setAttackLimit] = React.useState(6);
   const [withPassing, setWithPassing] = React.useState(true);
-  // const [playerCount, setPlayerCount] = React.useState(4);
+  const [playerCount, setPlayerCount] = React.useState(4);
 
   const createGameRequest = () => {
-    // TODO: add player count option
     client
       .post('game/request', {
-        parameters: { player_count: 3 },
+        parameters: { playerCount },
         variant: {
           withPassing,
           lowestRank,
@@ -58,56 +57,80 @@ const NewGameLink = ({ history }) => {
       <UICard.Content extra>
         <FormWrapper>
           <div>Passing?</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue
-            currentValue={withPassing}
-            setValue={setWithPassing}
-          >
-            Yes
-          </VariantOptionButton>
-          <VariantOptionButton
-            size="tiny"
-            activeValue={false}
-            currentValue={withPassing}
-            setValue={setWithPassing}
-          >
-            No
-          </VariantOptionButton>
+          <Button.Group basic size="tiny" widths="2">
+            <VariantOptionButton
+              activeValue={false}
+              currentValue={withPassing}
+              setValue={setWithPassing}
+            >
+              No
+            </VariantOptionButton>
+            <VariantOptionButton
+              activeValue
+              currentValue={withPassing}
+              setValue={setWithPassing}
+            >
+              Yes
+            </VariantOptionButton>
+          </Button.Group>
           <div>Lowest rank</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue="6"
-            currentValue={lowestRank}
-            setValue={setLowestRank}
-          >
-            Six
-          </VariantOptionButton>
-          <VariantOptionButton
-            size="tiny"
-            activeValue="2"
-            currentValue={lowestRank}
-            setValue={setLowestRank}
-          >
-            Two
-          </VariantOptionButton>
+          <Button.Group basic size="tiny" widths="2">
+            <VariantOptionButton
+              activeValue="2"
+              currentValue={lowestRank}
+              setValue={setLowestRank}
+            >
+              Two
+            </VariantOptionButton>
+            <VariantOptionButton
+              activeValue="6"
+              currentValue={lowestRank}
+              setValue={setLowestRank}
+            >
+              Six
+            </VariantOptionButton>
+          </Button.Group>
           <div>Attack limit</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue={6}
-            currentValue={attackLimit}
-            setValue={setAttackLimit}
-          >
-            Six cards
-          </VariantOptionButton>
-          <VariantOptionButton
-            size="tiny"
-            activeValue={100}
-            currentValue={attackLimit}
-            setValue={setAttackLimit}
-          >
-            Unlimited
-          </VariantOptionButton>
+          <Button.Group basic size="tiny" widths="2">
+            <VariantOptionButton
+              activeValue={100}
+              currentValue={attackLimit}
+              setValue={setAttackLimit}
+            >
+              Unlimited
+            </VariantOptionButton>
+            <VariantOptionButton
+              activeValue={6}
+              currentValue={attackLimit}
+              setValue={setAttackLimit}
+            >
+              Six cards
+            </VariantOptionButton>
+          </Button.Group>
+          <div>Players</div>
+          <Button.Group basic size="tiny" widths="3">
+            <VariantOptionButton
+              activeValue={2}
+              currentValue={playerCount}
+              setValue={setPlayerCount}
+            >
+              2
+            </VariantOptionButton>
+            <VariantOptionButton
+              activeValue={3}
+              currentValue={playerCount}
+              setValue={setPlayerCount}
+            >
+              3
+            </VariantOptionButton>
+            <VariantOptionButton
+              activeValue={4}
+              currentValue={playerCount}
+              setValue={setPlayerCount}
+            >
+              4
+            </VariantOptionButton>
+          </Button.Group>
         </FormWrapper>
       </UICard.Content>
       <UICard.Content extra>
