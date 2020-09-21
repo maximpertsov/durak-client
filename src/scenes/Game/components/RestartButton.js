@@ -6,7 +6,7 @@ import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/isEqual';
 
-import VariantOptionButton from 'components/VariantOptionButton';
+import SelectedOptionButtons from 'components/SelectedOptionButtons';
 import {
   getAttackLimit,
   getLowestRank,
@@ -26,10 +26,11 @@ const mapStateToProps = createSelector(
     withPassing: getWithPassing(state),
   }),
 );
+
 const FormWrapper = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 7fr;
   row-gap: 10px;
 `;
 
@@ -70,50 +71,38 @@ const RestartButton = () => {
       <UICard.Content extra>
         <FormWrapper>
           <div>Passing?</div>
-          <VariantOptionButton
-            activeValue
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [false, 'No'],
+              [true, 'Yes'],
+            ]}
             currentValue={withPassing}
             setValue={setWithPassing}
-          >
-            Yes
-          </VariantOptionButton>
-          <VariantOptionButton
-            activeValue={false}
-            currentValue={withPassing}
-            setValue={setWithPassing}
-          >
-            No
-          </VariantOptionButton>
+            basic
+            widths="2"
+          />
           <div>Lowest rank</div>
-          <VariantOptionButton
-            activeValue="6"
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              ['2', 'Two'],
+              ['6', 'Six'],
+            ]}
             currentValue={lowestRank}
             setValue={setLowestRank}
-          >
-            Six
-          </VariantOptionButton>
-          <VariantOptionButton
-            activeValue="2"
-            currentValue={lowestRank}
-            setValue={setLowestRank}
-          >
-            Two
-          </VariantOptionButton>
+            basic
+            widths="2"
+          />
           <div>Attack limit</div>
-          <VariantOptionButton
-            activeValue={6}
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [100, 'Unlimited'],
+              [6, 'Six cards'],
+            ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
-          >
-            Six cards
-          </VariantOptionButton>
-          <VariantOptionButton
-            activeValue={100}
-            currentValue={attackLimit}
-            setValue={setAttackLimit}
-          >
-            Unlimited
-          </VariantOptionButton>
+            basic
+            widths="2"
+          />
         </FormWrapper>
       </UICard.Content>
     </UICard>

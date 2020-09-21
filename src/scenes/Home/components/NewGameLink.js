@@ -9,7 +9,6 @@ import isEqual from 'lodash/fp/isEqual';
 
 import actions from 'actions';
 import SelectedOptionButtons from 'components/SelectedOptionButtons';
-import VariantOptionButton from 'components/VariantOptionButton';
 import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
 

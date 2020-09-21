@@ -147,6 +147,7 @@ const Game = () => {
 
   // eslint-disable-next-line complexity
   const renderButton = () => {
+    if (isDurak) return <RestartButton />;
     if (!hasMessages) return <StartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
