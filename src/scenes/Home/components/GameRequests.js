@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import styled from '@emotion/styled';
 import { Card as UICard, Header, Segment } from 'semantic-ui-react';
 
 import flatten from 'lodash/flatten';
@@ -10,6 +11,7 @@ import actions from 'actions';
 import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
 
+import GameRequest from './GameRequest';
 import NewGameLink from './NewGameLink';
 
 const mapStateToProps = createSelector(
@@ -21,6 +23,14 @@ const mapStateToProps = createSelector(
     user: state.user,
   }),
 );
+
+const Wrapper = styled.div`
+  align-items: start;
+  display: grid;
+  justify-items: start;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 10px;
+`;
 
 const GameRequests = () => {
   const dispatch = useDispatch();
@@ -41,13 +51,8 @@ const GameRequests = () => {
 
   const renderGameRequests = () =>
     flatten([
-      <NewGameLink />,
-      gameRequests.map(({ players }) => (
-        <UICard>
-          <UICard.Content extra>
-            <div>{players}</div>
-          </UICard.Content>
-        </UICard>
+      gameRequests.map(({ id, players, variant }) => (
+        <GameRequest id={id} players={players} variant={variant} />
       )),
     ]);
 
@@ -58,7 +63,10 @@ const GameRequests = () => {
   return (
     <Segment className="GameRequests">
       <Header>Game Requests</Header>
-      <UICard.Group centered>{renderGameRequests()}</UICard.Group>
+      <Wrapper>
+        <NewGameLink />
+        <UICard.Group centered>{renderGameRequests()}</UICard.Group>
+      </Wrapper>
     </Segment>
   );
 };
