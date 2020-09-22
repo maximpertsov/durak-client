@@ -61,4 +61,10 @@ export const WebSocketProvider = ({ children }) => {
 
 export const useWebSocketContext = () => useContext(WebSocketContext);
 
+export const withWebSocket = WrappedComponent => props => {
+  const io = useWebSocketContext();
+
+  return WrappedComponent({ io, ...props });
+};
+
 export default {};

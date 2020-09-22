@@ -5,6 +5,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Game from 'scenes/Game';
+import WebSocketEventListener from 'scenes/Game/components/WebSocketEventListener';
 import Home from 'scenes/Home';
 import LoginForm from 'scenes/Home/components/LoginForm';
 import Navigation from 'scenes/Home/components/Navigation';
@@ -14,6 +15,7 @@ const App = () => (
     <Router>
       <Navigation />
       <LoginForm />
+      <WebSocketEventListener />
       <Route exact path="/" component={Home} />
       <Route exact path="/:game" component={Game} />
     </Router>

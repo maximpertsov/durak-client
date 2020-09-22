@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
@@ -7,10 +7,10 @@ import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/fp/isEqual';
 
-import actions from 'actions';
 import SelectedOptionButtons from 'components/SelectedOptionButtons';
 import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
+import { withWebSocket } from 'utils/websockets';
 
 const FormWrapper = styled.div`
   align-items: center;
@@ -23,8 +23,7 @@ const mapStateToProps = createSelector(() => ({
   newGameFeatureFlag: getNewGameFeatureFlag(),
 }));
 
-const NewGameLink = ({ history }) => {
-  const dispatch = useDispatch();
+const NewGameLink = ({ io, history }) => {
   const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
 
   const [lowestRank, setLowestRank] = React.useState('6');
@@ -43,8 +42,7 @@ const NewGameLink = ({ history }) => {
         },
       })
       .then(() => {
-        dispatch(actions.home.gameList.set(null));
-        dispatch(actions.home.gameRequests.set(null));
+        io.send('updated_game_requests', {});
       });
   };
 
@@ -116,4 +114,4 @@ const NewGameLink = ({ history }) => {
     </UICard>
   );
 };
-export default withRouter(NewGameLink);
+export default withWebSocket(withRouter(NewGameLink));

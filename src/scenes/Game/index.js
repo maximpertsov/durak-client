@@ -32,7 +32,6 @@ import Player from './components/Player';
 import RestartButton from './components/RestartButton';
 import StartButton from './components/StartButton';
 import Table from './components/Table';
-import WebSocketEventListener from './components/WebSocketEventListener';
 import YieldButton from './components/YieldButton';
 
 const mapStateToProps = createSelector(
@@ -188,7 +187,6 @@ const Game = () => {
   return (
     <div className="Game">
       <GameInitializer />
-      <WebSocketEventListener />
       <Dimmer active={isLoading}>
         <Loader />
       </Dimmer>

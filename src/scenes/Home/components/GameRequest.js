@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { Button, Card as UICard } from 'semantic-ui-react';
@@ -7,8 +7,8 @@ import { Button, Card as UICard } from 'semantic-ui-react';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 
-import actions from 'actions';
 import client from 'utils/client';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state.user,
@@ -25,8 +25,7 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const GameRequest = ({ id, players, variant }) => {
-  const dispatch = useDispatch();
+const GameRequest = ({ io, id, players, variant }) => {
   const {
     playerCount,
     lowestRankText,
@@ -40,8 +39,7 @@ const GameRequest = ({ id, players, variant }) => {
 
   const joinGame = () => {
     client.patch(`game/request/${id}`).then(() => {
-      dispatch(actions.home.gameList.set(null));
-      dispatch(actions.home.gameRequests.set(null));
+      io.send('updated_game_requests', {});
     });
   };
 
@@ -64,7 +62,7 @@ const GameRequest = ({ id, players, variant }) => {
   );
 };
 
-export default GameRequest;
+export default withWebSocket(GameRequest);
 
 GameRequest.propTypes = {
   id: PropTypes.number.isRequired,
