@@ -1,14 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { Card as UICard, Header, Segment } from 'semantic-ui-react';
 
+import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
 import client from 'utils/client';
 
 import GameLink from './GameLink';
+
+// TODO move to utils
+const maxAgeInSeconds = 1;
+const getAgeInSeconds = createdAt =>
+  (new Date().getTime() - new Date(createdAt).getTime()) / 1000;
 
 const mapStateToProps = createSelector(
   state => state,
@@ -19,7 +26,7 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const GameList = () => {
+const GameList = ({ history }) => {
   const dispatch = useDispatch();
 
   const { gameList, user } = useSelector(mapStateToProps, isEqual);
@@ -29,9 +36,22 @@ const GameList = () => {
     if (gameList !== null) return;
 
     client.get('games/me').then(response => {
+      const games = response.data;
+
+      const gameToJoin = find(games, game => {
+        if (!game.players.includes(user)) return false;
+
+        return getAgeInSeconds(game.createdAt) < maxAgeInSeconds;
+      });
+
+      if (gameToJoin) {
+        history.push(`/${gameToJoin.slug}`);
+        return;
+      }
+
       dispatch(actions.home.gameList.set(response.data));
     });
-  }, [dispatch, gameList, user]);
+  }, [history, dispatch, gameList, user]);
 
   const renderGameList = () =>
     gameList.map(({ players, slug, variant }) => (
@@ -49,4 +69,4 @@ const GameList = () => {
   );
 };
 
-export default GameList;
+export default withRouter(GameList);

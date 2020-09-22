@@ -46,7 +46,12 @@ const mapStateToProps = createSelector(
     defender,
     game: getGame(),
     hands: getHands(state),
-    hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
+    hasMessages: !isEmpty(
+      reject(state.messages, ({ type }) =>
+        // TODO: find a better way to manager this
+        ['initialized', 'updated_game_requests'].includes(type),
+      ),
+    ),
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
     isDurak: durak && durak === state.user,
