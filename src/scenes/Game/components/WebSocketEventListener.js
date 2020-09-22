@@ -11,8 +11,10 @@ const getLastMessage = ({ messages }) => last(messages);
 const WebSocketEventListener = ({ history }) => {
   const dispatch = useDispatch();
   const lastMessage = useSelector(getLastMessage);
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
+    if (!user) return;
     if (!lastMessage) return;
 
     switch (lastMessage.type) {
@@ -22,9 +24,13 @@ const WebSocketEventListener = ({ history }) => {
         dispatch(actions.game.remoteDataState.set('NOT_FETCHED'));
         history.push(`/${lastMessage.payload.game}`);
         break;
+      case 'updated_game_requests':
+        dispatch(actions.home.gameList.set(null));
+        dispatch(actions.home.gameRequests.set(null));
+        break;
       default:
     }
-  }, [dispatch, history, lastMessage]);
+  }, [dispatch, history, lastMessage, user]);
 
   return null;
 };

@@ -15,7 +15,12 @@ const mapStateToProps = createSelector(
   state => getPlayers(state),
 
   (state, players) => ({
-    hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
+    hasMessages: !isEmpty(
+      reject(state.messages, ({ type }) =>
+        // TODO: find a better way to manager this
+        ['initialized', 'updated_game_requests'].includes(type),
+      ),
+    ),
     isInitialAttacker: !isEmpty(players) && state.user === players[0],
   }),
 );

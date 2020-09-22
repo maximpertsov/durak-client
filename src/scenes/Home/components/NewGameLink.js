@@ -3,17 +3,19 @@ import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Card as UICard } from 'semantic-ui-react';
+import { Button, Card as UICard } from 'semantic-ui-react';
 
 import isEqual from 'lodash/fp/isEqual';
 
-import VariantOptionButton from 'components/VariantOptionButton';
+import SelectedOptionButtons from 'components/SelectedOptionButtons';
 import { getNewGameFeatureFlag } from 'reducers';
+import client from 'utils/client';
+import { withWebSocket } from 'utils/websockets';
 
 const FormWrapper = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 7fr;
   row-gap: 10px;
 `;
 
@@ -21,12 +23,28 @@ const mapStateToProps = createSelector(() => ({
   newGameFeatureFlag: getNewGameFeatureFlag(),
 }));
 
-const NewGameLink = ({ history }) => {
+const NewGameLink = ({ io, history }) => {
   const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
 
   const [lowestRank, setLowestRank] = React.useState('6');
   const [attackLimit, setAttackLimit] = React.useState(6);
   const [withPassing, setWithPassing] = React.useState(true);
+  const [playerCount, setPlayerCount] = React.useState(4);
+
+  const createGameRequest = () => {
+    client
+      .post('game/request', {
+        parameters: { playerCount },
+        variant: {
+          withPassing,
+          lowestRank,
+          attackLimit,
+        },
+      })
+      .then(() => {
+        io.send('updated_game_requests', {});
+      });
+  };
 
   if (!newGameFeatureFlag) return null;
 
@@ -38,59 +56,62 @@ const NewGameLink = ({ history }) => {
       <UICard.Content extra>
         <FormWrapper>
           <div>Passing?</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [false, 'No'],
+              [true, 'Yes'],
+            ]}
             currentValue={withPassing}
             setValue={setWithPassing}
-          >
-            Yes
-          </VariantOptionButton>
-          <VariantOptionButton
+            basic
             size="tiny"
-            activeValue={false}
-            currentValue={withPassing}
-            setValue={setWithPassing}
-          >
-            No
-          </VariantOptionButton>
+            widths="2"
+          />
           <div>Lowest rank</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue="6"
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              ['2', 'Two'],
+              ['6', 'Six'],
+            ]}
             currentValue={lowestRank}
             setValue={setLowestRank}
-          >
-            Six
-          </VariantOptionButton>
-          <VariantOptionButton
+            basic
             size="tiny"
-            activeValue="2"
-            currentValue={lowestRank}
-            setValue={setLowestRank}
-          >
-            Two
-          </VariantOptionButton>
+            widths="2"
+          />
           <div>Attack limit</div>
-          <VariantOptionButton
-            size="tiny"
-            activeValue={6}
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [100, 'Unlimited'],
+              [6, 'Six cards'],
+            ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
-          >
-            Six cards
-          </VariantOptionButton>
-          <VariantOptionButton
+            basic
             size="tiny"
-            activeValue={100}
-            currentValue={attackLimit}
-            setValue={setAttackLimit}
-          >
-            Unlimited
-          </VariantOptionButton>
+            widths="2"
+          />
+          <div>Players</div>
+          <SelectedOptionButtons
+            activeValueChildrenPairs={[
+              [2, '2'],
+              [3, '3'],
+              [4, '4'],
+            ]}
+            currentValue={playerCount}
+            setValue={setPlayerCount}
+            basic
+            size="tiny"
+            widths="3"
+          />
         </FormWrapper>
+      </UICard.Content>
+      <UICard.Content extra>
+        <Button size="tiny" fluid onClick={createGameRequest}>
+          Create
+        </Button>
       </UICard.Content>
     </UICard>
   );
 };
-export default withRouter(NewGameLink);
+export default withWebSocket(withRouter(NewGameLink));

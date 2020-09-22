@@ -32,7 +32,6 @@ import Player from './components/Player';
 import RestartButton from './components/RestartButton';
 import StartButton from './components/StartButton';
 import Table from './components/Table';
-import WebSocketEventListener from './components/WebSocketEventListener';
 import YieldButton from './components/YieldButton';
 
 const mapStateToProps = createSelector(
@@ -47,7 +46,12 @@ const mapStateToProps = createSelector(
     defender,
     game: getGame(),
     hands: getHands(state),
-    hasMessages: !isEmpty(reject(state.messages, { type: 'initialized' })),
+    hasMessages: !isEmpty(
+      reject(state.messages, ({ type }) =>
+        // TODO: find a better way to manager this
+        ['initialized', 'updated_game_requests'].includes(type),
+      ),
+    ),
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
     isDurak: durak && durak === state.user,
@@ -147,6 +151,7 @@ const Game = () => {
 
   // eslint-disable-next-line complexity
   const renderButton = () => {
+    if (isDurak) return <RestartButton />;
     if (!hasMessages) return <StartButton />;
     if (isDurak) return <RestartButton />;
     if (isOutOfGame) return null;
@@ -187,7 +192,6 @@ const Game = () => {
   return (
     <div className="Game">
       <GameInitializer />
-      <WebSocketEventListener />
       <Dimmer active={isLoading}>
         <Loader />
       </Dimmer>

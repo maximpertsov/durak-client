@@ -24,6 +24,11 @@ const rootReducer = combineReducers({
     (state, action) => action.payload,
     null,
   ),
+  gameRequests: handleAction(
+    actions.home.gameRequests.set,
+    (state, action) => action.payload,
+    null,
+  ),
   remoteDataState,
   selectedCards,
   user,
