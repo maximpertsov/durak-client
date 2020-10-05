@@ -4,10 +4,10 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 
-import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import reject from 'lodash/reject';
 import size from 'lodash/size';
+import some from 'lodash/some';
 
 import {
   getAttackers,
@@ -16,6 +16,7 @@ import {
   getDurak,
   getGame,
   getHands,
+  getJoined,
   getPlayers,
   getPlayersFromUser,
   getWinners,
@@ -46,12 +47,10 @@ const mapStateToProps = createSelector(
     defender,
     game: getGame(),
     hands: getHands(state),
-    hasMessages: !isEmpty(
-      reject(state.messages, ({ type }) =>
-        // TODO: find a better way to manager this
-        ['initialized', 'updated_game_requests'].includes(type),
-      ),
-    ),
+    // TODO: find a better way to manage this
+    gameHasStarted:
+      !getJoined(state)
+      && some(state.messages, message => get(message, 'toState.attackers')),
     isAttacker: getAttackers(state).includes(state.user),
     isDefender: defender === state.user,
     isDurak: durak && durak === state.user,
@@ -106,13 +105,13 @@ const Game = () => {
   const {
     collector,
     defender,
-    hasMessages,
     isAttacker,
     isCollecting,
     isDefender,
     isDurak,
     isOutOfGame,
     isLoading,
+    gameHasStarted,
     game,
     players,
     user,
@@ -149,11 +148,9 @@ const Game = () => {
       </Segment>
     );
 
-  // eslint-disable-next-line complexity
   const renderButton = () => {
     if (isDurak) return <RestartButton />;
-    if (!hasMessages) return <StartButton />;
-    if (isDurak) return <RestartButton />;
+    if (!gameHasStarted) return <StartButton />;
     if (isOutOfGame) return null;
     if (isDefender) return <CollectButton />;
 
