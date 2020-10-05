@@ -1,5 +1,3 @@
-import map from 'lodash/map';
-
 import actions from 'actions';
 import client from 'utils/client';
 
@@ -12,10 +10,8 @@ const fetchGame = ({ game }) => dispatch => {
     // TODO: simplify payload coming from server
     const {
       data: {
-        drawPile,
-        hands,
         players,
-        trumpSuit,
+        seed,
         variant: { lowestRank, attackLimit, withPassing },
       },
     } = response;
@@ -26,13 +22,12 @@ const fetchGame = ({ game }) => dispatch => {
         type: 'initialized',
         toState: {
           collector: null,
+          drawnCards: [],
           durak: null,
-          drawPile: map(drawPile, 'card'),
-          hands,
+          seed,
           players,
           passCount: 0,
           table: [],
-          trumpSuit,
           yielded: [],
           lowestRank,
           attackLimit,

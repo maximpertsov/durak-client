@@ -55,11 +55,13 @@ export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
 export const getDurak = state => fromCurrentState(state, 'durak', null);
 
-export const getDrawPile = state => fromCurrentState(state, 'drawPile', []);
+export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
+export const getLastCard = state => fromCurrentState(state, 'lastCard', null);
+export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
+
 export const getHands = state => fromCurrentState(state, 'hands', {});
 export const getPlayers = state => fromCurrentState(state, 'players', []);
 export const getTable = state => fromCurrentState(state, 'table', []);
-export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 export const getYielded = state => fromCurrentState(state, 'yielded', []);
 
 export const getWithPassing = state =>
