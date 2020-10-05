@@ -7,7 +7,6 @@ const fetchGame = ({ game }) => dispatch => {
   dispatch(actions.game.remoteDataState.set('FETCHING_GAME'));
 
   client.get(`game/${game}`).then(response => {
-    // TODO: simplify payload coming from server
     const {
       data: {
         players,
@@ -16,19 +15,12 @@ const fetchGame = ({ game }) => dispatch => {
       },
     } = response;
 
-    // TODO: make messages the source of truth for states
     dispatch(
       actions.messages.append({
         type: 'initialized',
         toState: {
-          collector: null,
-          drawnCards: [],
-          durak: null,
           seed,
           players,
-          passCount: 0,
-          table: [],
-          yielded: [],
           lowestRank,
           attackLimit,
           withPassing,
