@@ -9,7 +9,6 @@ import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
 
 import actions from 'actions';
-import { getNewGameFeatureFlag } from 'reducers';
 import client from 'utils/client';
 
 import GameRequest from './GameRequest';
@@ -19,7 +18,6 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    newGameFeatureFlag: getNewGameFeatureFlag(),
     gameRequests: state.gameRequests,
     user: state.user,
   }),
@@ -37,7 +35,7 @@ const Wrapper = styled.div`
 const GameRequests = () => {
   const dispatch = useDispatch();
 
-  const { newGameFeatureFlag, gameRequests, user } = useSelector(
+  const { gameRequests, user } = useSelector(
     mapStateToProps,
     isEqual,
   );
@@ -58,7 +56,6 @@ const GameRequests = () => {
       )),
     ]);
 
-  if (!newGameFeatureFlag) return null;
   if (!user) return null;
   if (gameRequests === null) return null;
 
