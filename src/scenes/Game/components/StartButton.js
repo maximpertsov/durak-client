@@ -29,7 +29,7 @@ const StartButton = () => {
   const { gameHasStarted, hasJoined } = useSelector(mapStateToProps, isEqual);
 
   const startGame = () => {
-    io.send('started_game', {});
+    io.send('joined_game', {});
   };
 
   if (gameHasStarted) return null;
