@@ -42,8 +42,8 @@ export const getMessageText = ({ type, payload }) => {
       return `passed with ${getCardText(payload.card)}`;
     case 'passed_with_many':
       return `passed with ${payload.cards.map(getCardText).join(' ')}`;
-    case 'started_game':
-      return 'started the game';
+    case 'joined_game':
+      return 'joined the game';
     case 'restarted':
       return 'started a new game';
     default:

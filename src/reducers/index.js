@@ -54,6 +54,7 @@ export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
 export const getDurak = state => fromCurrentState(state, 'durak', null);
+export const getJoined = state => fromCurrentState(state, 'joined', null);
 
 export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
 export const getLastCard = state => fromCurrentState(state, 'lastCard', null);
