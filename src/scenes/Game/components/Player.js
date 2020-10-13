@@ -19,6 +19,7 @@ import get from 'lodash/get';
 
 import {
   getAttackers,
+  getCollector,
   getDefender,
   getHands,
   getJoined,
@@ -42,11 +43,13 @@ const mapStateToProps = createSelector(
   state => getAttackers(state),
   state => getPlayers(state),
   state => getJoined(state),
+  state => getCollector(state),
   (_, props) => props.player,
   (state, props) => get(getHands(state), props.player),
 
-  (state, attackers, players, joined, player, cards) => ({
+  (state, attackers, players, joined, collector, player, cards) => ({
     hasJoined: joined && joined.includes(player),
+    isCollecting: collector && collector === player,
     isDefender: getDefender(state) === player,
     isNextDefender: players.slice(2, 3).includes(player),
     isFollowingNextDefender: players.slice(3, 4).includes(player),
@@ -123,13 +126,15 @@ const StatusIconLabelWrapper = styled(Label)({
 const dagger = String.fromCodePoint(0x1f5e1);
 const shield = String.fromCodePoint(0x1f6e1);
 const bowAndArrow = String.fromCodePoint(0x1f3f9);
-const rocket = String.fromCodePoint(0x1F680);
+const rocket = String.fromCodePoint(0x1f680);
+const whiteFlag = String.fromCodePoint(0x1f3f3);
 
 const Player = ({ player }) => {
   const {
     cardCount,
     displayCards,
     hasJoined,
+    isCollecting,
     isDefender,
     isNextDefender,
     isFollowingNextDefender,
@@ -139,7 +144,9 @@ const Player = ({ player }) => {
     order,
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
+  // eslint-disable-next-line complexity
   const getContext = () => {
+    if (isCollecting) return { text: 'Collecting', symbol: whiteFlag };
     if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
     if (isDefender) return { text: 'The defender', symbol: shield };
     if (isSideAttacker) return { text: 'Attacking', symbol: bowAndArrow };
