@@ -26,7 +26,7 @@ import {
   getPlayers,
   getYielded,
 } from 'reducers';
-import { MediaQuery } from 'styles';
+import { Emoji, MediaQuery } from 'styles';
 
 import Cards from './Cards';
 
@@ -125,13 +125,6 @@ const StatusIconLabelWrapper = styled(Label)({
   },
 });
 
-const dagger = String.fromCodePoint(0x1f5e1);
-const shield = String.fromCodePoint(0x1f6e1);
-const bowAndArrow = String.fromCodePoint(0x1f3f9);
-const rocket = String.fromCodePoint(0x1f680);
-const whiteFlag = String.fromCodePoint(0x1f3f3);
-const thumbsUp = String.fromCodePoint(0x1f44d);
-
 const Player = ({ player }) => {
   const {
     cardCount,
@@ -150,12 +143,12 @@ const Player = ({ player }) => {
 
   // eslint-disable-next-line complexity
   const getContext = () => {
-    if (hasYielded) return { text: 'Stopped attacking', symbol: thumbsUp };
-    if (isCollecting) return { text: 'Collecting', symbol: whiteFlag };
-    if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
-    if (isDefender) return { text: 'The defender', symbol: shield };
-    if (isSideAttacker) return { text: 'Attacking', symbol: bowAndArrow };
-    if (hasJoined) return { text: 'Joined game', symbol: rocket };
+    if (hasYielded) return { text: 'Stopped attacking', symbol: Emoji.THUMBS_UP };
+    if (isCollecting) return { text: 'Collecting', symbol: Emoji.WHITE_FLAG };
+    if (isMainAttacker) return { text: 'The attacker', symbol: Emoji.DAGGER };
+    if (isDefender) return { text: 'The defender', symbol: Emoji.SHIELD };
+    if (isSideAttacker) return { text: 'Attacking', symbol: Emoji.BOW_AND_ARROW };
+    if (hasJoined) return { text: 'Joined game', symbol: Emoji.ROCKET };
 
     return { text: '...' };
   };
