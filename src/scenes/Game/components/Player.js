@@ -24,6 +24,7 @@ import {
   getHands,
   getJoined,
   getPlayers,
+  getYielded,
 } from 'reducers';
 import { MediaQuery } from 'styles';
 
@@ -49,6 +50,7 @@ const mapStateToProps = createSelector(
 
   (state, attackers, players, joined, collector, player, cards) => ({
     hasJoined: joined && joined.includes(player),
+    hasYielded: getYielded(state).includes(player),
     isCollecting: collector && collector === player,
     isDefender: getDefender(state) === player,
     isNextDefender: players.slice(2, 3).includes(player),
@@ -128,12 +130,14 @@ const shield = String.fromCodePoint(0x1f6e1);
 const bowAndArrow = String.fromCodePoint(0x1f3f9);
 const rocket = String.fromCodePoint(0x1f680);
 const whiteFlag = String.fromCodePoint(0x1f3f3);
+const thumbsUp = String.fromCodePoint(0x1f44d);
 
 const Player = ({ player }) => {
   const {
     cardCount,
     displayCards,
     hasJoined,
+    hasYielded,
     isCollecting,
     isDefender,
     isNextDefender,
@@ -146,6 +150,7 @@ const Player = ({ player }) => {
 
   // eslint-disable-next-line complexity
   const getContext = () => {
+    if (hasYielded) return { text: 'Stopped attacking', symbol: thumbsUp };
     if (isCollecting) return { text: 'Collecting', symbol: whiteFlag };
     if (isMainAttacker) return { text: 'The attacker', symbol: dagger };
     if (isDefender) return { text: 'The defender', symbol: shield };
