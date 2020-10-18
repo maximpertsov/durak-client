@@ -6,6 +6,7 @@ import isEqual from 'lodash/fp/isEqual';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import get from 'lodash/get';
+import isPlainObject from 'lodash/isPlainObject';
 import last from 'lodash/last';
 
 import actions from 'actions';
@@ -61,7 +62,14 @@ export const getLastCard = state => fromCurrentState(state, 'lastCard', null);
 export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 
 export const getHands = state => fromCurrentState(state, 'hands', {});
-export const getPlayers = state => fromCurrentState(state, 'players', []);
+export const getPlayers = state => {
+  const playerData = fromCurrentState(state, 'players', []);
+  playerData.map(player => {
+    if (isPlainObject(player)) return player.id;
+    // Assume the player data IS the player id if not a plain object
+    return player;
+  });
+};
 export const getTable = state => fromCurrentState(state, 'table', []);
 export const getYielded = state => fromCurrentState(state, 'yielded', []);
 
