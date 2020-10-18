@@ -20,7 +20,9 @@ const fetchGame = ({ game }) => dispatch => {
         type: 'initialized',
         toState: {
           seed,
-          players,
+          players: players.map(player => ({
+            id: player,
+          })),
           lowestRank,
           attackLimit,
           withPassing,
