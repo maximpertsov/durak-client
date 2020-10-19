@@ -64,7 +64,7 @@ export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 export const getHands = state => fromCurrentState(state, 'hands', {});
 export const getPlayers = state => {
   const playerData = fromCurrentState(state, 'players', []);
-  playerData.map(player => {
+  return playerData.map(player => {
     if (isPlainObject(player)) return player.id;
     // Assume the player data IS the player id if not a plain object
     return player;
