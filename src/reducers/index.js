@@ -9,6 +9,7 @@ import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
 import isPlainObject from 'lodash/isPlainObject';
 import last from 'lodash/last';
+import sortBy from 'lodash/sortBy';
 
 import actions from 'actions';
 
@@ -76,11 +77,14 @@ export const getHands = state => {
 
 export const getPlayers = state => {
   const playerData = fromCurrentState(state, 'players', []);
-  return playerData.map(player => {
-    if (isPlainObject(player)) return player.id;
-    // Assume the player data IS the player id if not a plain object
-    return player;
-  });
+  return sortBy(
+    playerData.map(player => {
+      if (isPlainObject(player)) return player.id;
+      // Assume the player data IS the player id if not a plain object
+      return player;
+    }),
+    ['order'],
+  );
 };
 export const getTable = state => fromCurrentState(state, 'table', []);
 export const getYielded = state => fromCurrentState(state, 'yielded', []);
