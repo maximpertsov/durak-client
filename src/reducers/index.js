@@ -87,7 +87,14 @@ export const getPlayers = state => {
   );
 };
 export const getTable = state => fromCurrentState(state, 'table', []);
-export const getYielded = state => fromCurrentState(state, 'yielded', []);
+export const getYielded = state => {
+  const result = fromCurrentState(state, 'yielded', null);
+  if (result) return result;
+
+  return fromCurrentState(state, 'players', [])
+    .filter(player => player.state.includes('yielded'))
+    .map(player => player.id);
+};
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);
