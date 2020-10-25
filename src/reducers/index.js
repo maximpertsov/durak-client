@@ -5,8 +5,11 @@ import isEqual from 'lodash/fp/isEqual';
 
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
+import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
+import isPlainObject from 'lodash/isPlainObject';
 import last from 'lodash/last';
+import sortBy from 'lodash/sortBy';
 
 import actions from 'actions';
 
@@ -60,10 +63,38 @@ export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
 export const getLastCard = state => fromCurrentState(state, 'lastCard', null);
 export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 
-export const getHands = state => fromCurrentState(state, 'hands', {});
-export const getPlayers = state => fromCurrentState(state, 'players', []);
+export const getHands = state => {
+  const result = fromCurrentState(state, 'hands', null);
+  if (result) return result;
+
+  return fromPairs(
+    fromCurrentState(state, 'players', []).map(player => [
+      player.id,
+      player.hand,
+    ]),
+  );
+};
+
+export const getPlayers = state => {
+  const playerData = fromCurrentState(state, 'players', []);
+  return sortBy(
+    playerData.map(player => {
+      if (isPlainObject(player)) return player.id;
+      // Assume the player data IS the player id if not a plain object
+      return player;
+    }),
+    ['order'],
+  );
+};
 export const getTable = state => fromCurrentState(state, 'table', []);
-export const getYielded = state => fromCurrentState(state, 'yielded', []);
+export const getYielded = state => {
+  const result = fromCurrentState(state, 'yielded', null);
+  if (result) return result;
+
+  return fromCurrentState(state, 'players', [])
+    .filter(player => player.state.includes('yielded'))
+    .map(player => player.id);
+};
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);
