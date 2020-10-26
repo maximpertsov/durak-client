@@ -69,7 +69,17 @@ export const getCollector = state => {
 export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
-export const getDurak = state => fromCurrentState(state, 'durak', null);
+export const getDurak = state => {
+  if (has(getCurrentState(state), 'durak')) {
+    return fromCurrentState(state, 'durak', null);
+  }
+
+  return first(
+    fromCurrentState(state, 'players', [])
+      .filter(player => get(player, 'state', []).includes('durak'))
+      .map(player => player.id),
+  );
+};
 export const getJoined = state => fromCurrentState(state, 'joined', null);
 
 export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
