@@ -22,6 +22,7 @@ const fetchGame = ({ game }) => dispatch => {
           seed,
           players: players.map(player => ({
             id: player,
+            state: [],
           })),
           lowestRank,
           attackLimit,
