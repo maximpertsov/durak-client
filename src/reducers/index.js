@@ -4,9 +4,11 @@ import { handleAction } from 'redux-actions';
 import isEqual from 'lodash/fp/isEqual';
 
 import findIndex from 'lodash/findIndex';
+import first from 'lodash/first';
 import flatMap from 'lodash/flatMap';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
+import has from 'lodash/has';
 import isPlainObject from 'lodash/isPlainObject';
 import last from 'lodash/last';
 import sortBy from 'lodash/sortBy';
@@ -52,11 +54,32 @@ export const getCurrentState = state =>
 const fromCurrentState = (state, field, defaultValue) =>
   get(getCurrentState(state), field, defaultValue);
 
-export const getCollector = state => fromCurrentState(state, 'collector', null);
+export const getCollector = state => {
+  if (has(getCurrentState(state), 'collecting')) {
+    return fromCurrentState(state, 'collecting', null);
+  }
+
+  return first(
+    fromCurrentState(state, 'players', [])
+      .filter(player => get(player, 'state', []).includes('collecting'))
+      .map(player => player.id),
+  );
+};
+
 export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
-export const getDurak = state => fromCurrentState(state, 'durak', null);
+export const getDurak = state => {
+  if (has(getCurrentState(state), 'durak')) {
+    return fromCurrentState(state, 'durak', null);
+  }
+
+  return first(
+    fromCurrentState(state, 'players', [])
+      .filter(player => get(player, 'state', []).includes('durak'))
+      .map(player => player.id),
+  );
+};
 export const getJoined = state => fromCurrentState(state, 'joined', null);
 
 export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
