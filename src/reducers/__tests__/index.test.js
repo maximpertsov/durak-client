@@ -4,6 +4,7 @@ const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
 /* eslint-disable indent */
 describe('getPlayersFromUser', () => {
+  // TODO: player arrays must contain objects now!
   test.each`
     user        | expected
     ${'anna'}   | ${['anna', 'vasyl', 'igor', 'grusha']}
