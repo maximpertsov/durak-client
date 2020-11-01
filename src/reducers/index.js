@@ -8,8 +8,6 @@ import first from 'lodash/first';
 import flatMap from 'lodash/flatMap';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
-import has from 'lodash/has';
-import isPlainObject from 'lodash/isPlainObject';
 import last from 'lodash/last';
 import sortBy from 'lodash/sortBy';
 
@@ -54,70 +52,45 @@ export const getCurrentState = state =>
 const fromCurrentState = (state, field, defaultValue) =>
   get(getCurrentState(state), field, defaultValue);
 
-export const getCollector = state => {
-  if (has(getCurrentState(state), 'collecting')) {
-    return fromCurrentState(state, 'collecting', null);
-  }
-
-  return first(
+export const getCollector = state =>
+  first(
     fromCurrentState(state, 'players', [])
       .filter(player => get(player, 'state', []).includes('collecting'))
       .map(player => player.id),
   );
-};
 
 export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
-export const getDurak = state => {
-  if (has(getCurrentState(state), 'durak')) {
-    return fromCurrentState(state, 'durak', null);
-  }
-
-  return first(
+export const getDurak = state =>
+  first(
     fromCurrentState(state, 'players', [])
       .filter(player => get(player, 'state', []).includes('durak'))
       .map(player => player.id),
   );
-};
 export const getJoined = state => fromCurrentState(state, 'joined', null);
 
 export const getCardsLeft = state => fromCurrentState(state, 'cardsLeft', null);
 export const getLastCard = state => fromCurrentState(state, 'lastCard', null);
 export const getTrumpSuit = state => fromCurrentState(state, 'trumpSuit', null);
 
-export const getHands = state => {
-  const result = fromCurrentState(state, 'hands', null);
-  if (result) return result;
-
-  return fromPairs(
+export const getHands = state =>
+  fromPairs(
     fromCurrentState(state, 'players', []).map(player => [
       player.id,
       player.hand,
     ]),
   );
-};
 
-export const getPlayers = state => {
-  const playerData = fromCurrentState(state, 'players', []);
-  return sortBy(
-    playerData.map(player => {
-      if (isPlainObject(player)) return player.id;
-      // Assume the player data IS the player id if not a plain object
-      return player;
-    }),
+export const getPlayers = state =>
+  sortBy(
+    fromCurrentState(state, 'players', []).map(player => player.id),
     ['order'],
   );
-};
 export const getTable = state => fromCurrentState(state, 'table', []);
-export const getYielded = state => {
-  const result = fromCurrentState(state, 'yielded', null);
-  if (result) return result;
-
-  return fromCurrentState(state, 'players', [])
-    .filter(player => player.state.includes('yielded'))
-    .map(player => player.id);
-};
+export const getYielded = state => fromCurrentState(state, 'players', [])
+  .filter(player => player.state.includes('yielded'))
+  .map(player => player.id);
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);

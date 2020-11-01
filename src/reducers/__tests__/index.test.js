@@ -4,6 +4,7 @@ const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
 /* eslint-disable indent */
 describe('getPlayersFromUser', () => {
+  // TODO: player arrays must contain objects now!
   test.each`
     user        | expected
     ${'anna'}   | ${['anna', 'vasyl', 'igor', 'grusha']}
@@ -12,7 +13,11 @@ describe('getPlayersFromUser', () => {
     ${'grusha'} | ${['grusha', 'anna', 'vasyl', 'igor']}
     ${null}     | ${[]}
   `('$user attacks', ({ user, expected }) => {
-    const state = { messages: [{ toState: { players } }], user };
+    const playerData = players.map((player, index) => ({
+      id: player,
+      order: index,
+    }));
+    const state = { messages: [{ toState: { players: playerData } }], user };
     expect(getPlayersFromUser(state)).toStrictEqual(expected);
   });
 });
