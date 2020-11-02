@@ -44,9 +44,8 @@ const SelectionIndicator = styled.div({
   zIndex: '1',
 });
 
-const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
+const Wrapper = styled.div(({ card, opacity, flipped, isGlowing }) => {
   const cardImage = flipped ? getBackOfCard() : getCardImage(card);
-  const isGlowing = !flipped && trumpSuit === getSuit(card);
 
   const glow = keyframes({
     '0%': {
@@ -64,7 +63,7 @@ const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
     backgroundSize: 'cover',
     borderRadius: '1px',
     height: '0%',
-    opacity: isDragging ? '30%' : '100%',
+    opacity,
     paddingTop: topAdjust,
     position: 'relative',
   };
@@ -110,11 +109,12 @@ const Card = ({ card, flipped }) => {
   return (
     <Wrapper
       className="Card"
-      onClick={onClick}
-      ref={dragRef}
-      isDragging={isDragging}
       card={card}
       flipped={flipped}
+      isGlowing={!flipped && trumpSuit === getSuit(card)}
+      onClick={onClick}
+      opacity={isDragging ? '30%' : '100%'}
+      ref={dragRef}
       trumpSuit={trumpSuit}
     >
       {!!selectedCard && <SelectionIndicator />}
