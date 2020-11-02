@@ -25,8 +25,6 @@ const getCardText = card => {
 export const getMessageText = ({ type, payload }) => {
   switch (type) {
     case 'attacked':
-      return `attacked with ${getCardText(payload.card)}`;
-    case 'attacked_with_many':
       return `attacked with ${payload.cards.map(getCardText).join(' ')}`;
     case 'defended':
       return `defended ${getCardText(payload.baseCard)} with ${getCardText(

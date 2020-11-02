@@ -47,7 +47,7 @@ const Table = () => {
     // unprocessable messages to the socket server.
     if (isEmpty(selectedCards)) return;
 
-    io.send('attacked_with_many', { cards: selectedCards });
+    io.send('attacked', { cards: selectedCards });
     dispatch(actions.game.selectedCards.clear());
   };
 
