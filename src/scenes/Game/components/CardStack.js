@@ -27,8 +27,8 @@ const mapStateToProps = createSelector(
 );
 
 const CardWrapper = styled.div(props => ({
-  opacity: props.isOver ? '30%' : '100%',
-  marginTop: props.index === 0 ? '0%' : '-100%',
+  marginTop: props.marginTop,
+  opacity: props.opacity,
 }));
 
 const CardStack = ({ children }) => {
@@ -72,9 +72,9 @@ const CardStack = ({ children }) => {
     React.Children.toArray(children).map((card, index) => (
       <CardWrapper
         key={index}
+        marginTop={index === 0 ? '0%' : '-100%'}
         onClick={defendWithSelectedCard}
-        isOver={isOver}
-        index={index}
+        opacity={isOver ? '30%' : '100%'}
         ref={dropRef}
       >
         {card}
