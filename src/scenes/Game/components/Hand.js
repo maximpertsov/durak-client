@@ -18,7 +18,9 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
-    cards: get(getHands(state), state.user, []).map(card => ({ card })),
+    cards: get(getHands(state), state.user, [])
+      .filter(card => card)
+      .map(card => ({ card })),
   }),
 );
 
