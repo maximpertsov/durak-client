@@ -37,8 +37,6 @@ export const getMessageText = ({ type, payload }) => {
     case 'yielded_attack':
       return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
     case 'passed':
-      return `passed with ${getCardText(payload.card)}`;
-    case 'passed_with_many':
       return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     case 'joined_game':
       return 'joined the game';

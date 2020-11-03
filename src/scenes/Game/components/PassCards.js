@@ -58,7 +58,7 @@ const PassCards = () => {
     // unprocessable messages to the socket server.
     if (isEmpty(selectedCards)) return;
 
-    io.send('passed_with_many', { cards: selectedCards });
+    io.send('passed', { cards: selectedCards });
     dispatch(actions.game.selectedCards.clear());
   };
 
