@@ -33,9 +33,9 @@ export const getMessageText = ({ type, payload }) => {
     case 'collected':
       return 'collected cards';
     case 'gave_up':
-      return `gave up ${String.fromCodePoint(0x1f3f3)}`;
+      return `gave up ${Emoji.WHITE_FLAG}`;
     case 'yielded_attack':
-      return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
+      return `stopped attacking ${Emoji.THUMBS_UP}`;
     case 'passed':
       return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     case 'joined_game':
