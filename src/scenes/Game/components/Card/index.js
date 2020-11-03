@@ -11,19 +11,13 @@ import isEqual from 'lodash/fp/isEqual';
 import concat from 'lodash/concat';
 import find from 'lodash/find';
 import get from 'lodash/get';
-import size from 'lodash/size';
-import some from 'lodash/some';
-import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
 
 import actions from 'actions';
 import { getDurak, getHands, getTrumpSuit } from 'reducers';
-import { cards as allCards, getRank, getSuit } from 'utils/gameLogic';
+import { cards as allCards, getSuit } from 'utils/gameLogic';
 
 import getCardImage, { getBackOfCard } from './images';
-
-const uniqueCards = cards => uniqWith(cards, isEqual);
-const sameRank = cards => size(uniqBy(uniqueCards(cards), getRank)) === 1;
 
 const mapStateToProps = createSelector(
   state => state,
@@ -34,7 +28,7 @@ const mapStateToProps = createSelector(
     durak: getDurak(state),
     hand: get(getHands(state), state.user),
     selectedCard: find(selectedCards, isEqual(card)),
-    selectedCards,
+    selectedAndDraggingCards: uniqWith(concat(card, selectedCards), isEqual),
     trumpSuit: getTrumpSuit(state),
   }),
 );
@@ -50,9 +44,8 @@ const SelectionIndicator = styled.div({
   zIndex: '1',
 });
 
-const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
+const Wrapper = styled.div(({ card, opacity, flipped, isGlowing }) => {
   const cardImage = flipped ? getBackOfCard() : getCardImage(card);
-  const isGlowing = !flipped && trumpSuit === getSuit(card);
 
   const glow = keyframes({
     '0%': {
@@ -70,7 +63,7 @@ const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
     backgroundSize: 'cover',
     borderRadius: '1px',
     height: '0%',
-    opacity: isDragging ? '30%' : '100%',
+    opacity,
     paddingTop: topAdjust,
     position: 'relative',
   };
@@ -78,20 +71,16 @@ const Wrapper = styled.div(({ card, isDragging, flipped, trumpSuit }) => {
 
 const Card = ({ card, flipped }) => {
   const dispatch = useDispatch();
-  const { durak, hand, selectedCard, selectedCards, trumpSuit } = useSelector(
-    state => mapStateToProps(state, { card }),
-    isEqual,
-  );
+  const {
+    durak,
+    hand,
+    selectedCard,
+    selectedAndDraggingCards,
+    trumpSuit,
+  } = useSelector(state => mapStateToProps(state, { card }), isEqual);
 
-  const canDrag = () => !durak && some(hand, isEqual(card));
   const begin = () => {
-    const selectedAndDraggingCards = uniqueCards(concat(selectedCards, card));
-    if (sameRank(selectedAndDraggingCards)) {
-      dispatch(actions.game.selectedCards.set(selectedAndDraggingCards));
-      return;
-    }
-
-    dispatch(actions.game.selectedCards.clear());
+    dispatch(actions.game.selectedCards.set(selectedAndDraggingCards));
   };
   const end = () => {
     dispatch(actions.game.selectedCards.clear());
@@ -100,7 +89,6 @@ const Card = ({ card, flipped }) => {
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', card },
     begin,
-    canDrag,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -121,11 +109,12 @@ const Card = ({ card, flipped }) => {
   return (
     <Wrapper
       className="Card"
-      onClick={onClick}
-      ref={dragRef}
-      isDragging={isDragging}
       card={card}
       flipped={flipped}
+      isGlowing={!flipped && trumpSuit === getSuit(card)}
+      onClick={onClick}
+      opacity={isDragging ? '30%' : '100%'}
+      ref={dragRef}
       trumpSuit={trumpSuit}
     >
       {!!selectedCard && <SelectionIndicator />}

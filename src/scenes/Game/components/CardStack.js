@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
@@ -10,7 +10,8 @@ import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
 import size from 'lodash/size';
 
-import { useWebSocketContext } from 'utils/websockets';
+import actions from 'actions';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -21,60 +22,58 @@ const mapStateToProps = createSelector(
       last(React.Children.toArray(children)),
       'props.cardOrStack.card',
     ),
-    legalDefenses: get(last(state.messages), 'toState.legalDefenses', {}),
     selectedCards: state.selectedCards,
   }),
 );
 
 const CardWrapper = styled.div(props => ({
-  opacity: props.isOver ? '30%' : '100%',
-  marginTop: props.index === 0 ? '0%' : '-100%',
+  marginTop: props.marginTop,
+  opacity: props.opacity,
 }));
 
-const CardStack = ({ children }) => {
-  const io = useWebSocketContext();
+const CardStack = ({ children, io }) => {
+  const dispatch = useDispatch();
 
-  const { legalDefenses, selectedCards, topCard } = useSelector(
+  const { selectedCards, topCard } = useSelector(
     state => mapStateToProps(state, { children }),
     isEqual,
   );
 
-  const canDefendWithCard = card =>
-    get(legalDefenses, topCard, []).includes(card);
+  const defendWithSelectedCard = () => {
+    if (size(selectedCards) !== 1) return;
 
-  const canDrop = ({ card }) => canDefendWithCard(card);
-
-  const drop = ({ card }) => {
+    const card = first(selectedCards);
     io.send('defended', { baseCard: topCard, card });
+    dispatch(actions.game.selectedCards.clear());
+  };
+
+  const canDrop = (item, monitor) => !!monitor.isOver({ shallow: true });
+
+  const drop = () => {
+    defendWithSelectedCard();
+  };
+
+  const onClick = event => {
+    event.stopPropagation();
+    defendWithSelectedCard();
   };
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
-    drop,
     canDrop,
+    drop,
     collect: monitor => ({
-      isOver: !!monitor.isOver(),
+      isOver: !!monitor.isOver({ shallow: true }),
     }),
   });
-
-  const defendWithSelectedCard = () => {
-    if (size(selectedCards) === 1) {
-      const card = first(selectedCards);
-
-      if (canDefendWithCard(card)) {
-        io.send('defended', { baseCard: topCard, card });
-      }
-    }
-    // HACK: No need clear cards since clicking the table also clears cards
-  };
 
   const renderCards = () =>
     React.Children.toArray(children).map((card, index) => (
       <CardWrapper
         key={index}
-        onClick={defendWithSelectedCard}
-        isOver={isOver}
-        index={index}
+        marginTop={index === 0 ? '0%' : '-100%'}
+        onClick={onClick}
+        opacity={isOver ? '30%' : '100%'}
         ref={dropRef}
       >
         {card}
@@ -84,4 +83,4 @@ const CardStack = ({ children }) => {
   return <div className="CardStack">{renderCards()}</div>;
 };
 
-export default CardStack;
+export default withWebSocket(CardStack);

@@ -4,16 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
-import every from 'lodash/every';
-import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import last from 'lodash/last';
-import size from 'lodash/size';
 
 import actions from 'actions';
 import { getTable } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 import Cards from './Cards';
 import DrawPile from './DrawPile';
@@ -31,46 +27,31 @@ const Wrapper = styled.div(props => ({
 
 const mapStateToProps = createSelector(
   state => state,
-  state => last(state.messages),
 
-  (state, lastMessage) => ({
-    legalAttacksCards: get(lastMessage, 'toState.legalAttacks.cards', []),
-    legalAttacksLimit: get(lastMessage, 'toState.legalAttacks.limit', 0),
+  state => ({
     selectedCards: state.selectedCards,
     table: getTable(state),
   }),
 );
 
-const Table = () => {
+const Table = ({ io }) => {
   const dispatch = useDispatch();
-  const io = useWebSocketContext();
-  const {
-    legalAttacksCards,
-    legalAttacksLimit,
-    selectedCards,
-    table,
-  } = useSelector(mapStateToProps, isEqual);
+  const { selectedCards, table } = useSelector(mapStateToProps, isEqual);
 
-  const canAttackWithCard = card => {
-    if (legalAttacksLimit < 1) return false;
+  const canDrop = (item, monitor) => !!monitor.isOver({ shallow: true });
 
-    return legalAttacksCards.includes(card);
-  };
+  const attackWithSelectedCards = () => {
+    // TODO: technically we don't need this, since the socket server checks this.
+    // That said, having this check is an easy way to prevent sending too many
+    // unprocessable messages to the socket server.
+    if (isEmpty(selectedCards)) return;
 
-  const canDrop = (item, monitor) => {
-    if (!monitor.isOver({ shallow: true })) return false;
-
-    return canAttackWithCard(item.card);
-  };
-
-  // TODO: move logic to action?
-  const drop = item => {
-    if (isEmpty(selectedCards)) {
-      io.send('attacked', { card: item.card });
-    } else {
-      io.send('attacked_with_many', { cards: selectedCards });
-    }
+    io.send('attacked', { cards: selectedCards });
     dispatch(actions.game.selectedCards.clear());
+  };
+
+  const drop = () => {
+    attackWithSelectedCards();
   };
 
   const [{ isOver }, dropRef] = useDrop({
@@ -81,18 +62,6 @@ const Table = () => {
       isOver: !!monitor.isOver({ shallow: true }),
     }),
   });
-
-  const attackWithSelectedCards = () => {
-    try {
-      if (isEmpty(selectedCards)) return;
-      if (size(selectedCards) > legalAttacksLimit) return;
-      if (!every(selectedCards, canAttackWithCard)) return;
-
-      io.send('attacked_with_many', { cards: selectedCards });
-    } finally {
-      dispatch(actions.game.selectedCards.clear());
-    }
-  };
 
   return (
     <Wrapper
@@ -111,4 +80,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default withWebSocket(Table);

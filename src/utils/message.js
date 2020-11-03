@@ -25,8 +25,6 @@ const getCardText = card => {
 export const getMessageText = ({ type, payload }) => {
   switch (type) {
     case 'attacked':
-      return `attacked with ${getCardText(payload.card)}`;
-    case 'attacked_with_many':
       return `attacked with ${payload.cards.map(getCardText).join(' ')}`;
     case 'defended':
       return `defended ${getCardText(payload.baseCard)} with ${getCardText(
@@ -35,12 +33,10 @@ export const getMessageText = ({ type, payload }) => {
     case 'collected':
       return 'collected cards';
     case 'gave_up':
-      return `gave up ${String.fromCodePoint(0x1f3f3)}`;
+      return `gave up ${Emoji.WHITE_FLAG}`;
     case 'yielded_attack':
-      return `stopped attacking ${String.fromCodePoint(0x1f44d)}`;
+      return `stopped attacking ${Emoji.THUMBS_UP}`;
     case 'passed':
-      return `passed with ${getCardText(payload.card)}`;
-    case 'passed_with_many':
       return `passed with ${payload.cards.map(getCardText).join(' ')}`;
     case 'joined_game':
       return 'joined the game';

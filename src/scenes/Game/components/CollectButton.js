@@ -12,7 +12,7 @@ import {
   getTable,
   getUnbeatenCards,
 } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -28,9 +28,7 @@ const mapStateToProps = createSelector(
 );
 
 // TODO: rename to CollectHandler to capture extra collect logic
-const CollectButton = () => {
-  const io = useWebSocketContext();
-
+const CollectButton = ({ io }) => {
   const { collector, isDefender, table, unbeatenCards } = useSelector(
     mapStateToProps,
     isEqual,
@@ -52,4 +50,4 @@ const CollectButton = () => {
   );
 };
 
-export default CollectButton;
+export default withWebSocket(CollectButton);

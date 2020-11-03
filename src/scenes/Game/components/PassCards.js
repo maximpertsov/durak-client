@@ -5,17 +5,15 @@ import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
 import compact from 'lodash/compact';
-import every from 'lodash/every';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import last from 'lodash/last';
-import size from 'lodash/size';
 import some from 'lodash/some';
 
 import actions from 'actions';
 import { getHands } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -38,9 +36,8 @@ const Wrapper = styled.div(props => ({
   width: '20%',
 }));
 
-const PassCards = () => {
+const PassCards = ({ io }) => {
   const dispatch = useDispatch();
-  const io = useWebSocketContext();
   const {
     hand,
     legalPassesCards,
@@ -48,45 +45,33 @@ const PassCards = () => {
     selectedCards,
   } = useSelector(mapStateToProps, isEqual);
 
-  const canPassWithCard = card => {
+  const canPassWithAnyCard = () => {
     if (legalPassesLimit < 1) return false;
 
-    return legalPassesCards.includes(card);
+    return some(compact(hand), card => legalPassesCards.includes(card));
   };
 
-  const canPassWithAnyCard = () => some(compact(hand), canPassWithCard);
+  const passWithSelectedCard = () => {
+    // TODO: technically we don't need this, since the socket server checks this.
+    // That said, having this check is an easy way to prevent sending too many
+    // unprocessable messages to the socket server.
+    if (isEmpty(selectedCards)) return;
 
-  const canDrop = item => canPassWithCard(item.card);
-
-  const drop = item => {
-    if (isEmpty(selectedCards)) {
-      io.send('passed', { card: item.card });
-    } else {
-      io.send('passed_with_many', { cards: selectedCards });
-    }
+    io.send('passed', { cards: selectedCards });
     dispatch(actions.game.selectedCards.clear());
+  };
+
+  const drop = () => {
+    passWithSelectedCard();
   };
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
     drop,
-    canDrop,
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
   });
-
-  const passWithSelectedCard = () => {
-    try {
-      if (isEmpty(selectedCards)) return;
-      if (size(selectedCards) > legalPassesLimit) return;
-      if (!every(selectedCards, canPassWithCard)) return;
-
-      io.send('passed_with_many', { cards: selectedCards });
-    } finally {
-      dispatch(actions.game.selectedCards.clear());
-    }
-  };
 
   if (!canPassWithAnyCard()) return null;
 
@@ -102,4 +87,4 @@ const PassCards = () => {
   );
 };
 
-export default PassCards;
+export default withWebSocket(PassCards);

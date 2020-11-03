@@ -13,7 +13,7 @@ import {
   getUnbeatenCards,
   getYielded,
 } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -28,9 +28,7 @@ const mapStateToProps = createSelector(
 );
 
 // eslint-disable-next-line complexity
-const YieldButton = () => {
-  const io = useWebSocketContext();
-
+const YieldButton = ({ io }) => {
   const {
     collector,
     hasYielded,
@@ -59,4 +57,4 @@ const YieldButton = () => {
   return null;
 };
 
-export default YieldButton;
+export default withWebSocket(YieldButton);

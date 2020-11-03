@@ -8,7 +8,7 @@ import isEqual from 'lodash/isEqual';
 import some from 'lodash/some';
 
 import { getJoined } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -23,9 +23,7 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const StartButton = () => {
-  const io = useWebSocketContext();
-
+const StartButton = ({ io }) => {
   const { gameHasStarted, hasJoined } = useSelector(mapStateToProps, isEqual);
 
   const startGame = () => {
@@ -42,4 +40,4 @@ const StartButton = () => {
   );
 };
 
-export default StartButton;
+export default withWebSocket(StartButton);

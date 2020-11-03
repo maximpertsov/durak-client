@@ -14,7 +14,7 @@ import {
   getWithPassing,
 } from 'reducers';
 import client from 'utils/client';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -34,14 +34,13 @@ const FormWrapper = styled.div`
   row-gap: 10px;
 `;
 
-const RestartButton = () => {
+const RestartButton = ({ io }) => {
   const {
     players,
     lowestRank: lastLowestRank,
     attackLimit: lastAttackLimit,
     withPassing: lastWithPassing,
   } = useSelector(mapStateToProps, isEqual);
-  const io = useWebSocketContext();
 
   const [lowestRank, setLowestRank] = React.useState(lastLowestRank);
   const [attackLimit, setAttackLimit] = React.useState(lastAttackLimit);
@@ -109,4 +108,4 @@ const RestartButton = () => {
   );
 };
 
-export default RestartButton;
+export default withWebSocket(RestartButton);
