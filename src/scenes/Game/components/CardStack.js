@@ -11,7 +11,7 @@ import last from 'lodash/last';
 import size from 'lodash/size';
 
 import actions from 'actions';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -31,9 +31,8 @@ const CardWrapper = styled.div(props => ({
   opacity: props.opacity,
 }));
 
-const CardStack = ({ children }) => {
+const CardStack = ({ children, io }) => {
   const dispatch = useDispatch();
-  const io = useWebSocketContext();
 
   const { selectedCards, topCard } = useSelector(
     state => mapStateToProps(state, { children }),
@@ -84,4 +83,4 @@ const CardStack = ({ children }) => {
   return <div className="CardStack">{renderCards()}</div>;
 };
 
-export default CardStack;
+export default withWebSocket(CardStack);

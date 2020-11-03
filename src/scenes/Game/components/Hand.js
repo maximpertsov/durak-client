@@ -10,7 +10,7 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 import { getHands } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 import Cards from './Cards';
 
@@ -39,8 +39,7 @@ const CenteredSegment = styled(Segment)`
   }
 `;
 
-const Hand = () => {
-  const io = useWebSocketContext();
+const Hand = ({ io }) => {
   const { cards } = useSelector(mapStateToProps, isEqual);
 
   const renderOrganizeButtons = () => {
@@ -69,4 +68,4 @@ const Hand = () => {
   );
 };
 
-export default Hand;
+export default withWebSocket(Hand);

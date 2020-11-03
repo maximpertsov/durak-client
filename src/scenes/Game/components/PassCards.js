@@ -13,7 +13,7 @@ import some from 'lodash/some';
 
 import actions from 'actions';
 import { getHands } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 const mapStateToProps = createSelector(
   state => state,
@@ -36,9 +36,8 @@ const Wrapper = styled.div(props => ({
   width: '20%',
 }));
 
-const PassCards = () => {
+const PassCards = ({ io }) => {
   const dispatch = useDispatch();
-  const io = useWebSocketContext();
   const {
     hand,
     legalPassesCards,
@@ -88,4 +87,4 @@ const PassCards = () => {
   );
 };
 
-export default PassCards;
+export default withWebSocket(PassCards);

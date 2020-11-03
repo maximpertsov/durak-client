@@ -9,7 +9,7 @@ import isEqual from 'lodash/isEqual';
 
 import actions from 'actions';
 import { getTable } from 'reducers';
-import { useWebSocketContext } from 'utils/websockets';
+import { withWebSocket } from 'utils/websockets';
 
 import Cards from './Cards';
 import DrawPile from './DrawPile';
@@ -34,9 +34,8 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const Table = () => {
+const Table = ({ io }) => {
   const dispatch = useDispatch();
-  const io = useWebSocketContext();
   const { selectedCards, table } = useSelector(mapStateToProps, isEqual);
 
   const canDrop = (item, monitor) => !!monitor.isOver({ shallow: true });
@@ -81,4 +80,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default withWebSocket(Table);
