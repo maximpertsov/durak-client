@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
 
-import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import last from 'lodash/last';
 
 import actions from 'actions';
 import { getTable } from 'reducers';
@@ -29,10 +27,8 @@ const Wrapper = styled.div(props => ({
 
 const mapStateToProps = createSelector(
   state => state,
-  state => last(state.messages),
 
-  (state, lastMessage) => ({
-    legalAttacksCards: get(lastMessage, 'toState.legalAttacks.cards', []),
+  state => ({
     selectedCards: state.selectedCards,
     table: getTable(state),
   }),
@@ -41,10 +37,7 @@ const mapStateToProps = createSelector(
 const Table = () => {
   const dispatch = useDispatch();
   const io = useWebSocketContext();
-  const { legalAttacksCards, selectedCards, table } = useSelector(
-    mapStateToProps,
-    isEqual,
-  );
+  const { selectedCards, table } = useSelector(mapStateToProps, isEqual);
 
   const canDrop = (item, monitor) => !!monitor.isOver({ shallow: true });
 
@@ -53,10 +46,6 @@ const Table = () => {
     // That said, having this check is an easy way to prevent sending too many
     // unprocessable messages to the socket server.
     if (isEmpty(selectedCards)) return;
-    // TODO: add a test for why this check is required. This check is necessary
-    // because without it, sometimes clicking on the table to defend might result
-    // in a simultaneous attack.
-    if (!legalAttacksCards.includes(selectedCards)) return;
 
     io.send('attacked', { cards: selectedCards });
     dispatch(actions.game.selectedCards.clear());

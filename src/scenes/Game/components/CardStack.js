@@ -48,15 +48,23 @@ const CardStack = ({ children }) => {
     dispatch(actions.game.selectedCards.clear());
   };
 
+  const canDrop = (item, monitor) => !!monitor.isOver({ shallow: true });
+
   const drop = () => {
+    defendWithSelectedCard();
+  };
+
+  const onClick = event => {
+    event.stopPropagation();
     defendWithSelectedCard();
   };
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
+    canDrop,
     drop,
     collect: monitor => ({
-      isOver: !!monitor.isOver(),
+      isOver: !!monitor.isOver({ shallow: true }),
     }),
   });
 
@@ -65,7 +73,7 @@ const CardStack = ({ children }) => {
       <CardWrapper
         key={index}
         marginTop={index === 0 ? '0%' : '-100%'}
-        onClick={defendWithSelectedCard}
+        onClick={onClick}
         opacity={isOver ? '30%' : '100%'}
         ref={dropRef}
       >
