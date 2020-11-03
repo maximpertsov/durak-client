@@ -21,9 +21,11 @@ import {
   getAttackers,
   getCollector,
   getDefender,
+  getDurak,
   getHands,
   getJoined,
   getPlayers,
+  getWinners,
   getYielded,
 } from 'reducers';
 import { Emoji, MediaQuery } from 'styles';
@@ -53,11 +55,13 @@ const mapStateToProps = createSelector(
     hasYielded: getYielded(state).includes(player),
     isCollecting: collector && collector === player,
     isDefender: getDefender(state) === player,
+    isDurak: getDurak(state) === player,
     isNextDefender: players.slice(2, 3).includes(player),
     isFollowingNextDefender: players.slice(3, 4).includes(player),
     isMainAttacker: attackers[0] === player,
     isSideAttacker: attackers.slice(1).includes(player),
     isUser: state.user && state.user === player,
+    isWinner: getWinners(state).includes(player),
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
     order: findIndex(players, isEqual(player)) + 1,
@@ -133,17 +137,21 @@ const Player = ({ player }) => {
     hasYielded,
     isCollecting,
     isDefender,
+    isDurak,
     isNextDefender,
     isFollowingNextDefender,
     isMainAttacker,
     isSideAttacker,
     isUser,
+    isWinner,
     order,
   } = useSelector(state => mapStateToProps(state, { player }), isEqual);
 
   // eslint-disable-next-line complexity
   const getContext = () => {
+    if (isDurak) return { text: 'The durak!', symbol: Emoji.UPSET };
     if (hasYielded) return { text: 'Stopped attacking', symbol: Emoji.THUMBS_UP };
+    if (isWinner) return { text: 'A winner!', symbol: Emoji.SUNGLASSES };
     if (isCollecting) return { text: 'Collecting', symbol: Emoji.WHITE_FLAG };
     if (isMainAttacker) return { text: 'The attacker', symbol: Emoji.DAGGER };
     if (isDefender) return { text: 'The defender', symbol: Emoji.SHIELD };
