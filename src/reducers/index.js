@@ -46,6 +46,11 @@ export const getNewGameFeatureFlag = () => {
   return params.get('ng') === 'true';
 };
 
+export const getAIFeatureFlag = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ai') === 'true';
+};
+
 export const getCurrentState = state =>
   get(last(state.messages), 'toState', {});
 

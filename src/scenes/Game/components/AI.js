@@ -7,7 +7,7 @@ import isEqual from 'lodash/fp/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import sample from 'lodash/sample';
 
-import { getGame, getPlayers } from 'reducers';
+import { getAIFeatureFlag, getGame, getPlayers } from 'reducers';
 import { withWebSocket } from 'utils/websockets';
 
 // TODO: do not hard-code bot users
@@ -17,6 +17,7 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
+    aiFeatureFlag: getAIFeatureFlag(),
     bots: getPlayers(state).filter(
       player => player !== state.user && BOTS.includes(player),
     ),
@@ -26,25 +27,23 @@ const mapStateToProps = createSelector(
 
 // TODO: feature flag?
 const AI = ({ io }) => {
-  const { bots, game } = useSelector(mapStateToProps, isEqual);
+  const { aiFeatureFlag, bots, game } = useSelector(mapStateToProps, isEqual);
 
   useEffect(() => {
-    console.log('setting up effect hook');
+    if (!aiFeatureFlag) return;
     if (!game) return;
-    console.log('game in session');
     if (isEmpty(bots)) return;
-    console.log('bots are playing');
 
     const interval = setInterval(() => {
       const bot = sample(bots);
-      console.log('bot action!');
       io.send('polled_for_action', { user: bot });
-    }, 5000);
+    }, 1000);
 
+    // eslint-disable-next-line consistent-return
     return () => {
       clearInterval(interval);
     };
-  }, [bots, game, io]);
+  }, [aiFeatureFlag, bots, game, io]);
 
   return null;
 };
