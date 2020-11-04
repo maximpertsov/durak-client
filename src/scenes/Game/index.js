@@ -24,6 +24,7 @@ import {
 } from 'reducers';
 import { Emoji, MediaQuery } from 'styles';
 
+import AI from './components/AI';
 import CollectButton from './components/CollectButton';
 import GameInitializer from './components/GameInitializer';
 import Hand from './components/Hand';
@@ -193,6 +194,7 @@ const Game = () => {
         <Loader />
       </Dimmer>
       {!isLoading && renderGame()}
+      {!isLoading && <AI />}
     </div>
   );
 };

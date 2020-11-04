@@ -1,6 +1,9 @@
 import React, { createContext, useContext } from 'react';
 import { useDispatch, useStore } from 'react-redux';
 
+import has from 'lodash/has';
+import unset from 'lodash/unset';
+
 import actions from 'actions';
 import { getCurrentState, getGame } from 'reducers';
 import { deepCamelCase, deepSnakeCase } from 'utils/lodash';
@@ -24,17 +27,26 @@ export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const store = useStore();
 
-  const createMessage = (type, payload) =>
-    deepSnakeCase(
+  const createMessage = (type, payload) => {
+    const overrides = {};
+
+    if (has(payload, 'user')) {
+      overrides.user = payload.user;
+      unset(payload, 'user');
+    }
+
+    return deepSnakeCase(
       {
         createdAt: new Date().toISOString(),
         type,
         game: getGame(),
         payload,
         ...getGameState(store),
+        ...overrides,
       },
       { skipKeys: ['hands'] },
     );
+  };
 
   const send = (type, payload) => {
     const message = createMessage(type, payload);
