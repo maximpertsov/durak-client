@@ -91,7 +91,7 @@ const WideScreenOnly = styled.span({
   },
 });
 
-const UICardWrapper = styled(UICard)(({ isGlowing }) => {
+const UICardWrapper = styled(UICard)(({ faded, glowing }) => {
   const glow = keyframes({
     '0%': {
       boxShadow: '0 0 20px teal',
@@ -103,7 +103,8 @@ const UICardWrapper = styled(UICard)(({ isGlowing }) => {
 
   return {
     '&&&': {
-      animation: isGlowing ? `${glow} 1s ease alternate infinite` : null,
+      animation: glowing ? `${glow} 1s ease alternate infinite` : null,
+      opacity: faded ? 0.3 : 1,
       marginTop: '-25px',
       zIndex: -1,
     },
@@ -183,7 +184,7 @@ const Player = ({ player }) => {
   };
 
   const renderUICard = () => (
-    <UICardWrapper fluid isGlowing={isUser}>
+    <UICardWrapper faded={isDurak || isWinner} fluid glowing={isUser}>
       <UICard.Content>
         <OrderLabelWrapper attached="top left" size="small">
           {order}
