@@ -24,6 +24,7 @@ import {
   getDurak,
   getHands,
   getJoined,
+  getOutOfPlay,
   getPlayers,
   getWinners,
   getYielded,
@@ -58,6 +59,7 @@ const mapStateToProps = createSelector(
     isDurak: getDurak(state) === player,
     isNextDefender: players.slice(2, 3).includes(player),
     isFollowingNextDefender: players.slice(3, 4).includes(player),
+    isOutOfPlay: getOutOfPlay(state).includes(player),
     isMainAttacker: attackers[0] === player,
     isSideAttacker: attackers.slice(1).includes(player),
     isUser: state.user && state.user === player,
@@ -141,6 +143,7 @@ const Player = ({ player }) => {
     isDurak,
     isNextDefender,
     isFollowingNextDefender,
+    isOutOfPlay,
     isMainAttacker,
     isSideAttacker,
     isUser,
@@ -184,7 +187,7 @@ const Player = ({ player }) => {
   };
 
   const renderUICard = () => (
-    <UICardWrapper faded={isDurak || isWinner} fluid glowing={isUser}>
+    <UICardWrapper faded={isOutOfPlay} fluid glowing={isUser}>
       <UICard.Content>
         <OrderLabelWrapper attached="top left" size="small">
           {order}

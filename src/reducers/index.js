@@ -67,6 +67,11 @@ export const getCollector = state =>
 export const getDefender = state => fromCurrentState(state, 'defender', null);
 export const getAttackers = state => fromCurrentState(state, 'attackers', []);
 export const getWinners = state => fromCurrentState(state, 'winners', []);
+export const getOutOfPlay = state =>
+  fromCurrentState(state, 'players', [])
+    .filter(player => player.state.includes('out_of_play'))
+    .map(player => player.id);
+
 export const getDurak = state =>
   first(
     fromCurrentState(state, 'players', [])
