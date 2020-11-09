@@ -93,9 +93,10 @@ export const getPlayers = state =>
     ['order'],
   );
 export const getTable = state => fromCurrentState(state, 'table', []);
-export const getYielded = state => fromCurrentState(state, 'players', [])
-  .filter(player => player.state.includes('yielded'))
-  .map(player => player.id);
+export const getYielded = state =>
+  fromCurrentState(state, 'players', [])
+    .filter(player => player.state.includes('yielded'))
+    .map(player => player.id);
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);
