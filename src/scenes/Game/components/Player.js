@@ -151,8 +151,8 @@ const Player = ({ player }) => {
   // eslint-disable-next-line complexity
   const getContext = () => {
     if (isDurak) return { text: 'The durak!', symbol: Emoji.UPSET };
-    if (hasYielded) return { text: 'Stopped attacking', symbol: Emoji.THUMBS_UP };
     if (isWinner) return { text: 'A winner!', symbol: Emoji.SUNGLASSES };
+    if (hasYielded) return { text: 'Stopped attacking', symbol: Emoji.THUMBS_UP };
     if (isCollecting) return { text: 'Collecting', symbol: Emoji.WHITE_FLAG };
     if (isMainAttacker) return { text: 'The attacker', symbol: Emoji.DAGGER };
     if (isDefender) return { text: 'The defender', symbol: Emoji.SHIELD };
