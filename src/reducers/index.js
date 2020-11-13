@@ -3,6 +3,7 @@ import { handleAction } from 'redux-actions';
 
 import isEqual from 'lodash/fp/isEqual';
 
+import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import first from 'lodash/first';
 import flatMap from 'lodash/flatMap';
@@ -102,6 +103,14 @@ export const getYielded = state =>
   fromCurrentState(state, 'players', [])
     .filter(player => player.state.includes('yielded'))
     .map(player => player.id);
+export const getUserOrganizeStrategy = state => {
+  if (!state.user) return null;
+
+  return get(
+    find(fromCurrentState(state, 'players', []), isEqual(state.user)),
+    'organizeStrategy',
+  );
+};
 
 export const getWithPassing = state =>
   fromCurrentState(state, 'withPassing', null);
