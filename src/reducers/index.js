@@ -103,11 +103,13 @@ export const getYielded = state =>
   fromCurrentState(state, 'players', [])
     .filter(player => player.state.includes('yielded'))
     .map(player => player.id);
-export const getUserOrganizeStrategy = state => {
+export const getOrganizeStrategy = state => {
   if (!state.user) return null;
 
   return get(
-    find(fromCurrentState(state, 'players', []), isEqual(state.user)),
+    find(fromCurrentState(state, 'players', []), player =>
+      isEqual(player.id, state.user),
+    ),
     'organizeStrategy',
   );
 };

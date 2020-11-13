@@ -1,9 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
-import { Button, Label, Segment } from 'semantic-ui-react';
+import { Label, Segment } from 'semantic-ui-react';
 
-import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/fp/isEqual';
 
+import SelectedOptionButtons from 'components/SelectedOptionButtons';
+import { getOrganizeStrategy } from 'reducers';
 import { withWebSocket } from 'utils/websockets';
 
 const CenteredSegment = styled(Segment)`
@@ -12,28 +16,37 @@ const CenteredSegment = styled(Segment)`
   }
 `;
 
-const groupByRank = io => () => {
-  io.send('organized', { strategy: 'group_by_rank' });
-};
+const mapStateToProps = createSelector(
+  state => state,
 
-const groupBySuit = io => () => {
-  io.send('organized', { strategy: 'group_by_suit' });
-};
-const groupByRankAndTrump = io => () => {
-  io.send('organized', { strategy: 'group_by_rank_and_trump' });
-};
+  state => ({
+    organizeStrategy: getOrganizeStrategy(state),
+  }),
+);
 
-const OrganizeMenu = ({ cards, io }) => {
-  if (isEmpty(cards)) return null;
+const OrganizeMenu = ({ io }) => {
+  const { organizeStrategy } = useSelector(mapStateToProps, isEqual);
+
+  const organize = strategy => {
+    io.send('organized', { strategy });
+  };
+
+  console.log(organizeStrategy);
 
   return (
     <CenteredSegment compact>
       <Label attached="top">Organize cards</Label>
-      <Button.Group basic widths="3">
-        <Button content="By rank" onClick={groupByRank(io)} />
-        <Button content="By suit" onClick={groupBySuit(io)} />
-        <Button content="By rank and trump" onClick={groupByRankAndTrump(io)} />
-      </Button.Group>
+      <SelectedOptionButtons
+        basic
+        widths="3"
+        activeValueChildrenPairs={[
+          ['group_by_rank', 'By rank'],
+          ['group_by_suit', 'By suit'],
+          ['group_by_rank_and_trump', 'By rank and trump'],
+        ]}
+        currentValue={organizeStrategy}
+        setValue={organize}
+      />
     </CenteredSegment>
   );
 };

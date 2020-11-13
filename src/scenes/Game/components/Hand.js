@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 import { getHands } from 'reducers';
@@ -26,7 +27,7 @@ const Hand = () => {
   return (
     <div className="Hand">
       <Cards cards={cards} />
-      <OrganizeMenu cards={cards} />
+      {!isEmpty(cards) && <OrganizeMenu />}
     </div>
   );
 };
