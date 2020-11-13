@@ -19,7 +19,9 @@ const mapStateToProps = createSelector(
     playerCount: size(players),
     lowestRankText: `Lowest rank: ${variant.lowestRank}`,
     attackLimitText:
-      variant.attackLimit === 6 ? 'Attack limit: 6 cards' : 'No attack limit',
+      variant.attackLimit === 'six'
+        ? 'Attack limit: 6 cards'
+        : 'No attack limit',
     withPassingText: variant.withPassing ? 'Passing allowed' : 'No passing',
     hasJoinedGame: players.includes(user),
   }),

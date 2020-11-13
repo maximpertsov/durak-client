@@ -27,7 +27,7 @@ const NewGameLink = ({ io, history }) => {
   const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
 
   const [lowestRank, setLowestRank] = React.useState('6');
-  const [attackLimit, setAttackLimit] = React.useState(6);
+  const [attackLimit, setAttackLimit] = React.useState('six');
   const [withPassing, setWithPassing] = React.useState(true);
   const [playerCount, setPlayerCount] = React.useState(4);
 
@@ -82,8 +82,8 @@ const NewGameLink = ({ io, history }) => {
           <div>Attack limit</div>
           <SelectedOptionButtons
             activeValueChildrenPairs={[
-              [100, 'Unlimited'],
-              [6, 'Six cards'],
+              ['hand', 'Cards in hand'],
+              ['six', 'Six cards'],
             ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
