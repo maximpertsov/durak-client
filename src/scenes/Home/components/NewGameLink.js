@@ -27,7 +27,7 @@ const NewGameLink = ({ io, history }) => {
   const { newGameFeatureFlag } = useSelector(mapStateToProps, isEqual);
 
   const [lowestRank, setLowestRank] = React.useState('6');
-  const [attackLimit, setAttackLimit] = React.useState(6);
+  const [attackLimit, setAttackLimit] = React.useState('six');
   const [withPassing, setWithPassing] = React.useState(true);
   const [playerCount, setPlayerCount] = React.useState(4);
 
