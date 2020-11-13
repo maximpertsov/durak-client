@@ -31,15 +31,15 @@ const OrganizeMenu = ({ io }) => {
     io.send('organized', { strategy });
   };
 
-  console.log(organizeStrategy);
-
   return (
     <CenteredSegment compact>
       <Label attached="top">Organize cards</Label>
       <SelectedOptionButtons
         basic
-        widths="3"
+        size="small"
+        widths="4"
         activeValueChildrenPairs={[
+          ['no_sort', 'Unsorted'],
           ['group_by_rank', 'By rank'],
           ['group_by_suit', 'By suit'],
           ['group_by_rank_and_trump', 'By rank and trump'],
