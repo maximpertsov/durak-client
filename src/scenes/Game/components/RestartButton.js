@@ -94,8 +94,8 @@ const RestartButton = ({ io }) => {
           <div>Attack limit</div>
           <SelectedOptionButtons
             activeValueChildrenPairs={[
-              [100, 'Unlimited'],
-              [6, 'Six cards'],
+              ['hand', 'Card in hand'],
+              ['six', 'Six cards'],
             ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
