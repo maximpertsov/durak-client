@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux';
 import { handleAction } from 'redux-actions';
 
+import compactFP from 'lodash/fp/compact';
+import flatMapFP from 'lodash/fp/flatMap';
+import flow from 'lodash/fp/flow';
 import isEqual from 'lodash/fp/isEqual';
+import mapFP from 'lodash/fp/map';
+import sortByFP from 'lodash/fp/sortBy';
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
@@ -98,7 +103,14 @@ export const getPlayers = state =>
     fromCurrentState(state, 'players', []).map(player => player.id),
     ['order'],
   );
-export const getTable = state => fromCurrentState(state, 'table', []);
+
+export const getTable = state =>
+  flow(
+    flatMapFP(player => player.attacks),
+    sortByFP(item => item.timestamp),
+    mapFP(item => compactFP([item.attack, item.defense])),
+  )(fromCurrentState(state, 'players', []));
+
 export const getYielded = state =>
   fromCurrentState(state, 'players', [])
     .filter(player => player.state.includes('yielded'))

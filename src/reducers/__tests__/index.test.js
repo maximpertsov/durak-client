@@ -1,4 +1,4 @@
-import { getPlayersFromUser, getUnbeatenCards } from '..';
+import { getPlayersFromUser, getTable, getUnbeatenCards } from '..';
 
 const players = ['anna', 'vasyl', 'igor', 'grusha'];
 
@@ -23,10 +23,25 @@ describe('getPlayersFromUser', () => {
 });
 /* eslint-enable indent */
 
-describe('getUnbeatenCards', () => {
+describe('table', () => {
+  const playersWithTableData = [
+    {
+      attacks: [
+        { attack: 'JH', defense: 'QH', timestamp: 0 },
+        { attack: '7C', defense: null, timestamp: 2 },
+      ],
+    },
+    { attacks: [{ attack: 'JS', defense: null, timestamp: 1 }] },
+  ];
   const state = {
-    messages: [{ toState: { table: [['JH', 'QH'], ['JS'], ['7C']] } }],
+    messages: [{ toState: { players: playersWithTableData } }],
   };
+
+  test('get table', () => {
+    const expected = [['JH', 'QH'], ['JS'], ['7C']];
+    expect(getTable(state)).toStrictEqual(expected);
+  });
+
   test('get all unbeaten cards', () => {
     const expected = ['7C', 'JS'];
     expect(getUnbeatenCards(state).sort()).toStrictEqual(expected.sort());
