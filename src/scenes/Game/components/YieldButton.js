@@ -54,7 +54,7 @@ const YieldButton = ({ io }) => {
   if (hasYielded) return null;
   if (isDefender) return null;
   if (isEmpty(table)) return null;
-  if (attackLimit === 'unlimited') return YieldButton();
+  if (attackLimit === 'unlimited') return renderYieldButton();
   if (collector) return renderYieldButton();
   if (isEmpty(unbeatenCards)) return renderYieldButton();
 
