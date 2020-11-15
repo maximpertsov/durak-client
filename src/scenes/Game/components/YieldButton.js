@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 import {
+  getAttackLimit,
   getCollector,
   getDefender,
   getTable,
@@ -19,6 +20,7 @@ const mapStateToProps = createSelector(
   state => state,
 
   state => ({
+    attackLimit: getAttackLimit(state),
     collector: getCollector(state),
     hasYielded: getYielded(state).includes(state.user),
     isDefender: state.user === getDefender(state),
@@ -30,6 +32,7 @@ const mapStateToProps = createSelector(
 // eslint-disable-next-line complexity
 const YieldButton = ({ io }) => {
   const {
+    attackLimit,
     collector,
     hasYielded,
     isDefender,
@@ -51,6 +54,7 @@ const YieldButton = ({ io }) => {
   if (hasYielded) return null;
   if (isDefender) return null;
   if (isEmpty(table)) return null;
+  if (attackLimit === 'unlimited') return YieldButton();
   if (collector) return renderYieldButton();
   if (isEmpty(unbeatenCards)) return renderYieldButton();
 
