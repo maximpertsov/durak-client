@@ -107,8 +107,8 @@ export const getPlayers = state =>
 export const getTable = state =>
   flow(
     flatMapFP(player => player.attacks),
-    sortByFP(item => item.timestamp),
-    mapFP(item => compactFP([item.attack, item.defense])),
+    sortByFP(item => get(item, 'timestamp')),
+    mapFP(item => compactFP([get(item, 'attack'), get(item, 'defense')])),
   )(fromCurrentState(state, 'players', []));
 
 export const getYielded = state =>
