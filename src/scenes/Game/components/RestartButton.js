@@ -95,12 +95,13 @@ const RestartButton = ({ io }) => {
           <SelectedOptionButtons
             activeValueChildrenPairs={[
               ['hand', 'Card in hand'],
+              ['unlimited', 'No limit'],
               ['six', 'Six cards'],
             ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
             basic
-            widths="2"
+            widths="3"
           />
         </FormWrapper>
       </UICard.Content>
