@@ -14,7 +14,6 @@ import map from 'lodash/fp/map';
 import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
-import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
 import {
@@ -68,7 +67,6 @@ const mapStateToProps = createSelector(
     isWinner: getWinners(state).includes(player),
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
-    order: findIndex(players, isEqual(player)) + 1,
   }),
 );
 
@@ -134,7 +132,7 @@ const StatusIconLabelWrapper = styled(Label)({
   },
 });
 
-const Player = ({ player }) => {
+const Player = ({ player, order }) => {
   const {
     attackLimit,
     cardCount,
@@ -151,8 +149,7 @@ const Player = ({ player }) => {
     isSideAttacker,
     isUser,
     isWinner,
-    order,
-  } = useSelector(state => mapStateToProps(state, { player }), isEqual);
+  } = useSelector(state => mapStateToProps(state, { player, order }), isEqual);
 
   // eslint-disable-next-line complexity
   const getContext = () => {
@@ -228,8 +225,10 @@ export default Player;
 
 Player.propTypes = {
   player: PropTypes.string,
+  order: PropTypes.number,
 };
 
 Player.defaultProps = {
   player: null,
+  order: 0,
 };

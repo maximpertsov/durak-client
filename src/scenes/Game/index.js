@@ -18,7 +18,6 @@ import {
   getHands,
   getJoined,
   getPlayers,
-  getPlayersFromUser,
   getWinners,
   getWithPassing,
 } from 'reducers';
@@ -38,12 +37,11 @@ import YieldButton from './components/YieldButton';
 
 const mapStateToProps = createSelector(
   state => state,
-  state => getPlayersFromUser(state),
   state => getCollector(state),
   state => getDefender(state),
   state => getDurak(state),
 
-  (state, playersFromUser, collector, defender, durak) => ({
+  (state, collector, defender, durak) => ({
     collector,
     defender,
     game: getGame(),
@@ -165,7 +163,9 @@ const Game = () => {
   );
 
   const renderPlayers = () =>
-    players.map(player => <Player key={player} player={player} />);
+    players.map((player, index) => (
+      <Player key={player} player={player} order={index + 1} />
+    ));
 
   const renderGame = () => (
     <Wrapper>
