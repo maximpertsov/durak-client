@@ -98,11 +98,17 @@ export const getHands = state =>
     ]),
   );
 
-export const getPlayers = state =>
-  sortBy(
-    fromCurrentState(state, 'players', []).map(player => player.id),
+export const getPlayers = state => {
+  const winners = getWinners(state);
+
+  return sortBy(
+    fromCurrentState(state, 'players', []).map((player, index) => ({
+      id: player.id,
+      order: index + (winners.includes(player.id) ? 100 : 0),
+    })),
     ['order'],
-  );
+  ).map(({ id }) => id);
+};
 
 export const getTable = state =>
   flow(

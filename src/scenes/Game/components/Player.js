@@ -14,11 +14,11 @@ import map from 'lodash/fp/map';
 import size from 'lodash/fp/size';
 import unzip from 'lodash/fp/unzip';
 
-import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
 import {
   getAttackers,
+  getAttackLimit,
   getCollector,
   getDefender,
   getDurak,
@@ -52,6 +52,7 @@ const mapStateToProps = createSelector(
   (state, props) => get(getHands(state), props.player),
 
   (state, attackers, players, joined, collector, player, cards) => ({
+    attackLimit: getAttackLimit(state),
     hasJoined: joined && joined.includes(player),
     hasYielded: getYielded(state).includes(player),
     isCollecting: collector && collector === player,
@@ -66,7 +67,6 @@ const mapStateToProps = createSelector(
     isWinner: getWinners(state).includes(player),
     cardCount: getCardCount(cards),
     displayCards: getDisplayCards(cards),
-    order: findIndex(players, isEqual(player)) + 1,
   }),
 );
 
@@ -132,8 +132,9 @@ const StatusIconLabelWrapper = styled(Label)({
   },
 });
 
-const Player = ({ player }) => {
+const Player = ({ player, order }) => {
   const {
+    attackLimit,
     cardCount,
     displayCards,
     hasJoined,
@@ -148,8 +149,7 @@ const Player = ({ player }) => {
     isSideAttacker,
     isUser,
     isWinner,
-    order,
-  } = useSelector(state => mapStateToProps(state, { player }), isEqual);
+  } = useSelector(state => mapStateToProps(state, { player, order }), isEqual);
 
   // eslint-disable-next-line complexity
   const getContext = () => {
@@ -195,14 +195,16 @@ const Player = ({ player }) => {
         <Header size="small">{`${player}`}</Header>
         {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
       </UICard.Content>
-      <UICard.Content extra>
-        <div>{`${cardCount} cards`}</div>
-        <WideScreenOnly>
-          <CardsWrapper>
-            <Cards cards={displayCards} scale={0.4} />
-          </CardsWrapper>
-        </WideScreenOnly>
-      </UICard.Content>
+      {attackLimit !== 'unlimited' && (
+        <UICard.Content extra>
+          <div>{`${cardCount} cards`}</div>
+          <WideScreenOnly>
+            <CardsWrapper>
+              <Cards cards={displayCards} scale={0.4} />
+            </CardsWrapper>
+          </WideScreenOnly>
+        </UICard.Content>
+      )}
     </UICardWrapper>
   );
 
@@ -223,8 +225,10 @@ export default Player;
 
 Player.propTypes = {
   player: PropTypes.string,
+  order: PropTypes.number,
 };
 
 Player.defaultProps = {
   player: null,
+  order: 0,
 };

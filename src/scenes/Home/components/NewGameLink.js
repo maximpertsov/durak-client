@@ -83,13 +83,14 @@ const NewGameLink = ({ io, history }) => {
           <SelectedOptionButtons
             activeValueChildrenPairs={[
               ['hand', 'Cards in hand'],
+              ['unlimited', 'No limit'],
               ['six', 'Six cards'],
             ]}
             currentValue={attackLimit}
             setValue={setAttackLimit}
             basic
             size="tiny"
-            widths="2"
+            widths="3"
           />
           <div>Players</div>
           <SelectedOptionButtons
