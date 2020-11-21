@@ -20,10 +20,9 @@ const authenticate = () => async dispatch => {
 
       dispatch(actions.game.user.set(user));
 
-      setTimeout(
-        dispatch(authenticate()),
-        exp * 1000 - Date.now() - EXPIRATION_BUFFER,
-      );
+      setTimeout(() => {
+        dispatch(authenticate());
+      }, exp * 1000 - Date.now() - EXPIRATION_BUFFER);
     }
   } catch (error) {
     dispatch(logout());
