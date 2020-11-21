@@ -4,6 +4,8 @@ import updateLoginForm from 'actions/updateLoginForm';
 import jwtDecode from 'jwt-decode';
 import client, { isSuccess } from 'utils/client';
 
+const EXPIRATION_BUFFER = 1000;
+
 const authenticate = () => async dispatch => {
   try {
     const response = await client.post('token/refresh', {
@@ -12,11 +14,16 @@ const authenticate = () => async dispatch => {
 
     if (isSuccess(response)) {
       const { access } = response.data;
-      const { user } = jwtDecode(access);
+      const { user, exp } = jwtDecode(access);
 
       localStorage.setItem('access', access);
 
       dispatch(actions.game.user.set(user));
+
+      setTimeout(
+        dispatch(authenticate()),
+        exp * 1000 - Date.now() - EXPIRATION_BUFFER,
+      );
     }
   } catch (error) {
     dispatch(logout());
