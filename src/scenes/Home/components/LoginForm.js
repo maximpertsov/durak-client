@@ -32,8 +32,6 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
-const REFRESH_INTERVAL = 5000;
-
 const LoginForm = () => {
   const dispatch = useDispatch();
   const { isLoggedIn, formUsername, formPassword, formError } = useSelector(
@@ -42,20 +40,8 @@ const LoginForm = () => {
   );
 
   useEffect(() => {
-    let interval = null;
-
-    if (isLoggedIn) {
-      interval = setInterval(() => {
-        dispatch(authenticate());
-      }, REFRESH_INTERVAL);
-    } else {
-      dispatch(authenticate());
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [dispatch, isLoggedIn]);
+    dispatch(authenticate());
+  }, [dispatch]);
 
   const handleChange = event => {
     const {
