@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import size from 'lodash/size';
 import some from 'lodash/some';
@@ -40,12 +41,13 @@ const mapStateToProps = createSelector(
   state => getCollector(state),
   state => getDefender(state),
   state => getDurak(state),
+  state => getHands(state),
 
-  (state, collector, defender, durak) => ({
+  (state, collector, defender, durak, hands) => ({
     collector,
     defender,
     game: getGame(),
-    hands: getHands(state),
+    hasCards: !isEmpty(get(hands, [state.user, 'hand'])),
     // TODO: find a better way to manage this
     gameHasStarted:
       !getJoined(state)
@@ -104,6 +106,7 @@ const Game = () => {
   const {
     collector,
     defender,
+    hasCards,
     isAttacker,
     isCollecting,
     isDefender,
@@ -147,11 +150,12 @@ const Game = () => {
       </Segment>
     );
 
+  // eslint-disable-next-line complexity
   const renderButton = () => {
     if (isDurak) return <RestartButton />;
     if (!gameHasStarted) return <StartButton />;
     if (isOutOfGame) return null;
-    if (isDefender) return <CollectButton />;
+    if (isDefender) return hasCards ? <CollectButton /> : null;
 
     return <YieldButton />;
   };

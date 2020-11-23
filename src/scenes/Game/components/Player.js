@@ -186,6 +186,24 @@ const Player = ({ player, order }) => {
     );
   };
 
+  const renderCardsContext = () => {
+    const hasCardsText = cardCount < 1 ? 'No more cards' : 'Has cards';
+    const cardCountText = `${cardCount} cards`;
+
+    return (
+      <UICard.Content extra>
+        <div>{attackLimit === 'unlimited' ? hasCardsText : cardCountText}</div>
+        {attackLimit !== 'unlimited' && (
+          <WideScreenOnly>
+            <CardsWrapper>
+              <Cards cards={displayCards} scale={0.4} />
+            </CardsWrapper>
+          </WideScreenOnly>
+        )}
+      </UICard.Content>
+    );
+  };
+
   const renderUICard = () => (
     <UICardWrapper faded={isOutOfPlay} fluid glowing={isUser}>
       <UICard.Content>
@@ -195,16 +213,7 @@ const Player = ({ player, order }) => {
         <Header size="small">{`${player}`}</Header>
         {getContext() && <UICard.Meta>{renderContext()}</UICard.Meta>}
       </UICard.Content>
-      {attackLimit !== 'unlimited' && (
-        <UICard.Content extra>
-          <div>{`${cardCount} cards`}</div>
-          <WideScreenOnly>
-            <CardsWrapper>
-              <Cards cards={displayCards} scale={0.4} />
-            </CardsWrapper>
-          </WideScreenOnly>
-        </UICard.Content>
-      )}
+      {renderCardsContext()}
     </UICardWrapper>
   );
 
